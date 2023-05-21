@@ -1,0 +1,15 @@
+<mat-toolbar>
+
+  Title
+
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    User Info
+    <button mat-menu-item>Settings</button>
+    <button mat-menu-item>Light/Dark</button>
+    <button mat-menu-item>Login/Logout</button>
+  </mat-menu>
+
+</mat-toolbar>
