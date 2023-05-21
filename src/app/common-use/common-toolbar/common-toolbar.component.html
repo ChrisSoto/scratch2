@@ -1,10 +1,13 @@
-<mat-toolbar>
+<mat-toolbar class="flex">
 
-  Title
+  <div class="flex-auto">
+    Title
+  </div>
 
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon>
   </button>
+  
   <mat-menu #menu="matMenu">
     User Info
     <button mat-menu-item>Settings</button>
