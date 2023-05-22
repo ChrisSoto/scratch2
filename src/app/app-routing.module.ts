@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [{
   path: '',
-  loadComponent: () => import('./common-use/common-toolbar/common-toolbar.component').then(c => c.CommonToolbarComponent)
+  loadComponent: () => import('./home/home.component').then(mod => mod.HomeComponent)
 }];
 
 @NgModule({

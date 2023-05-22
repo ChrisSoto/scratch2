@@ -1,7 +1,7 @@
 <mat-toolbar class="flex">
 
   <div class="flex-auto">
-    Title
+    {{ titleService.getTitle() }}
   </div>
 
   <button mat-icon-button [matMenuTriggerFor]="menu">

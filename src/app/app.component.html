@@ -1,4 +1,6 @@
-<router-outlet></router-outlet>
-
-
-<p class="mt4">test</p>
+<div [ngClass]="{ 'full-height': screenHeight.full() }">
+  <common-toolbar></common-toolbar>
+  <div class="p-2">
+    <router-outlet></router-outlet>
+  </div>
+</div>
