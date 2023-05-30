@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { ScreenHeightService } from './root-services/screen-height.service';
+import { ScreenHeightService } from './shared/services/screen-height.service';
+import { UserService } from './shared/user/user.service';
+import { AuthService } from './shared/user/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +9,7 @@ import { ScreenHeightService } from './root-services/screen-height.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public screenHeight: ScreenHeightService) { }
+  constructor(
+    public screenHeight: ScreenHeightService,
+    public auth: AuthService) { }
 }
