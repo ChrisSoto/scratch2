@@ -1,21 +1,23 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private auth: Auth = Inject(Auth);
+  private auth: Auth = inject(Auth);
 
   user: User | null | undefined;
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   constructor() {
     this.auth.onAuthStateChanged((user: User | null) => {
-      if (user) this.user$.next(user);
+      if (user) {
+        console.log('logged in: ', user);
+        this.user$.next(user);
+      }
     });
   }
 

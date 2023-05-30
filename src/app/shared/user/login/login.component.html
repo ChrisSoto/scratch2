@@ -1,26 +1,31 @@
-<div class="login" fxLayout="row" fxLayoutAlign="center center">
+<div id="login">
 
-    <mat-card class="box" style="width: 300px;">
-        <mat-card-header fxLayout="row" fxLayoutAlign="center center">
-            <mat-card-title><h1>Welcome</h1></mat-card-title>
-        </mat-card-header>
+    <mat-card>
+        <mat-card-content>
 
-        <form class="example-form">
-            <mat-card-content fxLayout="column">
-                <mat-form-field appearance="fill">
-                    <input matInput placeholder="Email" [(ngModel)]="user.email" name="'email'">
-                </mat-form-field>
+            <mat-card-title class="pb-3">Welcome</mat-card-title>
 
-                <mat-form-field appearance="fill">
-                    <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="'password'">
-                </mat-form-field>
-            </mat-card-content>
-            <div fxLayout="row" fxLayoutAlign="end">
-                <button (click)="signIn()" mat-button>Log in</button>
-            </div>
-        </form>
+            <form>
+                <div class="flex flex-col">
+                    <mat-form-field appearance="fill">
+                        <input matInput placeholder="Email" [(ngModel)]="user.email" name="'email'">
+                    </mat-form-field>
 
-        <span class="mat-small">click <span class="span-button" (click)="register()">here</span> if you need to register.</span>
+                    <mat-form-field appearance="fill">
+                        <input matInput type="password" placeholder="Password" [(ngModel)]="user.password" name="'password'">
+                    </mat-form-field>
+                </div>
+
+                <mat-card-actions align="end">
+                    <button color="primary" (click)="login()" mat-button>Log in</button>
+                </mat-card-actions>
+            </form>
+
+            <mat-card-footer>
+                <span class="mat-small">click <span class="span-button" (click)="register()">here</span> if you need to register.</span>
+            </mat-card-footer>
+
+        </mat-card-content>
     </mat-card>
 
 </div>

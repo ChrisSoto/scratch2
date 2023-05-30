@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormsModule, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -26,6 +26,9 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class LoginComponent implements OnInit {
 
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   form = new UntypedFormControl();
 
   user: UserLogin = {
@@ -33,16 +36,12 @@ export class LoginComponent implements OnInit {
     password: ''
   };
 
-  constructor(
-    private _auth: AuthService,
-    private _router: Router) { }
-
   ngOnInit(): void { }
 
-  signIn() {
-    this._auth.signIn(this.user.email, this.user.password)
+  login() {
+    this.auth.signIn(this.user.email, this.user.password)
       .then(data => {
-        this._router.navigate(['/bible-app/genesis/1'])
+        this.router.navigate(['/bible-app/genesis/1'])
       })
       .catch(error => {
         console.log(error.code);
@@ -50,7 +49,7 @@ export class LoginComponent implements OnInit {
   }
 
   register() {
-    this._router.navigate(['/register'])
+    this.router.navigate(['/register'])
   }
 
 }

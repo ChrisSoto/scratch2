@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { UntypedFormControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserLogin } from '../user-model';
 import { UserService } from '../user.service';
@@ -27,6 +27,10 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class RegisterComponent implements OnInit {
 
+  private auth = inject(AuthService);
+  private userService = inject(UserService);
+  private router = inject(Router);
+
   form = new UntypedFormControl();
 
   user: UserLogin = {
@@ -34,22 +38,17 @@ export class RegisterComponent implements OnInit {
     password: ''
   };
 
-  constructor(
-    private _auth: AuthService,
-    private _user: UserService,
-    private _router: Router) { }
-
   ngOnInit(): void { }
 
   register() {
-    this._auth.createUser(this.user.email, this.user.password)
+    this.auth.createUser(this.user.email, this.user.password)
       .then(data => {
-        this._user.create({
+        this.userService.create({
           email: data.user.email,
           uid: data.user.uid
         })
           .then(res => {
-            this._router.navigate(['/login'])
+            this.router.navigate(['/login'])
           })
       }).catch(error => {
         console.log(error.code);
@@ -57,6 +56,6 @@ export class RegisterComponent implements OnInit {
   }
 
   login() {
-    this._router.navigate(['/login'])
+    this.router.navigate(['/login'])
   }
 }

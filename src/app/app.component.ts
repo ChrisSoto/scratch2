@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ScreenHeightService } from './shared/services/screen-height.service';
-import { UserService } from './shared/user/user.service';
 import { AuthService } from './shared/user/auth.service';
 
 @Component({
@@ -9,7 +8,11 @@ import { AuthService } from './shared/user/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(
-    public screenHeight: ScreenHeightService,
-    public auth: AuthService) { }
+
+  public screenHeight = inject(ScreenHeightService);
+  public auth = inject(AuthService);
+
+  constructor() {
+  }
+
 }
