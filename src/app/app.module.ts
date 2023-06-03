@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,8 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { firebaseConfig } from 'firebase_config';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomErrorHandler } from './shared/services/custom-error-handler.service';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,14 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonToolbarComponent,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: CustomErrorHandler
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
