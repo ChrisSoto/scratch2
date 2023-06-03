@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { ScreenHeightService } from '../shared/services/screen-height.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  constructor(private titleService: Title) {
-    this.titleService.setTitle('Home: Under Construction');
+
+  ngOnInit() {
+    this.test()
+  }
+
+  test() {
+    ({} as any).test();
   }
 }
