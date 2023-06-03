@@ -11,15 +11,28 @@ export class LocalStorageService {
 
   constructor() { }
 
-  get storage(): Storage {
-    return getLocalStorage();
+  // get storage(): Storage {
+  //   return getLocalStorage();
+  // }
+
+  getLocalStorage<T>(key: string): T | null {
+    const data = localStorage.getItem(key);
+    if (data) {
+      return this.unPack<T>(data);
+    } else {
+      return null;
+    }
   }
 
-  pack(data: any) {
+  setLocalStorage(key: string, data: any) {
+    localStorage.setItem(key, this.pack(data));
+  }
+
+  private pack(data: any): string {
     return JSON.stringify(data);
   }
 
-  unPack(data: any) {
+  private unPack<T>(data: any): T {
     return JSON.parse(data);
   }
 }
