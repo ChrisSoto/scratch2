@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class AuthService {
   user: User | null | undefined;
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
-  isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  isAuthenticated$: Subject<boolean> = new Subject();
 
   constructor() {
     this.auth.onAuthStateChanged((user: User | null) => {
