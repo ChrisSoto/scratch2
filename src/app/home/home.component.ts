@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { ScreenHeightService } from '../shared/services/screen-height.service';
+import { ToolbarService } from '../shared/services/toolbar.service';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +11,8 @@ import { ScreenHeightService } from '../shared/services/screen-height.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-
-  ngOnInit() {
-    this.test()
-  }
-
-  test() {
-    ({} as any).test();
+  private toolbar = inject(ToolbarService);
+  constructor() {
+    this.toolbar.showToolbar();
   }
 }

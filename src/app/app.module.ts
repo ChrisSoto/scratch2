@@ -11,6 +11,7 @@ import { firebaseConfig } from 'firebase_config';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from './shared/services/custom-error-handler.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { CustomErrorHandler } from './shared/services/custom-error-handler.servi
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

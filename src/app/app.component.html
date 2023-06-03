@@ -1,5 +1,5 @@
 <div [ngClass]="{ 'full-height': screenHeight.full() }">
-  <common-toolbar></common-toolbar>
+  <common-toolbar *ngIf="toolbar.show()"></common-toolbar>
   <div class="p-2">
     <router-outlet></router-outlet>
   </div>
