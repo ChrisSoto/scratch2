@@ -5,7 +5,7 @@ import {
   collection, Firestore, DocumentReference, DocumentSnapshot, DocumentData, enableIndexedDbPersistence
 } from '@angular/fire/firestore';
 import { getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
-import { combineLatest, from, map, mergeMap, Observable, of } from 'rxjs';
+import { catchError, combineLatest, from, map, mergeMap, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../user/auth.service';
 
 export interface PaginatedCollection<T> {
@@ -52,6 +52,10 @@ export class DatabaseService {
         collection(this.firestore, path) as CollectionReference<T>,
         ...q
       ), { idField: 'id' }
+    ).pipe(
+      catchError(err => {
+        return throwError(() => new Error(`Database List did not work: ${err}`));
+      })
     );
   }
 
@@ -69,6 +73,9 @@ export class DatabaseService {
             next: val[1],
             count: val[2],
           }
+        }),
+        catchError(err => {
+          return throwError(() => new Error(`Database List Paginated did not work: ${err}`));
         })
       )
   }
@@ -79,6 +86,10 @@ export class DatabaseService {
         collection(this.firestore, path) as CollectionReference<T>,
         ...q
       ), { idField: idField || 'id' }
+    ).pipe(
+      catchError(err => {
+        return throwError(() => new Error(`Database List Custom Id did not work: ${err}`));
+      })
     );
   }
 
@@ -91,7 +102,10 @@ export class DatabaseService {
     data = Object.assign(data, meta);
 
     const ref = collection(this.firestore, path);
-    return addDoc(ref, this.setUndefinedValuesToNull(data));
+    return addDoc(ref, this.setUndefinedValuesToNull(data))
+      .catch(err => {
+        return new Promise(() => new Error(`Database List did not work: ${err}`));
+      });
   }
 
   set(path: string, data: any): Promise<void> {
@@ -103,12 +117,18 @@ export class DatabaseService {
     data = Object.assign(data, meta);
 
     const ref = doc(this.firestore, path);
-    return setDoc(ref, this.setUndefinedValuesToNull(data));
+    return setDoc(ref, this.setUndefinedValuesToNull(data))
+      .catch(err => {
+        return new Promise(() => new Error(`Database List did not work: ${err}`));
+      });
   }
 
   get(path: string): Promise<DocumentSnapshot<DocumentData>> {
     const ref = doc(this.firestore, path);
-    return getDoc(ref);
+    return getDoc(ref)
+      .catch(err => {
+        return new Promise(() => new Error(`Database List did not work: ${err}`));
+      });
   }
 
   update(path: string, data: any): Promise<void> {
@@ -117,22 +137,25 @@ export class DatabaseService {
       updatedBy: this.auth.user$.value?.uid,
     };
 
-    // if ('id' in data) {
-    //   delete data.id;
-    // }
-
     data = Object.assign(data, meta);
 
     const ref = doc(this.firestore, path);
-    return updateDoc(ref, this.setUndefinedValuesToNull(data));
+    return updateDoc(ref, this.setUndefinedValuesToNull(data))
+      .catch(err => {
+        return new Promise(() => new Error(`Database List did not work: ${err}`));
+      });
   }
 
   delete(path: string): Promise<void> {
     const ref = doc(this.firestore, path);
-    return deleteDoc(ref);
+    return deleteDoc(ref)
+      .catch(err => {
+        return new Promise(() => new Error(`Database List did not work: ${err}`));
+      });
   }
 
   private enableIndexedDbPersistence() {
+
     enableIndexedDbPersistence(this.firestore)
   }
 
