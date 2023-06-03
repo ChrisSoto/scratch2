@@ -1,22 +1,43 @@
-import { NgModule } from '@angular/core';
+import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ToolbarService } from './shared/services/toolbar.service';
+import { AuthService } from './shared/user/auth.service';
 
 const routes: Routes = [
   {
+    path: '',
+    title: 'Home: Under Construction',
+    loadComponent: () => import('./home/home.component').then(c => c.HomeComponent),
+  },
+  {
     path: 'login',
+    title: 'Login',
     loadComponent: () => import('./shared/user/login/login.component').then(c => c.LoginComponent),
-    title: 'Login'
+
   },
   {
     path: 'register',
+    title: 'Register',
     loadComponent: () => import('./shared/user/register/register.component').then(c => c.RegisterComponent),
-    title: 'Register'
+
   },
+  //
+  //
+  // protected routes
+  //
   {
     path: '',
-    loadComponent: () => import('./home/home.component').then(c => c.HomeComponent),
-    title: 'Home: Under Construction'
-  },
+    canActivate: [
+      () => inject(AuthService).isAuthenticated$
+    ],
+    children: [
+      {
+        path: 'church-slide-sync',
+        title: 'Church Slide Sync',
+        loadComponent: () => import('./apps/church-slide-sync/church-slide-sync.component').then(c => c.ChurchSlideSyncComponent),
+      }
+    ]
+  }
 ];
 
 @NgModule({

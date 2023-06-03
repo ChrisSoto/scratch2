@@ -12,11 +12,16 @@ export class AuthService {
   user: User | null | undefined;
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
+  isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   constructor() {
     this.auth.onAuthStateChanged((user: User | null) => {
       if (user) {
         console.log('logged in: ', user);
+        this.isAuthenticated$.next(true);
         this.user$.next(user);
+      } else {
+        this.isAuthenticated$.next(false);
       }
     });
   }
