@@ -7,7 +7,7 @@ import { Injectable, signal } from '@angular/core';
 })
 export class ScreenHeightService {
 
-  full = signal(false);
+  readonly full = signal(false);
 
   constructor() { }
 
