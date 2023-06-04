@@ -1,13 +1,13 @@
-<div *ngIf="orientation === 'horizontal'" class="text-fab horizontal" class="flex flex-row justify-between items-center" fxLayoutAlign="space-between center">
-    <span class="btn-text" [class.disabled]="disabled">{{ text }}</span>
-    <button [disabled]="disabled" mat-mini-fab [color]="color" (click)="buttonChange.emit()">
+<div *ngIf="orientation === 'horizontal'" class="text-fab horizontal" class="flex flex-row justify-end items-center" fxLayoutAlign="space-between center">
+    <span class="btn-text font-bold" [class.disabled]="disabled">{{ text }}</span>
+    <button class="ml-4" [disabled]="disabled" mat-mini-fab [color]="color" (click)="buttonChange.emit()">
         <mat-icon>{{ icon }}</mat-icon>
     </button>
 </div>
 
 <div *ngIf="orientation === 'vertical'" class="text-fab vertical" class="flex flex-column justify-between items-center" fxLayoutAlign="space-between center">
-    <button [disabled]="disabled" mat-mini-fab [color]="color" (click)="buttonChange.emit()">
+    <button class="ml-4" [disabled]="disabled" mat-mini-fab [color]="color" (click)="buttonChange.emit()">
         <mat-icon>{{ icon }}</mat-icon>
     </button>
-    <span class="btn-text" [class.disabled]="disabled">{{ text }}</span>
+    <span class="btn-text font-bold" [class.disabled]="disabled">{{ text }}</span>
 </div>
