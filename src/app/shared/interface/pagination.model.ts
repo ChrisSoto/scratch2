@@ -5,3 +5,7 @@ export interface PaginatedCollection<T> {
   next: QueryDocumentSnapshot<T>,
   count: number
 }
+
+export interface SavedPages<T> {
+  [page: number]: QueryDocumentSnapshot<T>;
+}

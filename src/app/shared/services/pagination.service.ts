@@ -3,10 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { QueryDocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { GeneralQuery } from './sort-to-query-constraints.service';
-
-export interface SavedPages<T> {
-  [page: number]: QueryDocumentSnapshot<T>;
-}
+import { SavedPages } from '../interface/pagination.model';
 
 @Injectable()
 export class PaginationService {
