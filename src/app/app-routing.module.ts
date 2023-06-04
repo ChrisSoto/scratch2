@@ -1,6 +1,5 @@
 import { NgModule, inject } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ToolbarService } from './shared/services/toolbar.service';
 import { AuthService } from './shared/user/auth.service';
 
 const routes: Routes = [
@@ -34,7 +33,7 @@ const routes: Routes = [
       {
         path: 'church-slide-sync',
         title: 'Church Slide Sync',
-        loadComponent: () => import('./apps/church-slide-sync/church-slide-sync.component').then(c => c.ChurchSlideSyncComponent),
+        loadChildren: () => import('./apps/church-slide-sync/church-slide-sync.routing').then(r => r.ChurchListRoutes)
       }
     ]
   }
