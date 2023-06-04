@@ -3,13 +3,13 @@
   (buttonChange)="newSlides()">
 </common-fab-button>
 
-<div class="slides-list shadow-sm overflow-hidden py-2 mat-elevation-z3">
+<div class="slides-list shadow-sm py-2">
 
   <div class="mb-2">
     <!-- <opc-service-new></opc-service-new> -->
   </div>
 
-  <table class="border-collapse table-fixed w-full text-sm " cdk-table recycleRows [dataSource]="churchSlides.list$">
+  <table class="border-collapse table-fixed w-full text-sm" cdk-table recycleRows [dataSource]="dataSource">
     <!-- Position Column -->
     <ng-container cdkColumnDef="title">
       <th class="border-b font-medium p-4 pt-0 pb-3 text-slate-950 text-left" cdk-header-cell *cdkHeaderCellDef> Title </th>
@@ -25,5 +25,12 @@
     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
     <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <mat-paginator
+    [hidePageSize]="true"
+    [pageSize]="10"
+    [length]="dataSource.count$ | async"
+    (page)="onPageChange($event)"  
+  ></mat-paginator>
 
 </div>

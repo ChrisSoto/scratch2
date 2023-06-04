@@ -15,7 +15,7 @@
 
 import { Meta } from "src/app/shared/interface/meta.model";
 
-export interface ChurchService extends Meta {
+export interface ChurchSlideshow extends Meta {
   title: string;
   pastor: string;
   date: Date;

@@ -7,12 +7,7 @@ import {
 import { getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
 import { catchError, combineLatest, from, map, mergeMap, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../user/auth.service';
-
-export interface PaginatedCollection<T> {
-  data: T[],
-  next: QueryDocumentSnapshot<T>,
-  count: number
-}
+import { PaginatedCollection } from '../interface/pagination.model';
 
 // yoinked from 
 // https://gist.github.com/evlymn/3369172043d18609fca4e5d426dc1cd7

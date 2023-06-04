@@ -20,7 +20,7 @@
     </form>
   </div>
 
-  <div class="flex flex-row justify-between" mat-dialog-actions>
+  <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()">Cancel</button>
     <button [disabled]="!newSlidesForm.valid" mat-raised-button color="primary" (click)="dialogRef.close(newSlidesForm.value)">Create</button>
   </div>
