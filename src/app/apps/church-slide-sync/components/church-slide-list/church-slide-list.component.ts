@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
@@ -13,6 +13,8 @@ import { PaginationService } from 'src/app/shared/services/pagination.service';
 import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { Sort } from '@angular/material/sort';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
+import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 
 @Component({
   selector: 'app-church-slide-list',
@@ -27,7 +29,6 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
     MatPaginatorModule,
   ],
   providers: [
-    ChurchSlideshowService,
     PaginationService
   ],
   templateUrl: './church-slide-list.component.html',
@@ -37,8 +38,11 @@ export class ChurchSlideListComponent {
 
   private dialog = inject(MatDialog);
   private actionStatus = inject(ActionStatusService);
-  private churchSlidesService = inject(ChurchSlideshowService);
+  private churchSlideshowService = inject(ChurchSlideshowService);
   private sortToQuery = inject(SortToQueryConstraintsService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private active = inject(ActiveChurchSlideshowService);
 
   dataSource = new ChurchSlideshowDataSource();
   lastSort: Sort = { active: 'created', direction: 'desc' };
@@ -57,19 +61,24 @@ export class ChurchSlideListComponent {
     this.dataSource.loadPaginated(query, pageEvent);
   }
 
-  newSlides() {
+  goToSlideshow(slideshow: ChurchSlideshow) {
+    this.active.setSlideshow(slideshow);
+    this.router.navigate(['edit/' + slideshow.id], { relativeTo: this.route })
+  }
+
+  newSlideshow() {
     this.dialog.open(NewSlidesFormComponent)
       .afterClosed()
       .pipe(
         mergeMap((slides) => {
-          return this.churchSlidesService.create(slides);
+          return this.churchSlideshowService.create(slides);
         })
       )
       .subscribe((ref) => {
         if (ref) {
-          this.actionStatus.success(`Service Created!`);
+          this.actionStatus.success(`Slideshow Created!`);
         } else {
-          this.actionStatus.failure(`Service Not Created!`);
+          this.actionStatus.failure(`Slideshow Not Created!`);
         }
       });
   }

@@ -1,0 +1,7 @@
+<div *ngIf="active.slideshow$ | async as slideshow; else noSlideshow">
+  service selected
+</div>
+
+<ng-template #noSlideshow>
+  Select a service!
+</ng-template>

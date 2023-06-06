@@ -1,0 +1,14 @@
+<div class="flex flex-row justify-end items-center">
+  <mat-form-field appearance="fill" class="flex grow pr-4">
+    <mat-label>Choose Slide</mat-label>
+    <mat-select (selectionChange)="selectChange($event)">
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button class="mb-5" [disabled]="!selected()" mat-mini-fab color="primary" (click)="addOptionChange.emit(selected())">
+      <mat-icon>add</mat-icon>
+  </button>
+</div>
