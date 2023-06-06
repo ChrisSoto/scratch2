@@ -1,7 +1,9 @@
-<h1 class="text-xl font-bold tracking-tight text-black sm:text-2xl mb-5">{{ active.title$| async }}</h1>
+<div class="sticky top-0 bg-white z-10 shadow-md pl-2">
+  <h1 class="text-xl font-bold tracking-tight text-black sm:text-2xl mb-5">{{ active.title$| async }}</h1>
 
-<div class="pr-4">
-  <common-select [options]="slideOptions" (addOptionChange)="onAddOptionChange($event)"></common-select>
+  <div class="pr-4">
+    <common-select [options]="slideOptions" (addOptionChange)="onAddOptionChange($event)"></common-select>
+  </div>
 </div>
 
 <div class="slide-list" cdkDropList (cdkDropListDropped)="move($event)">

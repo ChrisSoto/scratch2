@@ -1,5 +1,7 @@
 <div *ngIf="active.slideshow$ | async as slideshow; else noSlideshow">
-  service selected
+  <div class="flex flex-row justify-center items-center">
+    <div class="bg-white" style="height:0;width:80%;padding-bottom:80%;"></div>
+  </div>
 </div>
 
 <ng-template #noSlideshow>
