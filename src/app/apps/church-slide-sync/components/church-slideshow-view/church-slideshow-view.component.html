@@ -1,7 +1,25 @@
-<div class="h-full flex flex-row justify-center items-center" *ngIf="active.slideshow$ | async as slideshow; else noSlideshow">
-  <div class="square bg-white" makeSquare></div>
+<div class="h-full flex flex-row justify-center items-center" *ngIf="active.slide$ | async as slide; else noSlide">
+  <div class="square bg-white" makeSquare>
+    <div class="flex flex-row justify-center items-center h-full">
+      <ng-container [ngSwitch]="slide.type">
+        <ng-container *ngSwitchCase="'HYMN'">
+          HYMM
+        </ng-container>
+        <ng-container *ngSwitchCase="'TEXT'">
+          TEXT
+        </ng-container>
+        <ng-container *ngSwitchCase="'IMAGE'">
+          IMAGE
+        </ng-container>
+        <ng-container *ngSwitchCase="'EMPTY'">
+          EMPTY
+        </ng-container>
+      </ng-container>
+    </div>
+    
+  </div>
 </div>
 
-<ng-template #noSlideshow>
+<ng-template #noSlide>
   Select a service!
 </ng-template>

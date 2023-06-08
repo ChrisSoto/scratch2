@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ChurchSlideshowService } from './church-slideshow.service';
-import { ChurchSlideType } from '../interface/ChurchSlideshow.interface';
+import { ChurchSlide, ChurchSlideType } from '../interface/ChurchSlideshow.interface';
 
 @Injectable()
 export class ChurchSlideService {
@@ -9,7 +9,7 @@ export class ChurchSlideService {
 
   constructor() { }
 
-  addEmptySlide(type: ChurchSlideType) {
+  addEmptySlide(type: ChurchSlideType): ChurchSlide {
     return {
       type: type,
       data: {}

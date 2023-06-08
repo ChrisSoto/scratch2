@@ -20,7 +20,8 @@ export interface ChurchSlideshow extends Meta {
   pastor: string;
   date: Date;
   slides: ChurchSlide[]
-  active?: 0,
+  activeSlide: number,
+  activeSubSlide: number;
 }
 
 export interface ChurchHymn {
