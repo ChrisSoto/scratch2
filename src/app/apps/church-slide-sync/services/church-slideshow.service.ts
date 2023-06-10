@@ -19,6 +19,10 @@ export class ChurchSlideshowService {
     return this.database.add(this.path, system);
   }
 
+  observe(id: string) {
+    return this.database.observe<ChurchSlideshow>(this.path + '/' + id);
+  }
+
   read(id: string): Promise<DocumentSnapshot<DocumentData>> {
     return this.database.get(this.path + '/' + id);
   }

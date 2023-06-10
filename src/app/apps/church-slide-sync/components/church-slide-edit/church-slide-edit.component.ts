@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, mergeMap, of } from 'rxjs';
+import { Unsubscribable, filter, mergeMap } from 'rxjs';
 import { ChurchSlideshowService } from '../../services/church-slideshow.service';
-import { ChurchSlideType, ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
+import { ChurchSlideType } from '../../interface/ChurchSlideshow.interface';
 import { CommonSelectComponent } from 'src/app/shared/components/common-select/common-select.component';
 import { ChurchSlideTypeEditComponent } from '../church-slide-type-edit/church-slide-type-edit.component';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -25,15 +25,14 @@ export class ChurchSlideEditComponent {
   slideshowService = inject(ChurchSlideshowService);
   route = inject(ActivatedRoute);
 
+  loadSlideshow$!: Unsubscribable;
+
   slideOptions: ChurchSlideType[] = [
     'HYMN', 'IMAGE', 'TEXT', 'EMPTY'
   ];
 
   ngOnInit() {
-    // if the edit page is refreshed, active slideshow loses the active slideshow
-    if (!this.active.slideshow$.value) {
-      this.loadSlideshow();
-    }
+    this.loadSlideshow();
   }
 
   onAddOptionChange(slideType: ChurchSlideType | null) {
@@ -42,29 +41,20 @@ export class ChurchSlideEditComponent {
   }
 
   loadSlideshow() {
-    this.route.paramMap
+    this.loadSlideshow$ = this.route.paramMap
       .pipe(
+        filter(params => params.has('id')),
         mergeMap((params) => {
-          if (params.has('id')) {
-            const id = params.get('id') as string;
-            return this.slideshowService.read(id);
-          } else {
-            return of(null);
-          }
+          const id = params.get('id') as string;
+          return this.slideshowService.observe(id);
         }),
-        map((data) => {
-          if (data && data.exists()) {
-            return data.data() as ChurchSlideshow;
-          } else {
-            return null;
-          }
-        })
       )
       .subscribe((slideshow) => {
         if (slideshow) {
+          console.log(slideshow)
           this.active.setSlideshow(slideshow);
         }
-      })
+      });
   }
 
   move(event: CdkDragDrop<string[]>) {
@@ -75,5 +65,6 @@ export class ChurchSlideEditComponent {
 
   ngOnDestroy() {
     this.active.clear();
+    this.loadSlideshow$.unsubscribe();
   }
 }

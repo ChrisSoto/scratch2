@@ -34,6 +34,26 @@ export class ActiveChurchSlideshowService {
     this.slideshowService.update(slideshow);
   }
 
+  nextSlide(sub?: boolean) {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    if (sub) {
+      slideshow.activeSubSlide++;
+    } else {
+      slideshow.activeSlide++;
+    }
+    this.slideshowService.update(slideshow);
+  }
+
+  prevSlide(sub?: boolean) {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    if (sub) {
+      slideshow.activeSubSlide--;
+    } else {
+      slideshow.activeSlide--;
+    }
+    this.slideshowService.update(slideshow);
+  }
+
   clear() {
     this.slideshow$.next(null);
     this.title$.next('');

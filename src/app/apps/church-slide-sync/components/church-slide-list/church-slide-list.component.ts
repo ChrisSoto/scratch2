@@ -62,7 +62,6 @@ export class ChurchSlideListComponent {
   }
 
   goToSlideshow(slideshow: ChurchSlideshow) {
-    this.active.setSlideshow(slideshow);
     this.router.navigate(['edit/' + slideshow.id], { relativeTo: this.route })
   }
 

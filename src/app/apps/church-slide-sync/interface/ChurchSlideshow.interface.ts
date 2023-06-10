@@ -24,13 +24,17 @@ export interface ChurchSlideshow extends Meta {
   activeSubSlide: number;
 }
 
+export interface ChurchHymnLyrics {
+  [section: string]: string[]
+}
+
 export interface ChurchHymn {
   number: number;
   title: string;
   publication: string; // remove
   tune: string;
   key: string;
-  lyrics: { [section: string]: string[] };
+  lyrics: ChurchHymnLyrics;
   source?: string;
   composer?: string;
   author?: string;
