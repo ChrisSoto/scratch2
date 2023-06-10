@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-  addDoc, CollectionReference, deleteDoc, doc, getDoc, getCountFromServer,
+  addDoc, CollectionReference, deleteDoc, doc, getDoc, getCountFromServer, onSnapshot,
   query, setDoc, updateDoc, collectionData, serverTimestamp, QueryConstraint,
   collection, Firestore, DocumentReference, DocumentSnapshot, DocumentData, enableIndexedDbPersistence
 } from '@angular/fire/firestore';
 import { getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
-import { catchError, combineLatest, from, map, mergeMap, Observable, of, throwError } from 'rxjs';
+import { catchError, combineLatest, from, map, mergeMap, Observable, of, throwError, Unsubscribable } from 'rxjs';
 import { AuthService } from '../user/auth.service';
 import { PaginatedCollection } from '../interface/pagination.model';
 
@@ -124,6 +124,17 @@ export class DatabaseService {
       .catch(err => {
         return new Promise(() => new Error(`Database List did not work: ${err}`));
       });
+  }
+
+  // https://stackoverflow.com/questions/71324214/firebase-v9-modular-how-do-you-use-onsnapshot-to-return-an-observable
+  observe<T>(path: string): Observable<T> {
+    const ref = doc(this.firestore, path);
+    return new Observable((observer) => {
+      return onSnapshot(ref,
+        (snapshot => observer.next(snapshot.data() as T)),
+        (error => observer.error(error.message))
+      );
+    });
   }
 
   update(path: string, data: any): Promise<void> {
