@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL, UploadTask, UploadResult } from "firebase/storage";
 import { ActionStatusService } from './action-status.service';
 import { BehaviorSubject } from 'rxjs';
+import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class FileUploadService {
@@ -25,6 +26,7 @@ export class FileUploadService {
       this.uploadResult = uploadBytes(fileRef, file);
       this.upload();
     }
+    return this.fileUrl$.asObservable();
   }
 
   uploadResumable() {
@@ -64,7 +66,6 @@ export class FileUploadService {
         getDownloadURL(this.uploadTask.snapshot.ref).then((downloadURL) => {
           this.fileUrl$.next(downloadURL);
         });
-
         this.progress$.next(0);
       });
   }

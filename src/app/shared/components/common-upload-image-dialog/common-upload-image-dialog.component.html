@@ -1,0 +1,30 @@
+<div class="p-4">
+  <h1 class="text-xl pb-4" mat-dialog-title>Image Upload</h1>
+
+  <div mat-dialog-content>
+
+      <div class="flex items-center justify-center w-full">
+          <label *ngIf="!(imageResult$ | async) else showImageResult" for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-gray-100">
+              <div class="flex flex-col items-center justify-center p-5">
+                  
+                  <mat-icon class="w-10 h-10 mb-3 text-gray-400">
+                    upload
+                  </mat-icon>
+                  
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+              </div>
+              <input id="dropzone-file" type="file" class="hidden" (change)="selectImage($event)"/>
+          </label>
+      </div>
+
+      <ng-template #showImageResult>
+        <img [src]="imageResult$ | async" alt="Image alt text">
+      </ng-template>
+  </div>
+
+  <div class="mt-4 flex flex-row justify-between items-center" mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!(imageResult$ | async)" (click)="uploadImage()">Upload</button>
+  </div>
+</div>
