@@ -8,6 +8,6 @@
 
 <div class="slide-list" cdkDropList (cdkDropListDropped)="move($event)">
   <div class="bg-white" *ngFor="let slide of active.slides$ | async; let i = index" cdkDrag>
-    <church-slide-type-edit [slide]="slide"></church-slide-type-edit>
+    <church-slide-type-edit [slide]="slide" [order]="i"></church-slide-type-edit>
   </div>
 </div>

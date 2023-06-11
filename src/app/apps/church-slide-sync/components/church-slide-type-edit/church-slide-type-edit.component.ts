@@ -7,6 +7,7 @@ import { CommonUploadImageDialogComponent } from 'src/app/shared/components/comm
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 import { filter, mergeMap } from 'rxjs';
+import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -23,9 +24,11 @@ import { filter, mergeMap } from 'rxjs';
 })
 export class ChurchSlideTypeEditComponent {
   @Input() slide!: ChurchSlide;
+  @Input() order!: number;
 
   dialog = inject(MatDialog);
   upload = inject(FileUploadService);
+  active = inject(ActiveChurchSlideshowService);
 
   editHymn() { }
   removeHymn() { }
@@ -38,11 +41,12 @@ export class ChurchSlideTypeEditComponent {
       .afterClosed()
       .pipe(
         filter((file: File) => file && 'name' in file),
-        mergeMap((file: File) => this.upload.uploadFile('opc/', file))
+        mergeMap((file: File) => this.upload.uploadFile('opc/', file)),
       )
       .subscribe(imageUrl => {
-        console.log(imageUrl);
+        this.active.saveImage(imageUrl, this.order);
       });
   }
+
   removeImage() { }
 }

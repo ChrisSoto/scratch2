@@ -9,7 +9,7 @@
           TEXT
         </ng-container>
         <ng-container *ngSwitchCase="'IMAGE'">
-          IMAGE
+          <img [src]="slide.data?.url" alt="Image alt text">
         </ng-container>
         <ng-container *ngSwitchCase="'EMPTY'">
           EMPTY

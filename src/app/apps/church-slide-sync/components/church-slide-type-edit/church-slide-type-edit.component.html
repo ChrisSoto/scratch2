@@ -33,7 +33,12 @@
     <ng-container *ngSwitchCase="'IMAGE'">
       <div class="flex flex-row grow justify-between items-center mr-4">
         
-        <div class="bg-green-500 h-14 flex grow items-stretch mr-4"></div>
+        <div class="h-14 flex grow items-stretch mr-4">
+          <img *ngIf="slide.data?.url else upload" class="h-14 grow object-cover" [src]="slide.data?.url" alt="Image alt text">
+          <ng-template #upload>
+            Upload an Image
+          </ng-template>
+        </div>
 
         <div class="flex flex-row gap-x-2">
           <button (click)="uploadImage()" mat-mini-fab color="primary">

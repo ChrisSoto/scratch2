@@ -34,6 +34,12 @@ export class ActiveChurchSlideshowService {
     this.slideshowService.update(slideshow);
   }
 
+  saveImage(imageUrl: string, slideIndex: number) {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    slideshow.slides[slideIndex].data['url'] = imageUrl;
+    this.slideshowService.update(slideshow);
+  }
+
   nextSlide(sub?: boolean) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     if (sub) {
