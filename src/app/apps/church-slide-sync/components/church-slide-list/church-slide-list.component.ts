@@ -5,7 +5,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
 import { NewSlidesFormComponent } from '../../dialogs/new-slides-form/new-slides-form.component';
-import { mergeMap } from 'rxjs';
+import { filter, mergeMap, of } from 'rxjs';
 import { ActionStatusService } from 'src/app/shared/services/action-status.service';
 import { ChurchSlideshowDataSource } from '../../services/church-slideshow.datasource';
 import { ChurchSlideshowService } from '../../services/church-slideshow.service';
@@ -14,7 +14,6 @@ import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-q
 import { Sort } from '@angular/material/sort';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
-import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 
 @Component({
   selector: 'app-church-slide-list',
@@ -42,7 +41,6 @@ export class ChurchSlideListComponent {
   private sortToQuery = inject(SortToQueryConstraintsService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private active = inject(ActiveChurchSlideshowService);
 
   dataSource = new ChurchSlideshowDataSource();
   lastSort: Sort = { active: 'created', direction: 'desc' };
@@ -69,6 +67,7 @@ export class ChurchSlideListComponent {
     this.dialog.open(NewSlidesFormComponent)
       .afterClosed()
       .pipe(
+        filter(slides => slides),
         mergeMap((slides) => {
           return this.churchSlideshowService.create(slides);
         })
@@ -76,8 +75,6 @@ export class ChurchSlideListComponent {
       .subscribe((ref) => {
         if (ref) {
           this.actionStatus.success(`Slideshow Created!`);
-        } else {
-          this.actionStatus.failure(`Slideshow Not Created!`);
         }
       });
   }
