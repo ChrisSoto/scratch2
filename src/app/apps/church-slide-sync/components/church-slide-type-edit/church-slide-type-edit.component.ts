@@ -1,8 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChurchSlide } from '../../interface/ChurchSlideshow.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonUploadImageDialogComponent } from 'src/app/shared/components/common-upload-image-dialog/common-upload-image-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { FileUploadService } from 'src/app/shared/services/file-upload.service';
+import { filter, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -10,7 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     CommonModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDialogModule,
+    CommonUploadImageDialogComponent
   ],
   templateUrl: './church-slide-type-edit.component.html',
   styleUrls: ['./church-slide-type-edit.component.scss']
@@ -18,9 +24,25 @@ import { MatIconModule } from '@angular/material/icon';
 export class ChurchSlideTypeEditComponent {
   @Input() slide!: ChurchSlide;
 
-  editHymn() {
-    console.log('edit hymn')
-  }
+  dialog = inject(MatDialog);
+  upload = inject(FileUploadService);
 
-  removeEmpty() { }
+  editHymn() { }
+  removeHymn() { }
+
+  editColor() { }
+  removeColor() { }
+
+  uploadImage() {
+    this.dialog.open(CommonUploadImageDialogComponent, { maxHeight: '80%', width: '50%' })
+      .afterClosed()
+      .pipe(
+        filter((file: File) => file && 'name' in file),
+        mergeMap((file: File) => this.upload.uploadFile('opc/', file))
+      )
+      .subscribe(imageUrl => {
+        console.log(imageUrl);
+      });
+  }
+  removeImage() { }
 }

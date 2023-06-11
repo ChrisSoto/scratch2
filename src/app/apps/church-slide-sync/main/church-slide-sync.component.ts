@@ -7,6 +7,7 @@ import { ActiveChurchSlideshowService } from '../services/active-church-slidesho
 import { ChurchSlideshowService } from '../services/church-slideshow.service';
 import { ChurchSlideService } from '../services/church-slide.service';
 import { SlideshowControlsService } from '../services/slideshow-controls.service';
+import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 
 @Component({
   selector: 'app-church-slide-sync',
@@ -21,6 +22,7 @@ import { SlideshowControlsService } from '../services/slideshow-controls.service
     ActiveChurchSlideshowService,
     ChurchSlideService,
     SlideshowControlsService,
+    FileUploadService
   ],
   templateUrl: './church-slide-sync.component.html',
   styleUrls: ['./church-slide-sync.component.scss'],
