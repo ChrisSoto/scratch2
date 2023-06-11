@@ -75,9 +75,6 @@ export class SlideshowControlsService {
     if (activeSlide.type === 'HYMN') {
       this.data.subSlides.active = slideshow.activeSubSlide;
       this.data.subSlides.total = Object.keys(activeSlide.data.lyrics).length;
-    } else {
-      // reset
-      this.resetSubSlides();
     }
   }
 
@@ -126,19 +123,8 @@ export class SlideshowControlsService {
     return this.data.subSlides.active === this.data.subSlides.total - 1;
   }
 
-  private resetSubSlides() {
-    this.data.subSlides.active = 0;
-    this.data.subSlides.total = 0;
-  }
-
-  private resetSlides() {
-    this.data.slides.active = 0;
-    this.data.slides.total = 0;
-  }
 
   reset() {
     this.slideshow$.unsubscribe();
-    this.resetSlides();
-    this.resetSubSlides();
   }
 }

@@ -46,6 +46,8 @@ export class ActiveChurchSlideshowService {
       slideshow.activeSubSlide++;
     } else {
       slideshow.activeSlide++;
+      // reset subslides
+      slideshow.activeSubSlide = 0;
     }
     this.slideshowService.update(slideshow);
   }
@@ -56,6 +58,11 @@ export class ActiveChurchSlideshowService {
       slideshow.activeSubSlide--;
     } else {
       slideshow.activeSlide--;
+      // get length of subslides
+      const slide = slideshow.slides[slideshow.activeSlide];
+      if (slide.type === 'HYMN') {
+        slideshow.activeSubSlide = Object.keys(slide.data.lyrics).length - 1;
+      }
     }
     this.slideshowService.update(slideshow);
   }
