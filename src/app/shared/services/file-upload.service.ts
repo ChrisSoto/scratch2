@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { getStorage, ref, uploadBytesResumable, uploadBytes, getDownloadURL, UploadTask, UploadResult } from "firebase/storage";
 import { ActionStatusService } from './action-status.service';
 import { BehaviorSubject } from 'rxjs';
-import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class FileUploadService {
@@ -64,7 +63,7 @@ export class FileUploadService {
       }, () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(this.uploadTask.snapshot.ref).then((downloadURL) => {
-          this.fileUrl$.next(downloadURL);
+          this.fileUrl$.next(this.urlCleanUp(downloadURL));
         });
         this.progress$.next(0);
       });
@@ -73,7 +72,17 @@ export class FileUploadService {
   upload() {
     this.uploadResult.then(result => {
       this.uploadResultData$.next(result);
-      this.fileUrl$.next(result.ref.toString());
+      this.fileUrl$.next(this.urlCleanUp(result.ref.toString()));
     })
+  }
+
+  urlCleanUp(url: string) {
+    const pre = 'https://firebasestorage.googleapis.com/v0/b/scratch-projects-63c96.appspot.com/o/';
+    const post = '?alt=media';
+    const clean = url
+      .replace('gs://scratch-projects-63c96.appspot.com/', '')
+      .replace('/', '%2F')
+      .replace(' ', '%20');
+    return pre + clean + post;
   }
 }
