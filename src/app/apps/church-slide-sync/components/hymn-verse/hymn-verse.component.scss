@@ -1,0 +1,28 @@
+.verse-line {
+  font-size: calc(18px + 1vw);
+  line-height: calc(30px + 1vh);
+  margin-bottom: calc(5px + 1vh);
+}
+
+.refrain-line {
+  font-size: calc(15px + 1vw);
+  line-height: calc(25px + 1vh);
+}
+
+.title {
+  font-size: calc(20px + 1vw);
+  margin-bottom: calc(5px + 1vh);
+}
+
+.order {
+  font-size: calc(18px + 1vw);
+  left: -25px;
+  top: -5px;
+}
+
+.number {
+  font-size: calc(221px + 1vw);
+  right: -32px;
+  top: -91px;
+  opacity: 0.25;
+}

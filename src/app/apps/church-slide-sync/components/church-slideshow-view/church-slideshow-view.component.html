@@ -1,9 +1,16 @@
 <div class="h-full flex flex-row justify-center items-center" *ngIf="active.slide$ | async as slide; else noSlide">
   <div class="square bg-white" makeSquare>
-    <div class="flex flex-row justify-center items-center h-full">
+    <div class="flex relative flex-row justify-center items-center h-full">
       <ng-container [ngSwitch]="slide.type">
         <ng-container *ngSwitchCase="'HYMN'">
-          HYMM
+          
+          <hymn-verse
+            [verse]="hymn.verse$ | async"
+            [refrain]="hymn.refrain$ | async"
+            [hymn]="hymn.hymn$ | async"
+            [order]="hymn.order$ | async">
+          </hymn-verse>
+
         </ng-container>
         <ng-container *ngSwitchCase="'TEXT'">
           TEXT
