@@ -41,7 +41,7 @@ export class ChurchSlideTypeEditComponent {
       .afterClosed()
       .pipe(
         filter((file: File) => file && 'name' in file),
-        mergeMap((file: File) => this.upload.uploadFile('opc/', file)),
+        mergeMap((file: File) => this.upload.uploadFile('opc', file)),
       )
       .subscribe(imageUrl => {
         this.active.saveImage(imageUrl, this.order);
