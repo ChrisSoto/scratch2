@@ -16,8 +16,8 @@ export class FileUploadService {
   private uploadTask!: UploadTask;
   private uploadResult!: Promise<UploadResult>;
 
-  uploadFile(path: string, file: File, resumable?: boolean) {
-    const fileRef = ref(this.storage, path + file.name);
+  uploadFile(directory: string, file: File, resumable?: boolean) {
+    const fileRef = ref(this.storage, directory + '/' + file.name);
     if (resumable) {
       this.uploadTask = uploadBytesResumable(fileRef, file);
       this.uploadResumable();
