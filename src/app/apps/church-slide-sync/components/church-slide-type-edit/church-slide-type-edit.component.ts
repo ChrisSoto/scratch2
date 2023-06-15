@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonUploadImageDialogComponent } from 'src/app/shared/components/common-upload-image-dialog/common-upload-image-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
-import { filter, mergeMap } from 'rxjs';
+import { filter, merge, mergeMap, of } from 'rxjs';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
+import { RemoveSlideComponent } from '../../dialogs/remove-slide/remove-slide.component';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -31,10 +32,8 @@ export class ChurchSlideTypeEditComponent {
   active = inject(ActiveChurchSlideshowService);
 
   editHymn() { }
-  removeHymn() { }
 
   editColor() { }
-  removeColor() { }
 
   uploadImage() {
     this.dialog.open(CommonUploadImageDialogComponent, { maxHeight: '80%', width: '50%' })
@@ -48,5 +47,16 @@ export class ChurchSlideTypeEditComponent {
       });
   }
 
-  removeImage() { }
+  removeSlide() {
+    this.dialog.open(RemoveSlideComponent, { maxHeight: '80%', width: '300px' })
+      .afterClosed()
+      .pipe(
+        mergeMap((remove) => {
+          return remove ? this.active.removeSlide(this.order) : of(null)
+        })
+      )
+      .subscribe(removed => {
+        console.log(removed);
+      })
+  }
 }

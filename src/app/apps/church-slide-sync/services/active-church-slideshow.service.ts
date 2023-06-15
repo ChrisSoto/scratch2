@@ -27,6 +27,12 @@ export class ActiveChurchSlideshowService {
     this.slide$.next(slideshow.slides[slideshow.activeSlide]);
   }
 
+  removeSlide(order: number) {
+    let slideshow = this.slideshow$.value as ChurchSlideshow;
+    slideshow.slides.splice(order, 1);
+    return this.slideshowService.update(slideshow);
+  }
+
   addSlide(type: ChurchSlideType) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides.push(this.slideService.addEmptySlide(type));
