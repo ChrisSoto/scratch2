@@ -19,110 +19,102 @@ export class SlideshowControlsService {
 
   private active = inject(ActiveChurchSlideshowService);
   private slideshow$!: Unsubscribable;
-  private data: SlidesControlData = {
-    slides: {
-      active: 0,
-      total: 0,
-    },
-    subSlides: {
-      active: 0,
-      total: 0,
-    },
-  };
-
-  setup() {
-    this.slideshow$ = this.active.slideshow$
-      .subscribe((slideshow) => {
-        if (slideshow) this.updateControlData();
-      });
-  }
 
   keyDown(event: KeyboardEvent) {
     if (event.code === 'KeyF') this.toggleFullscreen();
-    if (event.code === 'ArrowRight') this.nextIndex();
-    if (event.code === 'ArrowLeft') this.prevIndex();
+    if (event.code === 'ArrowRight') this.next();
+    if (event.code === 'ArrowLeft') this.prev();
   }
 
   toggleFullscreen() {
     this.fullscreen() ? this.fullscreen.set(false) : this.fullscreen.set(true);
   }
 
-  nextIndex() {
-    if (!this.hasSlides()) return;
-    if (this.hasSubSlides()) {
-      // progress through subslides until they're end
-      this.nextSlide(!this.atEndOfSubSlides());
-    } else {
-      this.nextSlide();
-    }
-  }
-
-  prevIndex() {
-    if (!this.hasSlides()) return;
-    if (this.hasSubSlides()) {
-      // move back through subslides until they're start
-      this.prevSlide(!this.atStartOfSubSlides());
-    } else {
-      this.prevSlide();
-    }
-  }
-
-  private updateControlData() {
+  next() {
     const slideshow = this.active.slideshow$.value as ChurchSlideshow;
-    this.data.slides.active = slideshow.activeSlide;
-    this.data.slides.total = slideshow.slides.length;
-    const activeSlide = slideshow.slides[slideshow.activeSlide];
-    if (activeSlide.type === 'HYMN') {
-      this.data.subSlides.active = slideshow.activeSubSlide;
-      this.data.subSlides.total = Object.keys(activeSlide.data.lyrics).length;
-    }
-  }
+    const slide = slideshow?.slides[slideshow.activeSlide];
 
-  private nextSlide(sub?: boolean) {
-    if (sub) {
-      this.active.nextSlide(sub);
+    // no slides
+    if (slideshow.slides.length < 1) return;
+
+    // regular slide
+    if (slide.type !== 'HYMN') {
+
+      this.nextSlide(slideshow);
+
+      // hymn slide
     } else {
-      if (!this.atEndOfSlides()) {
-        this.active.nextSlide();
-      }
-    }
 
+      const totalHymnSlides = Object.keys(slide.data.lyrics).length;
+
+      // no hymn slides
+      if (totalHymnSlides < 1) {
+        this.nextSlide(slideshow)
+        return;
+      }
+
+      // at end of subslides
+      // need to go to next slide
+      if (slideshow.activeSubSlide >= totalHymnSlides - 1) {
+        this.nextSlide(slideshow)
+        return;
+      }
+
+      this.nextHymnSlide(slideshow, totalHymnSlides);
+    }
   }
 
-  private prevSlide(sub?: boolean) {
-    if (sub) {
-      this.active.prevSlide(sub);
+  prev() {
+    const slideshow = this.active.slideshow$.value as ChurchSlideshow;
+    const slide = slideshow?.slides[slideshow.activeSlide];
+
+    // no slides
+    if (slideshow.slides.length < 1) return;
+
+    // regular slide
+    if (slide.type !== 'HYMN') {
+
+      this.prevSlide(slideshow);
+
+      // hymn slide
     } else {
-      if (!this.atStartOfSlides()) {
-        this.active.prevSlide();
+
+      const totalHymnSlides = Object.keys(slide.data.lyrics).length;
+
+      // no hymn slides
+      if (totalHymnSlides < 1) {
+        this.prevSlide(slideshow)
+        return;
       }
+
+      // at start of subslides
+      // need to go back a slide
+      if (slideshow.activeSubSlide === 0) {
+        this.prevSlide(slideshow)
+        return;
+      }
+
+      this.prevHymnSlide(slideshow);
     }
   }
 
-  private hasSlides(): boolean {
-    return this.data.slides.total > 0;
+  private nextSlide(slideshow: ChurchSlideshow) {
+    const nextIndex = slideshow.activeSlide + 1;
+    if (nextIndex <= (slideshow.slides.length - 1)) this.active.nextSlide();
   }
 
-  private hasSubSlides(): boolean {
-    return this.data.subSlides.total > 0;
+  private nextHymnSlide(slideshow: ChurchSlideshow, total: number) {
+    const nextIndex = slideshow.activeSubSlide + 1;
+    if (nextIndex <= total - 1) this.active.nextSlide(true);
   }
 
-  private atStartOfSlides() {
-    return this.data.slides.active === 0;
+  private prevSlide(slideshow: ChurchSlideshow) {
+    if (slideshow.activeSlide > 0) this.active.prevSlide();
   }
 
-  private atEndOfSlides() {
-    return this.data.slides.active === this.data.slides.total - 1;
+  private prevHymnSlide(slideshow: ChurchSlideshow) {
+    if (slideshow.activeSubSlide > 0) this.active.prevSlide(true);
   }
-
-  private atStartOfSubSlides(): boolean {
-    return this.data.subSlides.active === 0;
-  }
-
-  private atEndOfSubSlides(): boolean {
-    return this.data.subSlides.active === this.data.subSlides.total - 1;
-  }
-
 
   reset() {
     this.slideshow$.unsubscribe();

@@ -16,7 +16,6 @@ export class ActiveChurchSlideshowService {
   slides$: BehaviorSubject<ChurchSlide[]> = new BehaviorSubject<ChurchSlide[]>([]);
   slide$: BehaviorSubject<ChurchSlide | null> = new BehaviorSubject<ChurchSlide | null>(null);
 
-
   setSlideshow(slideshow: ChurchSlideshow) {
     this.slideshow$.next(slideshow);
     this.title$.next(slideshow.title);
@@ -42,29 +41,29 @@ export class ActiveChurchSlideshowService {
 
   nextSlide(sub?: boolean) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
-    if (sub) {
-      slideshow.activeSubSlide++;
-    } else {
+    if (!sub) {
       slideshow.activeSlide++;
-      // reset subslides
       slideshow.activeSubSlide = 0;
+    } else {
+      slideshow.activeSubSlide++;
     }
     this.slideshowService.update(slideshow);
   }
 
   prevSlide(sub?: boolean) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
-    if (sub) {
-      slideshow.activeSubSlide--;
-    } else {
+    if (!sub) {
       slideshow.activeSlide--;
-      // get length of subslides
-      const slide = slideshow.slides[slideshow.activeSlide];
-      if (slide.type === 'HYMN') {
-        slideshow.activeSubSlide = Object.keys(slide.data.lyrics).length - 1;
-      }
+      slideshow.activeSubSlide = this.lastSubSlideIndex(slideshow);
+    } else {
+      slideshow.activeSubSlide--;
     }
     this.slideshowService.update(slideshow);
+  }
+
+  private lastSubSlideIndex(slideshow: ChurchSlideshow) {
+    const slide = slideshow.slides[slideshow.activeSlide];
+    return slide.type === 'HYMN' ? Object.keys(slide.data.lyrics).length - 1 : 0;
   }
 
   clear() {
