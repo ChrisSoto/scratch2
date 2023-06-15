@@ -50,6 +50,10 @@ export interface ChurchSlide {
   type: ChurchSlideType;
 }
 
+export interface ImageUrl {
+  url: string;
+}
+
 export interface ChurchSlideImage extends Meta {
   url: string;
   name: string;
