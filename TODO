@@ -1,0 +1,8 @@
+can't figure out why a dialog will not take on tailwind styling, figured it out before, can't figure it out now. Complete mystery
+    UPDATE: needed to remove MatDialogModule... not sure if styling is removed
+
+for some reason, HymnEdit will repeat it's observable for however many hymns are selected for the slide. So need to fix that at some point.
+
+convert whatever should be a signal to a signal
+
+need smaller bundle size for app
