@@ -127,11 +127,11 @@ export class DatabaseService {
   }
 
   // https://stackoverflow.com/questions/71324214/firebase-v9-modular-how-do-you-use-onsnapshot-to-return-an-observable
-  observe<T>(path: string): Observable<T> {
+  observe<T>(path: string): Observable<DocumentSnapshot<DocumentData>> {
     const ref = doc(this.firestore, path);
     return new Observable((observer) => {
       return onSnapshot(ref,
-        (snapshot => observer.next(snapshot.data() as T)),
+        (snapshot => observer.next(snapshot)),
         (error => observer.error(error.message))
       );
     });
