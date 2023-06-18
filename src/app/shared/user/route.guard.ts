@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
-import { map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -8,20 +8,19 @@ import { AuthService } from './auth.service';
 })
 export class UserRouteGuard {
 
-  constructor(
-    private auth: AuthService,
-    private router: Router) {
+  isAuthenticated$ = inject(AuthService).isAuthenticated$
+  router = inject(Router);
 
-  }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.isLoggedIn() ? true : this.router.createUrlTree(['login']);
-    // .pipe(
-    //   tap(test => console.log(test)),
-    //   map(loggedIn => {
-    //     return loggedIn ? true : this.router.createUrlTree(['login'])
-    //   })
-    // )
+    console.log(route, state);
+
+    return this.isAuthenticated$
+      .pipe(
+        map(auth => {
+          return auth ? true : this.router.createUrlTree(['login']);
+        })
+      )
   }
 
 }

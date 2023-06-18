@@ -9,10 +9,8 @@
   </button>
   
   <mat-menu #menu="matMenu">
-    User Info
-    <button mat-menu-item>Settings</button>
-    <button mat-menu-item>Light/Dark</button>
-    <button mat-menu-item>Login/Logout</button>
+    <button *ngIf="(isAuthenticated$ | async)" mat-menu-item (click)="logout()">Log Out</button>
+    <button *ngIf="!(isAuthenticated$ | async)" mat-menu-item (click)="login()">Log In</button>
   </mat-menu>
 
 </mat-toolbar>

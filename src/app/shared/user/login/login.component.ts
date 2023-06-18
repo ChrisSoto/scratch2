@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.auth.signIn(this.user.email, this.user.password)
       .then(data => {
-        this.router.navigate(['/bible-app/genesis/1'])
+        this.router.navigate(['/'])
       })
       .catch(error => {
         console.log(error.code);

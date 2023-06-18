@@ -1,6 +1,6 @@
 import { NgModule, inject } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthService } from './shared/user/auth.service';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { UserRouteGuard } from './shared/user/route.guard';
 
 const routes: Routes = [
   {
@@ -27,7 +27,7 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [
-      () => inject(AuthService).isAuthenticated$
+      (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => inject(UserRouteGuard).canActivate(route, state)
     ],
     children: [
       {
