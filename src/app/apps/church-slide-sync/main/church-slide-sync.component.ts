@@ -8,6 +8,7 @@ import { ChurchSlideshowService } from '../services/church-slideshow.service';
 import { ChurchSlideService } from '../services/church-slide.service';
 import { SlideshowControlsService } from '../services/slideshow-controls.service';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
+import { EditHymnComponent } from '../dialogs/edit-hymn/edit-hymn.component';
 
 @Component({
   selector: 'app-church-slide-sync',

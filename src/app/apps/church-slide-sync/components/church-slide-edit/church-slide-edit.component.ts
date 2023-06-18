@@ -51,7 +51,6 @@ export class ChurchSlideEditComponent {
       )
       .subscribe((slideshow) => {
         if (slideshow) {
-          console.log(slideshow)
           this.active.setSlideshow(slideshow);
         }
       });

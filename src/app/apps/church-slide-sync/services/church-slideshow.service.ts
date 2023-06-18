@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { DocumentData, DocumentReference, DocumentSnapshot } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { ChurchSlideshow } from '../interface/ChurchSlideshow.interface';
@@ -20,7 +20,14 @@ export class ChurchSlideshowService {
   }
 
   observe(id: string) {
-    return this.database.observe<ChurchSlideshow>(this.path + '/' + id);
+    return this.database.observe<ChurchSlideshow>(this.path + '/' + id)
+      .pipe(
+        map(data => {
+          let slideshow = data.data() as ChurchSlideshow;
+          slideshow.id = data.id;
+          return slideshow;
+        })
+      );
   }
 
   read(id: string): Promise<DocumentSnapshot<DocumentData>> {
@@ -37,8 +44,8 @@ export class ChurchSlideshowService {
     return this.database.listPaginated(this.path, ...this.sortToQuery.convert(sort));
   }
 
-  update(system: Partial<ChurchSlideshow>) {
-    return this.database.update(this.path + '/' + system.id, system);
+  update(slideshow: Partial<ChurchSlideshow>): Promise<void> {
+    return this.database.update(this.path + '/' + slideshow.id, slideshow);
   }
 
   remove(id: string): Promise<void> {

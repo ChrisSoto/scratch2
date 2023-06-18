@@ -1,6 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ChurchSlide, ChurchSlideType, ChurchSlideshow } from '../interface/ChurchSlideshow.interface';
+import { ChurchHymn, ChurchSlide, ChurchSlideType, ChurchSlideshow } from '../interface/ChurchSlideshow.interface';
 import { ChurchSlideService } from './church-slide.service';
 import { ChurchSlideshowService } from './church-slideshow.service';
 
@@ -16,11 +16,23 @@ export class ActiveChurchSlideshowService {
   slides$: BehaviorSubject<ChurchSlide[]> = new BehaviorSubject<ChurchSlide[]>([]);
   slide$: BehaviorSubject<ChurchSlide | null> = new BehaviorSubject<ChurchSlide | null>(null);
 
+  background = signal(false);
+
   setSlideshow(slideshow: ChurchSlideshow) {
     this.slideshow$.next(slideshow);
     this.title$.next(slideshow.title);
     this.slides$.next(slideshow.slides);
     this.updateSlide(slideshow);
+    this.updateBackground();
+  }
+
+  updateBackground() {
+    const slide = this.slide$.value;
+    if (slide && slide.type === 'EMPTY') {
+      this.background.set(true);
+    } else {
+      this.background.set(false);
+    }
   }
 
   updateSlide(slideshow: ChurchSlideshow) {
@@ -36,6 +48,12 @@ export class ActiveChurchSlideshowService {
   addSlide(type: ChurchSlideType) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides.push(this.slideService.addEmptySlide(type));
+    this.slideshowService.update(slideshow);
+  }
+
+  saveHymn(hymn: ChurchHymn, slideIndex: number) {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    slideshow.slides[slideIndex].data = hymn;
     this.slideshowService.update(slideshow);
   }
 

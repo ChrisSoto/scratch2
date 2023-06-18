@@ -6,20 +6,27 @@
 
   <div mat-dialog-content>
 
-    <div fxLayout="row" fxLayoutAlign="space-between center">
-      <mat-form-field appearance="fill" fxFlex="75">
+    <form class="flex flex-row justify-between items-center" [formGroup]="hymnForm">
+      <mat-form-field class="pr-4" appearance="fill">
         <mat-label> Hymn </mat-label>
-        <input type="number" matInput [(ngModel)]="selectedHymn" placeholder="1">
+        <input type="number" matInput formControlName="number" placeholder="Hymn Number">
       </mat-form-field>
-      <button class="mb-1" [disabled]="!selectedHymn" mat-mini-fab color="primary" (click)="selectHymn()">
+      <button class="mb-5" [disabled]="hymnForm.pristine" mat-mini-fab color="primary" (click)="selectHymn()">
         <mat-icon>add</mat-icon>
       </button>
-    </div>
-
+    </form>
   </div>
+
+  <div *ngIf="selectedHymn$ | async as hymn; else hymnNotSelected">
+    <h1 class="text-3xl text-bold">{{ hymn.title }}</h1>
+  </div>
+
+  <ng-template #hymnNotSelected>
+    No Hymn Selected
+  </ng-template>
 
   <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
     <button mat-button (click)="dialogRef.close(false)">Cancel</button>
-    <button mat-raised-button color="primary" (click)="dialogRef.close(true)">Remove</button>
+    <button mat-raised-button [disabled]="!(selectedHymn$ | async)" color="primary" (click)="select()">Select</button>
   </div>
 </div>

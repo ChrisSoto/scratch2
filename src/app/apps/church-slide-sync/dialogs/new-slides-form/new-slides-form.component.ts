@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -31,6 +30,8 @@ export class NewSlidesFormComponent {
     title: new FormControl(''),
     pastor: new FormControl('Joe Puglia'),
     date: new FormControl(new Date()),
-    slides: new FormControl([])
+    slides: new FormControl([]),
+    activeSlide: new FormControl(0),
+    activeSubSlide: new FormControl(0),
   })
 }

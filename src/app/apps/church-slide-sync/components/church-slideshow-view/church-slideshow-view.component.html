@@ -1,5 +1,5 @@
 <div class="h-full flex flex-row justify-center items-center" *ngIf="active.slide$ | async as slide; else noSlide">
-  <div class="square bg-white" makeSquare>
+  <div [ngClass]="{ 'bg-white': !active.background(), 'bg-black': active.background()}" makeSquare>
     <div class="flex relative flex-row justify-center items-center h-full">
       <ng-container [ngSwitch]="slide.type">
         <ng-container *ngSwitchCase="'HYMN'">

@@ -24,7 +24,6 @@ import { ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
     CdkTableModule,
     MatDialogModule,
     CommonFabButtonComponent,
-    NewSlidesFormComponent,
     MatPaginatorModule,
   ],
   providers: [
