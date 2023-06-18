@@ -6,9 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonUploadImageDialogComponent } from 'src/app/shared/components/common-upload-image-dialog/common-upload-image-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
-import { filter, merge, mergeMap, of } from 'rxjs';
+import { filter, mergeMap, of } from 'rxjs';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 import { RemoveSlideComponent } from '../../dialogs/remove-slide/remove-slide.component';
+import { EditHymnComponent } from '../../dialogs/edit-hymn/edit-hymn.component';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -17,6 +18,7 @@ import { RemoveSlideComponent } from '../../dialogs/remove-slide/remove-slide.co
     CommonModule,
     MatButtonModule,
     MatIconModule,
+    EditHymnComponent,
     MatDialogModule,
     CommonUploadImageDialogComponent
   ],
@@ -31,7 +33,13 @@ export class ChurchSlideTypeEditComponent {
   upload = inject(FileUploadService);
   active = inject(ActiveChurchSlideshowService);
 
-  editHymn() { }
+  editHymn() {
+    this.dialog.open(EditHymnComponent)
+      .afterClosed()
+      .subscribe(data => {
+        console.log(data);
+      })
+  }
 
   editColor() { }
 

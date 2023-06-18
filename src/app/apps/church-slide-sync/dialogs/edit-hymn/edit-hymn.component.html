@@ -1,0 +1,25 @@
+<div class="p-4">
+
+  <div class="text-xl pb-4" mat-dialog-title>
+    Select Hymn
+  </div>
+
+  <div mat-dialog-content>
+
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-form-field appearance="fill" fxFlex="75">
+        <mat-label> Hymn </mat-label>
+        <input type="number" matInput [(ngModel)]="selectedHymn" placeholder="1">
+      </mat-form-field>
+      <button class="mb-1" [disabled]="!selectedHymn" mat-mini-fab color="primary" (click)="selectHymn()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+  </div>
+
+  <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close(false)">Cancel</button>
+    <button mat-raised-button color="primary" (click)="dialogRef.close(true)">Remove</button>
+  </div>
+</div>
