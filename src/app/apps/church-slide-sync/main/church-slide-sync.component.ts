@@ -35,11 +35,10 @@ export class ChurchSlideSyncComponent {
 
   private screenHeight = inject(ScreenHeightService);
   controls = inject(SlideshowControlsService);
-
   viewMode = signal(false);
 
   constructor() {
-    this.screenHeight.setFull();
+    this.screenHeight.setFullScreen(true);
   }
 
   handleKeyDown(event: KeyboardEvent) {

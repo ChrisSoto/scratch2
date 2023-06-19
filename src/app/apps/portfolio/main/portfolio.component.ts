@@ -17,6 +17,6 @@ export class PortfolioComponent {
   screenHeight = inject(ScreenHeightService);
 
   constructor() {
-    this.screenHeight.setFull();
+    this.screenHeight.setFullScreen(true);
   }
 }

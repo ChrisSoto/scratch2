@@ -7,16 +7,16 @@ import { Injectable, signal } from '@angular/core';
 })
 export class ScreenHeightService {
 
-  readonly full = signal(false);
+  fullClass = "h-full"; // tailwind
+
+  readonly fullScreen = signal('');
 
   constructor() { }
 
-  setFull() {
-    this.full.set(true);
-  }
-
-  setScroll() {
-    this.full.set(false);
+  setFullScreen(value: boolean) {
+    this.fullScreen.update(() => {
+      return value ? this.fullClass : '';
+    })
   }
 
 }
