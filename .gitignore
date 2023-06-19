@@ -43,3 +43,6 @@ Thumbs.db
 
 # Env Config
 firebase_config.ts
+
+# cache data
+/.firebase
