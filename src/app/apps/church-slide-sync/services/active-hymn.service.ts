@@ -24,6 +24,9 @@ export class ActiveHymnService {
           hymn = slide.data as ChurchHymn;
           this.hymn$.next(hymn);
           const key = 's' + (slideshow.activeSubSlide + 1);
+
+          if (!(hymn.lyrics && key in hymn.lyrics)) return;
+
           const verse = hymn.lyrics[key];
           this.verse$.next(verse);
           if ('refrain' in hymn && hymn.refrain) {
