@@ -10,23 +10,49 @@
     <!-- HYMN -->
     <ng-container *ngSwitchCase="'HYMN'">
       <ng-container *ngIf="slide.data; else noHymn">
+
         <div class="flex flex-row grow justify-start items-center mr-4">
           <span class="basis-1/6 text-3xl pr-4">{{ slide.data.number }}</span>
           <span class="basis-5/6 text-base text-slate-600 pr-2">{{ slide.data.title }}</span>
-          <div class="flex flex-row gap-x-2">
-            <button (click)="editHymn()" mat-mini-fab color="primary">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button (click)="removeSlide()" mat-mini-fab color="warn">
-              <mat-icon>remove</mat-icon>
-            </button>
-          </div>
+        </div>
+
+      </ng-container>
+
+      <ng-template #noHymn>
+        <div class="flex flex-row grow mr-4">
+          Select a Hymn
+        </div>
+      </ng-template>
+
+      <div class="flex flex-row gap-x-2 mr-4">
+        <button (click)="editHymn()" mat-mini-fab color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="removeSlide()" mat-mini-fab color="warn">
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+
+    </ng-container>
+
+      <!-- <ng-container *ngIf="slide.data; else noHymn">
+        <div class="flex flex-row grow justify-start items-center mr-4">
+          <span class="basis-1/6 text-3xl pr-4">{{ slide.data.number }}</span>
+          <span class="basis-5/6 text-base text-slate-600 pr-2">{{ slide.data.title }}</span>
         </div>
       </ng-container>
       <ng-template #noHymn>
         Select a Hymn
       </ng-template>
-    </ng-container>
+      <div class="flex flex-row gap-x-2">
+        <button (click)="editHymn()" mat-mini-fab color="primary">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button (click)="removeSlide()" mat-mini-fab color="warn">
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </ng-container> -->
 
     <ng-container *ngSwitchCase="'TEXT'">Text</ng-container>
 

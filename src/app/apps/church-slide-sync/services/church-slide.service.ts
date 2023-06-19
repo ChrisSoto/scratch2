@@ -12,7 +12,7 @@ export class ChurchSlideService {
   addEmptySlide(type: ChurchSlideType): ChurchSlide {
     return {
       type: type,
-      data: {}
+      data: false
     };
   }
 }

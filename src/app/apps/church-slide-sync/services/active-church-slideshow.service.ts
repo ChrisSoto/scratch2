@@ -87,7 +87,7 @@ export class ActiveChurchSlideshowService {
 
   private lastSubSlideIndex(slideshow: ChurchSlideshow) {
     const slide = slideshow.slides[slideshow.activeSlide];
-    return slide.type === 'HYMN' ? Object.keys(slide.data.lyrics).length - 1 : 0;
+    return slide.type === 'HYMN' && slide.data ? Object.keys(slide.data.lyrics).length - 1 : 0;
   }
 
   clear() {

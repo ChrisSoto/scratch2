@@ -4,12 +4,18 @@
       <ng-container [ngSwitch]="slide.type">
         <ng-container *ngSwitchCase="'HYMN'">
           
-          <hymn-verse
-            [verse]="hymn.verse$ | async"
-            [refrain]="hymn.refrain$ | async"
-            [hymn]="hymn.hymn$ | async"
-            [order]="hymn.order$ | async">
-          </hymn-verse>
+          <ng-container *ngIf="slide.data; else noHymn">
+            <hymn-verse
+              [verse]="hymn.verse$ | async"
+              [refrain]="hymn.refrain$ | async"
+              [hymn]="hymn.hymn$ | async"
+              [order]="hymn.order$ | async">
+            </hymn-verse>
+          </ng-container>
+          
+          <ng-template #noHymn>
+            Select a Hymn
+          </ng-template>
 
         </ng-container>
         <ng-container *ngSwitchCase="'TEXT'">

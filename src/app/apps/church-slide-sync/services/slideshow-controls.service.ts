@@ -45,6 +45,12 @@ export class SlideshowControlsService {
       // hymn slide
     } else {
 
+      // does it have a selected hymn?
+      if (!slide.data) {
+        this.nextSlide(slideshow);
+        return;
+      }
+
       const totalHymnSlides = Object.keys(slide.data.lyrics).length;
 
       // no hymn slides
@@ -78,6 +84,12 @@ export class SlideshowControlsService {
 
       // hymn slide
     } else {
+
+      // does it have a selected hymn?
+      if (!slide.data) {
+        this.prevSlide(slideshow);
+        return;
+      }
 
       const totalHymnSlides = Object.keys(slide.data.lyrics).length;
 
