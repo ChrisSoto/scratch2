@@ -12,9 +12,6 @@ export class UserRouteGuard {
   router = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-    console.log(route, state);
-
     return this.isAuthenticated$
       .pipe(
         map(auth => {
