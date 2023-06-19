@@ -1,0 +1,15 @@
+<div class="flex mx-auto">
+
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 justify-items-stretch">
+
+    <li class="grid-item bg-red-500" *ngFor="let project of projects$ | async">
+      <a href="project.link">
+        <div>
+          {{ project.name }}
+        </div>
+      </a>
+    </li>
+
+  </div>
+
+</div>
