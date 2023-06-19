@@ -34,6 +34,11 @@ const routes: Routes = [
         path: 'church-slide-sync',
         title: 'Church Slide Sync',
         loadChildren: () => import('./apps/church-slide-sync/church-slide-sync.routing').then(r => r.ChurchListRoutes)
+      },
+      {
+        path: 'portfolio',
+        title: 'Chris Grimm\'s Portfolio',
+        loadChildren: () => import('./apps/portfolio/portfolio.routing').then(r => r.PortfolioRouting)
       }
     ]
   }
