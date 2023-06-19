@@ -39,6 +39,11 @@ const routes: Routes = [
         path: 'portfolio',
         title: 'Chris Grimm\'s Portfolio',
         loadChildren: () => import('./apps/portfolio/portfolio.routing').then(r => r.PortfolioRouting)
+      },
+      {
+        path: 'weldmac',
+        title: 'WELDMAC - Roll Weld',
+        loadChildren: () => import('./apps/weldmac/weldmac.routing').then(r => r.WeldmacRouting)
       }
     ]
   }
