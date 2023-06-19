@@ -5,7 +5,7 @@ import { UserRouteGuard } from './shared/user/route.guard';
 const routes: Routes = [
   {
     path: '',
-    title: 'Home: Under Construction',
+    title: 'Home',
     loadComponent: () => import('./home/home.component').then(c => c.HomeComponent),
   },
   {
