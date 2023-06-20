@@ -8,7 +8,7 @@
         <mat-label>Select Machine</mat-label>
         <mat-select (selectionChange)="selectMachineChange($event)">
           <mat-option *ngFor="let machine of machines$ | async" [value]="machine">
-            {{ machine.brand }}
+            {{ machine.brand + ' ' + machine.power + ' : ' + machine.serial }}
           </mat-option>
         </mat-select>
       </mat-form-field>
