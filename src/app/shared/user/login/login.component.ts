@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -18,7 +19,8 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSnackBarModule,
   ],
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
 
   private auth = inject(AuthService);
   private router = inject(Router);
+  private snack = inject(MatSnackBar);
 
   form = new UntypedFormControl();
 
@@ -44,12 +47,15 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/'])
       })
       .catch(error => {
-        console.log(error.code);
+        this.snack.open(error, '', { duration: 5000 })
       });
   }
 
   register() {
     this.router.navigate(['/register'])
+      .then(() => {
+        this.snack.open('Logged In!', '', { duration: 3000 })
+      })
   }
 
 }
