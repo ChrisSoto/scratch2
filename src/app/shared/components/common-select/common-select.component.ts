@@ -19,14 +19,21 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrls: ['./common-select.component.scss']
 })
 export class CommonSelectComponent<T> {
-  @Input() options: T[] = [];
+  @Input() options: T[] | null = [];
+  @Input() label: string = 'Select';
+  @Input() showFab: boolean = true;
   @Output() addOptionChange = new EventEmitter<T | null>();
 
   selected = signal<T | null>(null);
 
   selectChange(selection: MatSelectChange) {
     let selected = selection.value as T;
-    this.selected.set(selected);
+    if (this.showFab) {
+      this.selected.set(selected);
+    } else {
+      this.selected.set(selected);
+      this.addOptionChange.emit(selected);
+    }
   }
 
 }

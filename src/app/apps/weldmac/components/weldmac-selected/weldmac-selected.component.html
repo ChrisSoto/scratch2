@@ -1,0 +1,13 @@
+<div class="flex grow flex-col">
+  <mat-label>{{ label }}</mat-label>
+  <div class="flex flex-row justify-between items-center bg-slate-200 text-2xl text-bold p-4 text-slate-700 border-slate-900">
+
+    <ng-content></ng-content>
+
+    <button color="warn" mat-mini-fab (click)="removeSelection.emit()">
+      <mat-icon>
+        remove
+      </mat-icon>
+    </button>
+  </div>
+</div>

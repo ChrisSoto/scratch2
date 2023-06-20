@@ -5,16 +5,16 @@ export const WeldmacRouting: Routes = [
     path: '',
     loadComponent: () => import('./main/weldmac.component').then(c => c.WeldmacComponent),
     children: [
-      // {
-      //   path: '',
-      //   loadComponent: () => import('./components/church-slide-list/church-slide-list.component')
-      //     .then(c => c.ChurchSlideListComponent)
-      // },
-      // {
-      //   path: 'edit/:id',
-      //   loadComponent: () => import('./components/church-slide-edit/church-slide-edit.component')
-      //     .then(c => c.ChurchSlideEditComponent)
-      // }
+      {
+        path: '',
+        loadComponent: () => import('./pages/create-register-by-part-number/create-register-by-part-number.component')
+          .then(p => p.CreateRegisterByPartNumberComponent)
+      },
+      {
+        path: 'register/:id',
+        loadComponent: () => import('./pages/test-register/test-register.component')
+          .then(p => p.TestRegisterComponent)
+      }
     ]
   }
 ];

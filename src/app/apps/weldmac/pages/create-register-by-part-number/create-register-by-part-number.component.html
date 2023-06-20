@@ -1,0 +1,52 @@
+<weldmac-header [title]="'Write Test Register'"></weldmac-header>
+
+<div class="m-2">
+
+  <div class="flex selection">
+    <ng-container *ngIf="!selectedMachine(); else showMachine">
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Select Machine</mat-label>
+        <mat-select (selectionChange)="selectMachineChange($event)">
+          <mat-option *ngFor="let machine of machines$ | async" [value]="machine">
+            {{ machine.brand }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+    <ng-template #showMachine>
+      <weldmac-selected class="flex grow pb-4" [label]="'Machine'" (removeSelection)="unSelectMachine()">
+        {{ machine().brand }}
+      </weldmac-selected>
+    </ng-template>
+  </div>
+
+  <div class="flex selection">
+    <ng-container *ngIf="!selectedPart(); else showPart">
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Select Part</mat-label>
+        <input  type="text"
+                placeholder="Pick one"
+                aria-label="Number"
+                matInput
+                [formControl]="partsControl" 
+                [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let part of filteredParts$ | async" [value]="part">
+            {{ part.number }}
+          </mat-option>
+        </mat-autocomplete>
+
+      </mat-form-field>
+    </ng-container>
+    <ng-template #showPart>
+      <weldmac-selected class="flex grow pb-4" [label]="'Part Number'" (removeSelection)="selectedPart.set(false)">
+        {{ part().number }} 
+      </weldmac-selected>
+    </ng-template>
+  </div>
+
+  <button (click)="newRegister()" style="height: 50px;" [disabled]="!part() || !machine()" class="text-2xl w-full mt-4" mat-raised-button color="primary">
+    NEW REGISTER
+  </button>
+
+</div>

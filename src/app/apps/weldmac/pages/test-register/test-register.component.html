@@ -1,0 +1,55 @@
+<div class="m-4">
+  <form class="flex flex-col basis-full" [formGroup]="registerFormGroup">
+    <div formGroupName="operator" class="flex grow flex-row gap-4">
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Operator</mat-label>
+        <input matInput formControlName="name" placeholder="Jose Ramirez">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Date</mat-label>
+        <input type="date" matInput formControlName="date" placeholder="12/25/1984">
+      </mat-form-field>
+    </div>
+
+    <div formGroupName="job" class="flex grow flex-row gap-4">
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Customer</mat-label>
+        <input matInput formControlName="customer" placeholder="Solar">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Job #</mat-label>
+        <input matInput formControlName="number" placeholder="123456">
+      </mat-form-field>
+    </div>
+
+    <div formGroupName="part" class="flex grow flex-row gap-4">
+      <mat-form-field appearance="fill" class="flex basis-2/3 grow">
+        <mat-label>Part #</mat-label>
+        <input matInput formControlName="number" placeholder="362430-913">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="flex basis-1/3 grow">
+        <mat-label>Revision</mat-label>
+        <input matInput formControlName="revision" placeholder="A">
+      </mat-form-field>
+    </div>
+
+    <div class="flex grow flex-row gap-4">
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Operation #</mat-label>
+        <input matInput formControlName="operationNumber" placeholder="80">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="flex grow">
+        <mat-label>Weld #</mat-label>
+        <input matInput formControlName="weldNumber" placeholder="10X1">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" class="flex grow">
+      <mat-label>Notes</mat-label>
+      <textarea matInput formControlName="notes" placeholder="Use Extensions..."></textarea>
+    </mat-form-field>
+
+  </form>
+</div>
+
+
