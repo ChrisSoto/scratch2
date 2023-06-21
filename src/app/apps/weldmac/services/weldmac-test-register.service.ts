@@ -1,8 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { DatabaseService } from 'src/app/shared/services/database.service';
-import { Timestamp } from '@angular/fire/firestore';
+import { DocumentData, DocumentReference, DocumentSnapshot, Timestamp } from '@angular/fire/firestore';
 import { WeldmacPart } from './weldmac-part.service';
 import { WeldmacResistanceWeldMachine } from './weldmac-machine.service';
+import { Observable } from 'rxjs';
+import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
+import { PaginatedCollection } from 'src/app/shared/interface/pagination.model';
+import { Meta } from 'src/app/shared/interface/meta.model';
 
 interface ExtensionProperties {
   length: string;
@@ -42,15 +46,20 @@ enum MotorDirection {
 }
 
 interface NameDate {
-  name: '',
+  firstName: string;
+  lastName: string;
   date: Timestamp | null;
 }
 
-export interface TestRegister {
+interface WeldmacJob {
+  number: string;
+  customer: string;
+}
+
+export interface TestRegister extends Meta {
   machine: WeldmacResistanceWeldMachine;
   operator: NameDate;
-  customer: string;
-  job: { number: string, revision: string; };
+  job: WeldmacJob;
   part: WeldmacPart;
   operation: { key?: number | null, number: number };
   notes?: string | null;
@@ -154,8 +163,41 @@ export interface TestRegister {
 @Injectable()
 export class WeldmacTestRegisterService {
   private database = inject(DatabaseService);
+  private sortToQuery = inject(SortToQueryConstraintsService);
+
+  path = 'weldmac_register';
 
   newRegisterId() {
     return this.database.createId();
+  }
+
+  set(id: string, register: TestRegister) {
+    return this.database.set(this.path + '/' + id, register);
+  }
+
+  create(register: Partial<TestRegister>): Promise<DocumentReference<TestRegister>> {
+    return this.database.add(this.path, register);
+  }
+
+  read(id: string): Promise<DocumentSnapshot<DocumentData>> {
+    return this.database.get(this.path + '/' + id);
+  }
+
+  list$(sort?: GeneralQuery[]): Observable<TestRegister[]> {
+    if (!sort) sort = [{ name: 'orderBy', field: 'created', direction: 'desc' }];
+    return this.database.list(this.path, ...this.sortToQuery.convert(sort));
+  }
+
+  listPaginated$(sort?: GeneralQuery[]): Observable<PaginatedCollection<TestRegister>> {
+    if (!sort) sort = [{ name: 'orderBy', field: 'created', direction: 'desc' }];
+    return this.database.listPaginated(this.path, ...this.sortToQuery.convert(sort));
+  }
+
+  update(register: Partial<TestRegister>): Promise<void> {
+    return this.database.update(this.path + '/' + register.id, register);
+  }
+
+  remove(id: string): Promise<void> {
+    return this.database.delete(this.path + '/' + id);
   }
 }

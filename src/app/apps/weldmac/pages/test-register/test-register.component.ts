@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TestRegister, WeldmacTestRegisterService } from '../../services/weldmac-test-register.service';
+import { WeldmacResistanceWeldMachine } from '../../services/weldmac-machine.service';
+import { WeldmacPart } from '../../services/weldmac-part.service';
+import { WeldmacActiveTestRegisterService } from '../../services/weldmac-active-test-register.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { mergeMap, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-test-register',
@@ -18,13 +24,18 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class TestRegisterComponent {
 
+  private registerService = inject(WeldmacTestRegisterService);
   private fb = new FormBuilder();
+  private route = inject(ActivatedRoute);
 
-  registerFormGroup = this.fb.group({
+  machine$ = inject(WeldmacActiveTestRegisterService).machine$;
+  part$ = inject(WeldmacActiveTestRegisterService).part$;
+
+  registerFormGroup = this.fb.nonNullable.group({
     machine: new FormGroup({
-      brand: new FormControl(null),
-      power: new FormControl(null),
-      serial: new FormControl(null)
+      brand: new FormControl(''),
+      power: new FormControl(0),
+      serial: new FormControl('')
     }),
     operator: new FormGroup({
       name: new FormControl(null),
@@ -35,8 +46,8 @@ export class TestRegisterComponent {
       number: new FormControl(null),
     }),
     part: new FormGroup({
-      number: new FormControl(null),
-      revision: new FormControl(null),
+      number: new FormControl(''),
+      revision: new FormControl(''),
     }),
     operationNumber: new FormControl(null),
     notes: new FormControl(null),
@@ -51,6 +62,41 @@ export class TestRegisterComponent {
   });
 
   ngOnInit() {
+    this.route.paramMap
+      .pipe(
+        mergeMap((params) => {
+          const id = params.get('id');
+          if (id) return this.registerService.read(id);
+          return of(null)
+        })
+      )
+      .subscribe(data => {
+        if (data?.exists()) {
+          const register = data.data() as Partial<TestRegister>;
+          this.patchValues(register);
+        }
+      })
+
     // insert known values
+    // const machine = this.machine$.value as WeldmacResistanceWeldMachine;
+    // const part = this.part$.value as WeldmacPart;
+
+    // this.registerFormGroup.patchValue(
+    //   {
+    //     machine: {
+    //       brand: machine.brand,
+    //       power: machine.power,
+    //       serial: machine.serial
+    //     }
+    //   })
+  }
+
+  patchValues(register: Partial<TestRegister>) {
+    this.registerFormGroup.patchValue(
+      {
+        machine: register.machine,
+        part: register.part
+      }
+    )
   }
 }

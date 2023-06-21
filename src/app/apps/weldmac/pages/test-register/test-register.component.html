@@ -1,4 +1,9 @@
 <div class="m-4">
+
+  <h1 *ngIf="machine$ | async as machine" class="font-mono text-center mb-4">
+    {{ machine.power + ' ' + machine.brand + ' Resistance Welder S/N ' + machine.serial + ' Test Register' }}
+  </h1>
+
   <form class="flex flex-col basis-full" [formGroup]="registerFormGroup">
     <div formGroupName="operator" class="flex grow flex-row gap-4">
       <mat-form-field appearance="fill" class="flex grow">

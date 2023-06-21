@@ -17,6 +17,7 @@ export interface WeldmacPart {
   company: string;
   operations: MaterialStack[],
   description?: string;
+  revision?: string;
 }
 
 @Injectable()

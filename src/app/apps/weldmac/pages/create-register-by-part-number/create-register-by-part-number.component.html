@@ -8,14 +8,14 @@
         <mat-label>Select Machine</mat-label>
         <mat-select (selectionChange)="selectMachineChange($event)">
           <mat-option *ngFor="let machine of machines$ | async" [value]="machine">
-            {{ machine.brand + ' ' + machine.power + ' : ' + machine.serial }}
+            {{ machine.brand + ' ' + machine.power + 'KVA : ' + machine.serial }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </ng-container>
     <ng-template #showMachine>
       <weldmac-selected class="flex grow pb-4" [label]="'Machine'" (removeSelection)="unSelectMachine()">
-        {{ machine().brand }}
+        {{ machine().brand + ' ' + machine().power + 'KVA : ' + machine().serial }}
       </weldmac-selected>
     </ng-template>
   </div>

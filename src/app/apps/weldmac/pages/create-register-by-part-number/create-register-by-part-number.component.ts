@@ -13,6 +13,7 @@ import { WeldmacPart, WeldmacPartService } from '../../services/weldmac-part.ser
 import { Observable, map, startWith } from 'rxjs';
 import { WeldmacHeaderComponent } from '../../components/weldmac-header/weldmac-header.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { WeldmacActiveTestRegisterService } from '../../services/weldmac-active-test-register.service';
 import { WeldmacTestRegisterService } from '../../services/weldmac-test-register.service';
 
 @Component({
@@ -33,7 +34,6 @@ import { WeldmacTestRegisterService } from '../../services/weldmac-test-register
   providers: [
     WeldmacMachineService,
     WeldmacPartService,
-    WeldmacTestRegisterService,
   ],
   templateUrl: './create-register-by-part-number.component.html',
   styleUrls: ['./create-register-by-part-number.component.scss']
@@ -43,6 +43,7 @@ export class CreateRegisterByPartNumberComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private registerService = inject(WeldmacTestRegisterService);
+  private activeRegisterService = inject(WeldmacActiveTestRegisterService);
 
   machines$ = inject(WeldmacMachineService).machines$;
   selectedMachine = signal<WeldmacResistanceWeldMachine | boolean>(false);
@@ -101,7 +102,17 @@ export class CreateRegisterByPartNumberComponent {
   }
 
   newRegister() {
-    const id = this.registerService.newRegisterId();
-    this.router.navigate(['register/' + id], { relativeTo: this.route });
+    // const id = this.registerService.newRegisterId();
+    // this.activeRegisterService.setMachine(this.machine());
+    // this.activeRegisterService.setPart(this.part());
+    const register = {
+      machine: this.machine(),
+      part: this.part(),
+    };
+
+    this.registerService.create(register)
+      .then((doc) => {
+        this.router.navigate(['register/' + doc.id], { relativeTo: this.route });
+      });
   }
 }
