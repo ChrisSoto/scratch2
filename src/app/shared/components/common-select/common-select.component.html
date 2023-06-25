@@ -1,5 +1,5 @@
 <div class="flex flex-row justify-end items-center">
-  <mat-form-field appearance="fill" class="flex grow">
+  <mat-form-field appearance="fill" class="pl-4 flex grow">
     <mat-label>{{ label }}</mat-label>
     <mat-select (selectionChange)="selectChange($event)">
       <mat-option *ngFor="let option of options" [value]="option">
@@ -8,7 +8,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button *ngIf="showFab" class="mb-5 pl-4" [disabled]="!selected()" mat-mini-fab color="primary" (click)="addOptionChange.emit(selected())">
+  <button *ngIf="showFab" style="margin-left: 1rem;"class="mb-5 pl-4" [disabled]="!selected()" mat-mini-fab color="primary" (click)="addOptionChange.emit(selected())">
       <mat-icon>add</mat-icon>
   </button>
 </div>
