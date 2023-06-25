@@ -59,6 +59,7 @@ export class ActiveChurchSlideshowService {
 
   saveImage(imageUrl: string, slideIndex: number) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
+    slideshow.slides[slideIndex].data = {}; // convert false to object
     slideshow.slides[slideIndex].data['url'] = imageUrl;
     this.slideshowService.update(slideshow);
   }
