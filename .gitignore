@@ -45,4 +45,6 @@ Thumbs.db
 firebase_config.ts
 
 # cache data
+.firebase/*
 /.firebase
+*.cache
