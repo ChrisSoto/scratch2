@@ -1,8 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
-import { ActivatedRoute } from '@angular/router';
-import { Unsubscribable, filter, mergeMap } from 'rxjs';
+import { Unsubscribable } from 'rxjs';
 import { ChurchSlideshowService } from '../../services/church-slideshow.service';
 import { ChurchSlideType } from '../../interface/ChurchSlideshow.interface';
 import { CommonSelectComponent } from 'src/app/shared/components/common-select/common-select.component';
@@ -26,7 +25,6 @@ export class ChurchSlideEditComponent {
 
   active = inject(ActiveChurchSlideshowService);
   slideshowService = inject(ChurchSlideshowService);
-  route = inject(ActivatedRoute);
 
   loadSlideshow$!: Unsubscribable;
 
