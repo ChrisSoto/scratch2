@@ -1,8 +1,8 @@
 import { NgModule, inject } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes, withComponentInputBinding } from '@angular/router';
 import { UserRouteGuard } from './shared/user/route.guard';
 
-const routes: Routes = [
+export const AppRoutes: Routes = [
   {
     path: '',
     title: 'Home',
@@ -45,12 +45,12 @@ const routes: Routes = [
         title: 'WELDMAC - Roll Weld',
         loadChildren: () => import('./apps/weldmac/weldmac.routing').then(r => r.WeldmacRouting)
       }
-    ]
+    ],
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(AppRoutes, { bindToComponentInputs: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

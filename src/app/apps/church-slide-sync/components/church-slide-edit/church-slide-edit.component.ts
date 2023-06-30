@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 import { ActivatedRoute } from '@angular/router';
@@ -21,6 +21,9 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
   styleUrls: ['./church-slide-edit.component.scss']
 })
 export class ChurchSlideEditComponent {
+
+  @Input() id?: string;
+
   active = inject(ActiveChurchSlideshowService);
   slideshowService = inject(ChurchSlideshowService);
   route = inject(ActivatedRoute);
@@ -41,14 +44,8 @@ export class ChurchSlideEditComponent {
   }
 
   loadSlideshow() {
-    this.loadSlideshow$ = this.route.paramMap
-      .pipe(
-        filter(params => params.has('id')),
-        mergeMap((params) => {
-          const id = params.get('id') as string;
-          return this.slideshowService.observe(id);
-        }),
-      )
+    if (!this.id) return;
+    this.loadSlideshow$ = this.slideshowService.observe(this.id)
       .subscribe((slideshow) => {
         if (slideshow) {
           this.active.setSlideshow(slideshow);
