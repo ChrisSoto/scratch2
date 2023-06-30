@@ -29,6 +29,9 @@ export class PortfolioProjectService {
         }, {
           name: 'Workforms',
           link: 'projects/workforms'
+        }, {
+          name: 'Workforms',
+          link: 'projects/workforms'
         }
       ]
     );
