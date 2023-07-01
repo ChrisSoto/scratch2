@@ -1,8 +1,7 @@
 <div class="pr-2">
   <common-fab-button
     [text]="'Add Service'"
-    (buttonChange)="newSlideshow()">
-  </common-fab-button>
+    (buttonChange)="newSlideshow()"/>
 </div>
 
 <div class="slides-list shadow-sm py-2">
@@ -32,7 +31,5 @@
     [hidePageSize]="true"
     [pageSize]="10"
     [length]="dataSource.count$ | async"
-    (page)="onPageChange($event)"  
-  ></mat-paginator>
-
+    (page)="onPageChange($event)"/>
 </div>
