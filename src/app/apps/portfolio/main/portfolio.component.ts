@@ -1,14 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScreenHeightService } from 'src/app/shared/services/screen-height.service';
-import { PortfolioGridComponent } from '../components/portfolio-grid/portfolio-grid.component';
+import { ProjectGridComponent } from '../components/project-grid/project-grid.component';
+import { DialogModule } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
   imports: [
     CommonModule,
-    PortfolioGridComponent
+    ProjectGridComponent,
+    DialogModule,
   ],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss']

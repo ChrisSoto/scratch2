@@ -1,0 +1,33 @@
+<div class="flex flex-col sticky top-0 bg-white z-10 p-4 pb-8">
+
+  <div class="flex flex-row justify-between center-items">
+
+    <div class="text-3xl pb-4" mat-dialog-title>
+      {{ project.name }}
+    </div>
+
+    <button mat-button color="warn" (click)="dialogRef.close(false)">CLOSE</button>
+
+  </div>
+
+  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium suscipit temporibus eos velit laborum officia. Aperiam ut sequi id! Explicabo deserunt recusandae consequatur iure expedita dignissimos necessitatibus repellendus quidem velit?</p>
+
+</div>
+
+<div class="bg-green-200">
+
+  <project-stepper>
+
+    <cdk-step *ngFor="let page of project.pages">
+
+      <div class="flex flex-row gap-4 p-4 pt-0">
+        <p class="">
+          {{ page.text }}
+        </p>
+        <img src="{{ page.media[0] }}" alt="">
+      </div>
+
+    </cdk-step>
+  </project-stepper>
+
+</div>
