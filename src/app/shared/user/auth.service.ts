@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, User } from '@angular/fire/auth';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, mergeMap, of } from 'rxjs';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +9,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class AuthService {
 
   private auth: Auth = inject(Auth);
+  // private userService = inject(UserService);
 
   user: User | null | undefined;
   user$: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   isAuthenticated$: Subject<boolean> = new Subject();
+  // isAdmin$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor() {
     this.auth.onAuthStateChanged((user: User | null) => {
@@ -24,6 +27,25 @@ export class AuthService {
         this.isAuthenticated$.next(false);
       }
     });
+
+   //  this.user$
+   //    .pipe(
+   //      mergeMap(user => {
+   //        if (user) {
+   //          return this.userService.show(user?.uid);
+   //        } else {
+   //          return of(null);
+   //        }
+   //      })
+   //    )
+   //    .subscribe(payload => {
+   //      if (payload && payload.exists()) {
+   //        const user = payload.data();
+   //        if ('role' in user && user['role'] === 'ADMIN') {
+   //          this.isAdmin$.next(true);
+   //        }
+   //      }
+   //    })
   }
 
   isLoggedIn(): boolean {
