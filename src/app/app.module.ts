@@ -13,6 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from './shared/services/custom-error-handler.service';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     BrowserAnimationsModule,
     CommonToolbarComponent,
     MatSnackBarModule,
+    MarkdownModule.forRoot(),
     MatNativeDateModule // I had to import here, didn't work from standalone component...
   ],
   providers: [
