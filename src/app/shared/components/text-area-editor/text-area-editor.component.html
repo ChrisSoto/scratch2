@@ -1,0 +1,18 @@
+<div class="flex flex-col grow pr-4">
+  <div class="flex flex-row justify-end center-items">
+    <div class="flex flex-row gap-4 pb-4">
+      <button mat-button color="warn" (click)="cancelChange.emit(true)">Cancel</button>
+      <button mat-raised-button color="primary" (click)="textChange.emit(text)">Save</button>
+    </div>
+  </div>
+
+  <mat-form-field>
+    <textarea matInput
+      [(ngModel)]="text"
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="5"
+      cdkAutosizeMaxRows="25">
+    </textarea>
+  </mat-form-field>
+</div>

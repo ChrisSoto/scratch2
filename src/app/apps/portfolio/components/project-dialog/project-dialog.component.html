@@ -3,31 +3,34 @@
   <div class="flex flex-row justify-between center-items">
 
     <div class="text-3xl pb-4" mat-dialog-title>
-      {{ project.name }}
+      {{ data.project.name }}
     </div>
 
     <button mat-button color="warn" (click)="dialogRef.close(false)">CLOSE</button>
 
   </div>
 
-  <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium suscipit temporibus eos velit laborum officia. Aperiam ut sequi id! Explicabo deserunt recusandae consequatur iure expedita dignissimos necessitatibus repellendus quidem velit?</p>
+  <p>{{ data.project.description }}</p>
+
+  <project-stepper [steps]="data.project.pages" [activeStep]="data.page"/>
 
 </div>
 
 <div class="bg-green-200">
 
-  <project-stepper>
+  <project-viewer [project]="data.project"/>
 
-    <cdk-step *ngFor="let page of project.pages">
+<!--  <project-stepper>
+    <cdk-step *ngFor="let page of data.project.pages">
 
       <div class="flex flex-row gap-4 p-4 pt-0">
         <p class="">
-          {{ page.text }}
+        {{ page.text }}
         </p>
         <img src="{{ page.media[0] }}" alt="">
       </div>
 
     </cdk-step>
-  </project-stepper>
+</project-stepper> -->
 
 </div>

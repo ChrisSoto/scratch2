@@ -1,0 +1,36 @@
+<div *ngIf="project$ | async as project"
+  class="flex flex-col
+         bg-slate-100
+         sm:bg-slate-200
+         md:bg-slate-300
+         lg:bg-slate-400
+         xl:bg-slate-500
+         h-full
+         max-w-screen-xl
+         mx-auto">
+
+  <div class="flex flex-col sticky top-0 bg-white z-10 p-4">
+
+    <div class="flex flex-row justify-between center-items">
+
+      <div class="text-3xl pb-4" mat-dialog-title>
+        {{ project.name }}
+      </div>
+
+      <button color="primary"  mat-button>Home</button>
+
+    </div>
+
+    <p>{{ project.description }}</p>
+
+    <project-stepper [steps]="project.pages" (stepChange)="onStepChange($event)"/>
+
+  </div>
+
+  <div class="bg-green-200">
+
+    <project-viewer [projectPage]="projectPage$ | async"/>
+
+  </div>
+
+</div>

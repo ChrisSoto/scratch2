@@ -1,23 +1,26 @@
-<div class="stepper-bar flex flex-row justify-around items-center bg-red-500 mb-8">
+<div class="stepper-bar flex flex-row justify-around items-center bg-red-500 mb-8 mt-8">
 
-  <div *ngFor="let step of steps; let i = index" class="step-section flex  grow h-full">
+  <div *ngFor="let step of steps; let i = index" class="step-section flex grow h-full">
 
-    <div class="left-of-step flex bg-green-500 grow"></div>
+    <div
+      [class.bg-red-500]="selectedIndex$.value >= i - 0.1"
+      class="left-of-step flex bg-green-500 grow"></div>
 
     <div class="step-holder flex">
       <div
-        class="step bg-slate-500 cursor-pointer"
-        [class.active]="selectedIndex === i"
+        class="step bg-red-500 cursor-pointer"
+        [class.active]="(selectedIndex$ | async)  === i"
         (click)="selectStepByIndex(i)">
-        Step {{ i + 1 }}
+        {{ i }}
       </div>
     </div>
 
 
-    <div class="right-of-step flex bg-blue-500 grow"></div>
+    <div
+      [class.bg-red-500]="selectedIndex$.value >= i + 0.1"
+      class="right-of-step flex bg-green-500 grow"></div>
 
   </div>
 
-</div>
+  </div>
 
-<div [ngTemplateOutlet]="selected ? selected.content : null"></div>
