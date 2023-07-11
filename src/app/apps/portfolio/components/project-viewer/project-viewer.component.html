@@ -1,19 +1,3 @@
-<div class="flex flex-col p-4 gap-4" *ngIf="projectPage?.text as text">
-
-
-  <div class="flex flex-row justify-end center-items">
-    <button *ngIf="!editMode()"  mat-raised-button color="primary" (click)="editMode.set(true)">Edit</button>
-  </div>
-
-  <div class="flex flex-row">
-    <div class="flex basis-1/2">
-
-      <div *ngIf="!editMode()" [innerHTML]="text | markdown"></div>
-      <text-area-editor class="w-full"  *ngIf="editMode()" [text]="text" (textChange)="save($event)" (cancelChange)="cancel()" ></text-area-editor>
-
-    </div>
-    <div *ngFor="let media of projectPage?.media">
-      <img src="{{ media }}" alt=""/>
-    </div>
-  </div>
+<div class="flex flex-col p-4" *ngIf="projectPage?.text as text">
+  <text-area-editor class="w-full" [text]="text" (textChange)="save($event)"/>
 </div>

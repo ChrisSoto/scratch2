@@ -42,11 +42,19 @@ export class PortfolioProjectService {
     }
   }
 
-  saveProjectEdit(idx: number,  text: string) {
+  savePageTextEdit(idx: number, text: string) {
     const project = this.active$.value;
     if (project?.pages.length) {
-     project.pages[idx].text = text;
-     this.database.update(this.path + '/' + project.id, project);
+      project.pages[idx].text = text;
+      this.database.update(this.path + '/' + project.id, project);
+    }
+  }
+
+  saveDescriptionEdit(text: string) {
+    const project = this.active$.value;
+    if (project) {
+      project.description = text;
+      this.database.update(this.path + '/' + project.id, project);
     }
   }
 
