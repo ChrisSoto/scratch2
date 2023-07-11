@@ -13,7 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from './shared/services/custom-error-handler.service';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MarkdownService } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,8 @@ import { MarkdownModule } from 'ngx-markdown';
     {
       provide: ErrorHandler,
       useClass: CustomErrorHandler
-    }
+    },
+    MarkdownService,
   ],
   bootstrap: [AppComponent]
 })
