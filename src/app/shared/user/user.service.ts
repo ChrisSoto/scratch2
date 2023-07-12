@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from './user-model';
 import { DatabaseService } from '../services/database.service';
@@ -9,11 +9,9 @@ import { DatabaseService } from '../services/database.service';
 })
 export class UserService {
 
-  private ref = 'users';
+  db = inject(DatabaseService);
 
-  constructor(
-    public db: DatabaseService
-  ) { }
+  private ref = 'users';
 
   get index$(): Observable<User[]> {
     return this.db.list(this.ref);
@@ -34,18 +32,5 @@ export class UserService {
   delete(uid: string) {
     return this.db.delete(this.ref + '/' + uid);
   }
-
-  // load() {
-  //   // const uid = this._auth.currentUser.uid;
-  //   this.auth.onAuthStateChanged(user => {
-  //     console.log('user', user);
-  //     if (user) {
-  //       this.db.get('users/'+user.uid)
-  //         .then(res => {
-  //           console.log(res.data());
-  //         })
-  //     }
-  //   });
-  // }
 
 }

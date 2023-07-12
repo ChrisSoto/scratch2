@@ -1,6 +1,6 @@
 <div class="flex flex-col grow">
 
-  <div class="flex flex-row justify-end center-items sticky z-10">
+  <div *ngIf="role.isAdmin$ | async" class="flex flex-row justify-end center-items sticky z-10">
     <div class="flex flex-row gap-4 pb-4 absolute bg-white p-4 opacity-50 hover:opacity-100">
       <button *ngIf="!editMode()" mat-raised-button color="primary" (click)="editMode.set(true)">Edit</button>
       <button *ngIf="editMode()" mat-button color="warn" (click)="editMode.set(false)">Cancel</button>

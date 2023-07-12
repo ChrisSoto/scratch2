@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { orderBy } from '@angular/fire/firestore';
 import { BehaviorSubject, filter, take } from 'rxjs';
 import { Meta } from 'src/app/shared/interface/meta.model';
 import { DatabaseService } from 'src/app/shared/services/database.service';
@@ -70,7 +71,7 @@ export class PortfolioProjectService {
   }
 
   private load() {
-    this.database.list<PortfolioProject>(this.path)
+    this.database.list<PortfolioProject>(this.path, orderBy('created', 'desc'))
     .subscribe(data => {
       this.ls.setLocalStorage('--projects', data);
       this.ls.setLocalStorage('--projectsLoadedOn', new Date().getTime());

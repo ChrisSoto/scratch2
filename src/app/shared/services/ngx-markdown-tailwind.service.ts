@@ -40,6 +40,20 @@ export class NgxMarkdownTailwindService {
         return '<ul class="list-outside list-disc mb-4 pl-8">' + body + '</ul>';
       }
     }
+
+    this.mkRender.renderer.em = (text) => {
+      return '<em class="font-light text-slate-600">' + text + '</em>';
+    }
+
+    this.mkRender.renderer.blockquote = (quote) => {
+      const data = this.parseQoute(quote);
+      return  '<blockquote class="relative font-light border-l-4 pl-4 sm:pl-6">' +
+                '<p class="text-gray-800 sm:text-xl"><em>' +
+                   data.text +
+                '</em></p>' +
+                '<div class="pl-8 pt-4">' + data.cite + '</div>' +
+              '</blockquote>';
+    }
   }
 
   setImgClasses(align: string): string {
@@ -53,11 +67,20 @@ export class NgxMarkdownTailwindService {
       case 'right-small':
         return 'float-right w-1/2 sm:w-1/4 pr-0 pl-4';
       case 'center':
-        return 'mx-auto float-none w-full sm:w-1/2';
+        return 'mx-auto float-none w-full sm:w-3/4 md:w-1/2';
       case 'center-full':
         return 'mx-auto float-none w-full sm:w-5/6 md:w-11/12 '
       default:
         return 'float-none';
+    }
+  }
+
+  parseQoute(text: string) {
+    // cite::
+    const data = text.split('::');
+    return {
+      cite: data[0],
+      text: data[1],
     }
   }
 
@@ -90,7 +113,7 @@ export class NgxMarkdownTailwindService {
         break;
 
       case 5:
-        headerClass = 'text-xl font-bold tracking-wide text-slate-800 pb-1';
+        headerClass = 'text-xl font-bold tracking-wide text-slate-600 pb-1';
         break;
 
       case 6:

@@ -5,6 +5,7 @@ import { UserRouteGuard } from './shared/user/route.guard';
 import { PortfolioProjectService } from './apps/portfolio/services/portfolio-project.service';
 import { PortfolioNavService } from './apps/portfolio/services/project-navigation.service';
 import { AuthService } from './shared/user/auth.service';
+import { UserService } from './shared/user/user.service';
 
 export const AppRoutes: Routes = [
   {
@@ -27,7 +28,6 @@ export const AppRoutes: Routes = [
     title: 'Chris Grimm\'s Portfolio',
     loadChildren: () => import('./apps/portfolio/portfolio.routing').then(r => r.PortfolioRouting),
     providers: [
-      AuthService,
       PortfolioProjectService,
       PortfolioNavService,
     ],

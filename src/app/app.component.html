@@ -1,4 +1,4 @@
-<div [ngClass]="screenHeight.fullScreen() + ' ' + dev.breakPoints()" >
+<div [ngClass]="screenHeight.fullScreen()" >
   <common-toolbar *ngIf="toolbar.show()"></common-toolbar>
   <div [ngClass]="screenHeight.fullScreen()">
     <router-outlet></router-outlet>

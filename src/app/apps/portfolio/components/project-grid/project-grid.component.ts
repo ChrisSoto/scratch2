@@ -22,6 +22,9 @@ export class ProjectGridComponent {
   router = inject(Router);
 
   openProject(project: PortfolioProject): void {
-    this.router.navigate(['portfolio/' + project.slug + '/' + '1']);
+    // temp
+    if (project.shortDescription.length) {
+      this.router.navigate(['portfolio/' + project.slug + '/' + '1']);
+    }
   }
 }
