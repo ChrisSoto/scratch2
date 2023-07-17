@@ -23,10 +23,19 @@ export class NgxMarkdownTailwindService {
 
     this.mkRender.renderer.image = (href, desc, altText) => {
       const altData = this.parseAltText(altText);
-      return  '<div class="' + this.setImgClasses(altData.align) +' pb-3">' +
-                '<img class="border-white border-solid border-4 mat-elevation-z1  w-full" src="' + href + '" alt="' + altData.text  + '">' +
-                '<div class="text-sm leading-tight text-center text-slate-600 pt-2">' + desc  + '</div>' +
-              '</div>';
+      if (!('video' in altData)) {
+        return  '<div class="' + this.setImgClasses(altData.align) +' pb-3">' +
+                  '<img class="border-white border-solid border-4 mat-elevation-z1  w-full" src="' + href + '" alt="' + altData.text  + '">' +
+                  '<div class="text-sm leading-tight text-center text-slate-600 pt-2">' + desc  + '</div>' +
+                '</div>';
+      } else {
+        return  '<div class="' + this.setImgClasses(altData.align) +' pb-3">' +
+                  '<video controls autoplay loop class="border-white border-solid border-4 mat-elevation-z1 w-full">' +
+                    '<source src="' + href  + '" type="video/mp4" />' +
+                  '</video>' +
+                  '<div class="text-sm leading-tight text-center text-slate-600 pt-2">' + desc  + '</div>' +
+                '</div>';
+      }
     }
 
     this.mkRender.renderer.listitem = (text, task, checked) => {
@@ -87,9 +96,17 @@ export class NgxMarkdownTailwindService {
   parseAltText(text: string) {
     // left:: | center:: | right:: | center-full:: | left-small:: | right-small::
     const data = text.split('::');
-    return {
-      align: data[0],
-      text: data[1],
+    if (data.length < 3) {
+      return {
+        align: data[0],
+        text: data[1],
+      }
+    } else {
+      return {
+        align: data[0],
+        text: data[1],
+        video: data[2],
+      }
     }
   }
 
