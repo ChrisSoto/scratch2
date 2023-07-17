@@ -2,11 +2,15 @@ import { Component, EventEmitter, Input, Output, computed, inject, signal } from
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { PortfolioNavService } from '../../services/project-navigation.service';
+import { OrderByPipe } from 'src/app/shared/pipes/order-by.pipe';
 
 @Component({
   selector: 'project-stepper',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    OrderByPipe,
+  ],
   templateUrl: './project-stepper.component.html',
   styleUrls: ['./project-stepper.component.scss']
 })

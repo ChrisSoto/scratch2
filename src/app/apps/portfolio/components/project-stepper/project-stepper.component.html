@@ -1,6 +1,6 @@
 <div class="stepper-bar flex flex-row justify-around items-center bg-red-500 mb-4 mt-4">
 
-  <div *ngFor="let step of steps; let i = index" class="step-section flex grow h-full">
+  <div *ngFor="let step of steps | orderBy; let i = index" class="step-section flex grow h-full">
 
     <div
       [class.bg-slate-500]="selectedIndex$.value >= i - 0.1"
