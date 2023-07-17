@@ -14,9 +14,9 @@ export class PortfolioNavService {
 
   goTo(projectSlug: string, page?: number) {
     if (page) {
-      this.router.navigate([this.home + '/' + projectSlug + '/' + page]);
+      this.router.navigate([this.home + '/' + projectSlug + '/' + page], { replaceUrl: true });
     } else {
-      this.router.navigate([this.home + '/' + projectSlug + '/' + '1']);
+      this.router.navigate([this.home + '/' + projectSlug + '/' + '1'], { replaceUrl: true });
     }
   }
 
