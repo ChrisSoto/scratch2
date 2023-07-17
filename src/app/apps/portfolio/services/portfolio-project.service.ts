@@ -7,6 +7,7 @@ import { LocalStorageService } from 'src/app/shared/services/local-storage-ref.s
 
 export interface PortfolioProject extends Meta {
   name: string;
+  order: number;
   slug: string;
   description: string;
   shortDescription: string;
@@ -16,8 +17,9 @@ export interface PortfolioProject extends Meta {
 
 export interface ProjectPage {
   text: string;
-  media: string[];
+  order: number;
 }
+
 
 @Injectable()
 export class PortfolioProjectService {
@@ -71,7 +73,7 @@ export class PortfolioProjectService {
   }
 
   private load() {
-    this.database.list<PortfolioProject>(this.path, orderBy('created', 'desc'))
+    this.database.list<PortfolioProject>(this.path, orderBy('order', 'asc'))
     .subscribe(data => {
       this.ls.setLocalStorage('--projects', data);
       this.ls.setLocalStorage('--projectsLoadedOn', new Date().getTime());
