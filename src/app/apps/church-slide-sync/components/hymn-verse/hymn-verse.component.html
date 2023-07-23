@@ -13,13 +13,13 @@
 
       <div class="refrain border-l-8 border-slate-400 pl-4">
         <ng-container *ngFor="let line of refrain">
-          <p class="refrain-line" [innerHTML]="line | newLine: 35"></p>
+          <p class="refrain-line" [innerHTML]="line | newLine: 40"></p>
         </ng-container>
       </div>
 
     </ng-container>
     <ng-template #default>
-      <p class="verse-line" [innerHtml]="line | newLine : 30"></p>
+      <p class="verse-line" [innerHtml]="line | newLine : 38"></p>
     </ng-template>
   </ng-container>
 
