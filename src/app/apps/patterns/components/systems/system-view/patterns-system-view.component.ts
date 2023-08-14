@@ -31,6 +31,8 @@ import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-b
     CategorySelectComponent,
     CommonFabButtonComponent,
   ],
+  providers: [
+  ],
   templateUrl: './patterns-system-view.component.html',
   styleUrls: ['./patterns-system-view.component.scss']
 })

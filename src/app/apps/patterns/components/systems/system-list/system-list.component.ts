@@ -10,6 +10,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { PatternNotesService } from '../../../services/pattern-notes.service';
 
 @Component({
   selector: 'patterns-systems-list',
@@ -25,6 +26,9 @@ import { CommonModule } from '@angular/common';
   ],
   providers: [
     PaginationService,
+    SystemService,
+    PatternNotesCreatorService,
+    PatternNotesService,
   ]
 })
 export class PatternsSystemListComponent implements OnInit {
@@ -40,12 +44,14 @@ export class PatternsSystemListComponent implements OnInit {
   displayedColumns: string[] = ['open', 'name', 'description', 'created', 'updated'];
 
   ngOnInit(): void {
+    console.log('run');
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });
     this.dataSource.loadPaginated(query);
   }
 
   onPageChange(pageEvent: PageEvent) {
+    console.log('change');
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });
     this.dataSource.loadPaginated(query, pageEvent);
@@ -68,6 +74,7 @@ export class PatternsSystemListComponent implements OnInit {
   }
 
   sortSystems(sort: Sort) {
+    console.log('sort');
     this.lastSort = sort;
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });

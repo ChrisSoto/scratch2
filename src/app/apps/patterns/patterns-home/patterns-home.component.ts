@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
+import { SystemService } from '../services/system.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -19,6 +20,10 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
+  ],
+  providers: [
+    PatternFakerService,
+    SystemService,
   ]
 })
 export class PatternsHomeComponent {
