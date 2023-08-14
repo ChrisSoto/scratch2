@@ -8,7 +8,7 @@ import { PatternsNoteEditComponent } from './components/notes/note-edit/patterns
 
 export const PatternsRouting: Routes = [
   {
-    path: 'patterns',
+    path: '',
     component: PatternsHomeComponent,
     children: [
       {
