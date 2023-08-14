@@ -1,0 +1,44 @@
+<table
+  cdk-table
+  [dataSource]="dataSource">
+
+  <ng-container matColumnDef="open">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Notes</th>
+    <td mat-cell *matCellDef="let data">
+      <mat-icon class="link" (click)="createNotes(data.id)">notes</mat-icon>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let data">
+      <a [routerLink]="['../edit/'+data.id]">{{ data.name }}</a>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <th [style.width]="'300px'" mat-header-cell mat-sort-header *matHeaderCellDef>Description<th>
+    <td mat-cell *matCellDef="let data">{{ data.description }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="created">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Created<th>
+    <td mat-cell *matCellDef="let data">{{ data.created.toDate() | date: 'short' }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="updated">
+    <th mat-header-cell mat-sort-header *matHeaderCellDef>Updated<th>
+    <td mat-cell *matCellDef="let data">{{ data.updated?.toDate() | date: 'short' }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+</table>
+
+<mat-paginator
+  [hidePageSize]="true"
+  [pageSize]="10"
+  [length]="dataSource.count$ | async"
+  (page)="onPageChange($event)"  
+></mat-paginator>

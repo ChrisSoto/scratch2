@@ -1,0 +1,38 @@
+<div class="p-1" *ngIf="!deletePart else confirmDelete">
+  
+  <h2>{{ status }} Part</h2>
+
+  <form class="flex layout-column" [formGroup]="partForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input matInput placeholder="Name" formControlName="name">
+      <mat-error *ngIf="partForm.get('name')?.hasError('required')">
+        This field is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+      <mat-error *ngIf="partForm.get('description')?.hasError('required')">
+        This field is required
+      </mat-error>
+    </mat-form-field>
+
+    <generator-id-list class="pb-2" formControlName="generatorIds"></generator-id-list>
+
+  </form>
+
+  <div class="layout-row layout-gap-15">
+    <button mat-raised-button color="secondary" (click)="onCancel()">Cancel</button>
+    <span class="flex"></span>
+    <button *ngIf="status === 'Edit'" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+    <button *ngIf="status === 'New'" [disabled]="partForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
+    <button *ngIf="status === 'Edit'" [disabled]="partForm.valid && !partForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+  </div>
+
+</div>
+
+<ng-template #confirmDelete>
+  <pattern-confirm-delete (confirmChange)="onConfirmChange($event)"></pattern-confirm-delete>
+</ng-template>

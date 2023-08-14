@@ -1,0 +1,17 @@
+<mat-form-field appearance="fill" style="width: 100%;">
+  <mat-label>Generator</mat-label>
+  <mat-select placeholder="Generator" [ngModel]="generatorIds[0]" (ngModelChange)="addId($event)">
+    <mat-option *ngFor="let system of systemsList$ | async" [value]="system.id">
+      {{ system.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="current-ids">
+  <div class="generator-id layout-row space-between-center pb-1" *ngFor="let item of namedIds$ | async; last as last" [ngClass]="{ 'noPB': last }">
+    <span>{{ item.name }}</span>
+    <button mat-mini-fab (click)="removeId(item.id)">
+      <mat-icon>remove</mat-icon>
+    </button>
+  </div>
+</div>

@@ -54,6 +54,11 @@ export const AppRoutes: Routes = [
         path: 'weldmac',
         title: 'WELDMAC - Roll Weld',
         loadChildren: () => import('./apps/weldmac/weldmac.routing').then(r => r.WeldmacRouting)
+      },
+      {
+        path: 'patterns',
+        title: 'Pattern Program',
+        loadChildren: () => import('./apps/patterns/patterns-routing.module').then(r => r.PatternsRouting)
       }
     ],
   }

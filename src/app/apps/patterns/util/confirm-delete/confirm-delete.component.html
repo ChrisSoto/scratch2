@@ -1,0 +1,11 @@
+<div class="confirm-delete layout-column p-1 pb-2">
+  <h3>{{ text }}</h3>
+  <div class="buttons layout-row layout-gap-15 space-around-center">
+    <button mat-fab color="warn" (click)="confirmChange.emit(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+    <button mat-fab color="primary" (click)="confirmChange.emit(true)">
+      <mat-icon>check</mat-icon>
+    </button>
+  </div>
+</div>

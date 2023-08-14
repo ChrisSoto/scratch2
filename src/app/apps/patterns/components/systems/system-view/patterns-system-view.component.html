@@ -1,0 +1,51 @@
+<div style="width: 100%;" class="layout-row layout-gap-15" *ngIf="active.system$ | async as system">
+
+  <div class="flex-33">
+
+    <mat-card>
+
+      <mat-tab-group>
+
+        <mat-tab label="System">
+          <div class="layout-row space-between-start p-1">
+            <div class="info">
+              <h1>{{ system.name }}</h1>
+              <p>{{ system.description }}</p>
+            </div>
+            <button mat-icon-button (click)="active.edit()">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="layout-row end p-1">
+            <common-fab-button [disabled]="showEditor" [color]="'primary'" [text]="'Add Part'" (buttonChange)="createPart()"/>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="Categories">
+          <pattern-category-select></pattern-category-select>
+        </mat-tab>
+
+      </mat-tab-group>
+
+    </mat-card>
+
+    <mat-card *ngIf="showEditor" class="mt-1">
+      <patterns-part-edit (cancelChange)="onNewPartCancel($event)"/>
+    </mat-card>
+
+  </div>
+
+  <div class="flex-33">
+    <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
+      <patterns-part-view
+        cdkDrag
+        *ngFor="let part of system.parts; last as isLast; index as i"
+        [part]="part" [isLast]="isLast" [index]="i"/>
+    </mat-card>
+  </div>
+
+  <div class="flex-33">
+    Test thing 2
+  </div>
+</div>
