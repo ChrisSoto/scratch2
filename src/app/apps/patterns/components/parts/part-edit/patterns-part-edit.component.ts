@@ -6,15 +6,26 @@ import { ActiveSystemService } from '../../../services/active-system.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDeleteComponent } from '../../../util/confirm-delete/confirm-delete.component';
 import { CommonModule } from '@angular/common';
+import { SystemService } from '../../../services/system.service';
+import { SystemPartService } from '../../../services/system-part.service';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'patterns-part-edit',
   standalone: true,
   imports: [
     CommonModule,
+    MatInputModule,
+    MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     ConfirmDeleteComponent,
+  ],
+  providers: [
+    ActiveSystemService,
+    SystemService,
+    SystemPartService,
   ],
   templateUrl: './patterns-part-edit.component.html',
   styleUrls: ['./patterns-part-edit.component.scss'],
@@ -24,8 +35,9 @@ export class PatternsPartEditComponent implements OnInit {
   @Output() cancelChange = new EventEmitter<boolean>();
 
   private fb = inject(FormBuilder);
-  private active = inject(ActiveSystemService);
+
   public data: { part: PPart, index: number } = inject(MAT_DIALOG_DATA);
+  private active = inject(ActiveSystemService);
 
   status = 'New';
   deletePart = false;
@@ -47,7 +59,7 @@ export class PatternsPartEditComponent implements OnInit {
     // it emits so the part editor not in a dialog will close
     this.cancelChange.emit(true);
     // it will close the dialogRef if needed
-    this.active.closePartDialog();
+    // this.active.closePartDialog();
   }
 
   onDelete() {
@@ -63,13 +75,13 @@ export class PatternsPartEditComponent implements OnInit {
   onUpdate() {
     const part = this.partForm.value as PPart;
     this.active.updatePart(part, this.data.index);
-    this.active.closePartDialog();
+    // this.active.closePartDialog();
   }
 
   onConfirmChange(remove: boolean) {
     if (remove) {
       this.active.removePart(this.data.index);
-      this.active.closePartDialog();
+      // this.active.closePartDialog();
     } else {
       this.deletePart = false;
     }

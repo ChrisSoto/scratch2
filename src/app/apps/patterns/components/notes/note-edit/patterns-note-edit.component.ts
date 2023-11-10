@@ -6,6 +6,8 @@ import { PatternNotesService } from '../../../services/pattern-notes.service';
 import { PSystem } from '../../../model/models.interface';
 import { CommonModule } from '@angular/common';
 import { NotesSystemPartComponent } from '../notes-system-part/notes-system-part.component';
+import { SystemPartService } from '../../../services/system-part.service';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'patterns-note-edit',
@@ -13,6 +15,12 @@ import { NotesSystemPartComponent } from '../notes-system-part/notes-system-part
   imports: [
     CommonModule,
     NotesSystemPartComponent,
+    MatDialogModule,
+  ],
+  providers: [
+    ActiveSystemService,
+    PatternNotesService,
+    SystemPartService,
   ],
   templateUrl: './patterns-note-edit.component.html',
   styleUrls: ['./patterns-note-edit.component.scss']

@@ -15,6 +15,7 @@ import { PatternsPartEditComponent } from '../../parts/part-edit/patterns-part-e
 import { CategorySelectComponent } from '../../categories/category-select/category-select.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'patterns-system-view',
@@ -25,6 +26,7 @@ import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-b
     MatIconModule,
     MatTabsModule,
     MatDividerModule,
+    MatDialogModule,
     DragDropModule,
     PatternsPartEditComponent,
     PatternsPartViewComponent,
@@ -32,6 +34,8 @@ import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-b
     CommonFabButtonComponent,
   ],
   providers: [
+    ActiveSystemService,
+    SystemPartService,
   ],
   templateUrl: './patterns-system-view.component.html',
   styleUrls: ['./patterns-system-view.component.scss']

@@ -10,6 +10,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDeleteComponent } from '../../../util/confirm-delete/confirm-delete.component';
 import { CommonModule } from '@angular/common';
+import { SystemPartService } from '../../../services/system-part.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'patterns-system-edit',
@@ -18,10 +21,17 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./patterns-system-edit.component.scss'],
   imports: [
     CommonModule,
+    MatInputModule,
     MatCardModule,
+    MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     ConfirmDeleteComponent,
+  ],
+  providers: [
+    ActiveSystemService,
+    SystemService,
+    SystemPartService,
   ]
 })
 export class PatternsSystemEditComponent implements OnInit {

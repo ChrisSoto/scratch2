@@ -58,7 +58,12 @@ export const AppRoutes: Routes = [
       {
         path: 'patterns',
         title: 'Pattern Program',
-        loadChildren: () => import('./apps/patterns/patterns-routing.module').then(r => r.PatternsRouting)
+        loadChildren: () => import('./apps/patterns/patterns-routing').then(r => r.PatternsRouting)
+      },
+      {
+        path: 'life',
+        title: 'Life Game',
+        loadChildren: () => import('./apps/life-game/life.routing').then(r => r.LifeRouting)
       }
     ],
   }

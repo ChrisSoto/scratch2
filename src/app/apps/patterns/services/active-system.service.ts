@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { PPart, PSystem, SystemDialogClose } from '../model/models.interface';
-import { PatternsPartEditComponent } from '../components/parts/part-edit/patterns-part-edit.component';
 import { SystemPartService } from './system-part.service';
 import { SystemService } from './system.service';
 import { PatternsSystemEditComponent } from '../components/systems/system-edit/patterns-system-edit.component';
@@ -17,7 +16,7 @@ export class ActiveSystemService {
   public system$: Observable<PSystem | null> = this._system$.asObservable();
 
   private systemDialogRef!: MatDialogRef<PatternsSystemEditComponent>;
-  private partDialogRef!: MatDialogRef<PatternsPartEditComponent>;
+
 
   constructor(
     private systemService: SystemService,
@@ -60,14 +59,14 @@ export class ActiveSystemService {
     this.systemDialogRef = this.dialog.open(PatternsSystemEditComponent, { data: this.system });
   }
 
-  editPart(part: PPart, index: number) {
-    this.partDialogRef = this.dialog.open(PatternsPartEditComponent, {
-      data: {
-        part: part,
-        index: index,
-      }
-    });
-  }
+  // editPart(part: PPart, index: number) {
+  //   this.partDialogRef = this.dialog.open(PatternsPartEditComponent, {
+  //     data: {
+  //       part: part,
+  //       index: index,
+  //     }
+  //   });
+  // }
 
   remove(id: string): Promise<void> {
     return this.systemService.remove(id)
@@ -123,11 +122,11 @@ export class ActiveSystemService {
   // dialog services
   //
 
-  closePartDialog(): MatDialogRef<PatternsPartEditComponent> | undefined {
-    if (!this.partDialogRef) return;
-    this.partDialogRef.close();
-    return this.partDialogRef;
-  }
+  // closePartDialog(): MatDialogRef<PatternsPartEditComponent> | undefined {
+  //   if (!this.partDialogRef) return;
+  //   this.partDialogRef.close();
+  //   return this.partDialogRef;
+  // }
 
   closeSystemDialog(): MatDialogRef<PatternsSystemEditComponent> | undefined {
     if (!this.systemDialogRef) return;
