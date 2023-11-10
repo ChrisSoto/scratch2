@@ -6,7 +6,7 @@ import { HymnVerseComponent } from '../hymn-verse/hymn-verse.component';
 import { ActiveHymnService } from '../../services/active-hymn.service';
 
 @Component({
-  selector: 'church-slides-view',
+  selector: 'church-slideshow-view',
   standalone: true,
   imports: [
     CommonModule,

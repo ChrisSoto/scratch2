@@ -1,34 +1,39 @@
-<div *ngIf="project$ | async as project"
-  class="flex flex-col
-         bg-slate-100
-         sm:bg-slate-200
-         md:bg-slate-300
-         lg:bg-slate-400
-         xl:bg-slate-500
-         h-full
-         max-w-screen-xl
-         mx-auto">
+@if (project$ | async; as project) {
 
-  <div class="flex flex-col sticky top-0 bg-white z-30 p-4 mat-elevation-z2">
+  <div class="flex flex-col
+              bg-slate-100
+              sm:bg-slate-200
+              md:bg-slate-300
+              lg:bg-slate-400
+              xl:bg-slate-500
+              h-full
+              max-w-screen-xl
+              mx-auto">
 
-    <div class="flex flex-row justify-between center-items">
+    <div class="flex flex-col sticky top-0 bg-white z-30 p-4 mat-elevation-z2">
 
-      <div [innerHTML]="project.name | markdown"></div>
+      <div class="flex flex-row justify-between center-items">
 
-      <button color="primary" (click)="goHome()"  mat-button>Home</button>
+        <div [innerHTML]="project.name | markdown"></div>
+
+        <button color="primary" (click)="goHome()"  mat-button>Home</button>
+
+      </div>
+
+      <text-area-editor *ngIf="showSummary()" class="w-full" [text]="project.description" (textChange)="save($event)"/>
+
+      <project-stepper [steps]="project.pages" (stepChange)="onStepChange($event)"/>
 
     </div>
 
-    <text-area-editor *ngIf="showSummary()" class="w-full" [text]="project.description" (textChange)="save($event)"/>
+    <div class="bg-slate-100">
 
-    <project-stepper [steps]="project.pages" (stepChange)="onStepChange($event)"/>
+      <project-viewer [projectPage]="projectPage$ | async"/>
 
-  </div>
-
-  <div class="bg-slate-100">
-
-    <project-viewer [projectPage]="projectPage$ | async"/>
+    </div>
 
   </div>
 
-</div>
+} @else {
+  no project details
+}

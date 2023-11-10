@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'
 import { ScreenHeightService } from 'src/app/shared/services/screen-height.service';
 import { ChurchSlideshowViewComponent } from '../components/church-slideshow-view/church-slideshow-view.component';
-import { RouterModule } from '@angular/router';
 import { ActiveChurchSlideshowService } from '../services/active-church-slideshow.service';
 import { ChurchSlideshowService } from '../services/church-slideshow.service';
 import { ChurchSlideService } from '../services/church-slide.service';

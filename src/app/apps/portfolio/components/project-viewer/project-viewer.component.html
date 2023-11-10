@@ -1,3 +1,6 @@
-<div class="flex flex-col p-4" *ngIf="projectPage?.text as text">
-  <text-area-editor class="w-full" [text]="text" (textChange)="save($event)"/>
-</div>
+@if (projectPage?.text; as text) {
+  <div class="flex flex-col p-4">
+    <text-area-editor class="w-full" [text]="text" (textChange)="save($event)"/>
+  </div>
+}
+

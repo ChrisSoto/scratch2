@@ -17,13 +17,11 @@
     </form>
   </div>
 
-  <div *ngIf="selectedHymn$ | async as hymn; else hymnNotSelected">
+  @if (selectedHymn$ | async; as hymn) {
     <h1 class="text-3xl text-bold">{{ hymn.title }}</h1>
-  </div>
-
-  <ng-template #hymnNotSelected>
-    No Hymn Selected
-  </ng-template>
+  } @else {
+    <p>No Hymn Selected</p>
+  }
 
   <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
     <button mat-button (click)="dialogRef.close(false)">Cancel</button>

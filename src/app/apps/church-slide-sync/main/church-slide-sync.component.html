@@ -1,14 +1,14 @@
 <div id="church-slide-sync" class="flex flex-row gap-2 items-stretch full-height">
-  <div [hidden]="controls.fullscreen()" class="basis-1/2 sm:basis-2/5 lg:basis-1/3 overflow-y-auto overflow-hidden">
+  <div [hidden]="controls.fullscreen()" class="basis-1/2 sm:basis-2/5 lg:basis-2/3 overflow-y-auto overflow-hidden">
     <router-outlet/>
   </div>
   <div class="bg-black basis-1/2 sm:basis-3/5 lg:basis-2/3 grow">
 
-    <church-slides-view *ngIf="viewMode() else previewMode"/>
-
-    <ng-template #previewMode>
-      <church-slides-view/>
-    </ng-template>
+    @if (viewMode()) {
+      <church-slideshow-view/>
+    } @else {
+      <church-slideshow-view/>
+    }
 
   </div>
 </div>
