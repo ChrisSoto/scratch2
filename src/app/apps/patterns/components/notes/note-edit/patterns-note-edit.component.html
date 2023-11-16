@@ -1,9 +1,12 @@
-<div *ngIf="active?.system">
+@if (active.system) {
+<div>
   <h1>{{ active.system.name }}</h1>
   <p>{{ active.system.description }}</p>
 
   <div class="system-part">
-    <notes-system-part *ngFor="let part of active.system.parts" [part]="part"></notes-system-part>
+    @for (part of active.system.parts; track $index) {
+    <notes-system-part [part]="part" />
+    }
   </div>
-
 </div>
+}

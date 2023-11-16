@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, inject } from '@angular/core';
 import { FormControl, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { PPart } from '../../../model/models.interface';
 import { ActiveSystemService } from '../../../services/active-system.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,6 +10,7 @@ import { SystemService } from '../../../services/system.service';
 import { SystemPartService } from '../../../services/system-part.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { GeneratorIdListComponent } from '../generator-id-list/generator-id-list.component';
 
 @Component({
   selector: 'patterns-part-edit',
@@ -18,9 +19,11 @@ import { MatButtonModule } from '@angular/material/button';
     CommonModule,
     MatInputModule,
     MatButtonModule,
+    MatDialogModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     ConfirmDeleteComponent,
+    GeneratorIdListComponent,
   ],
   providers: [
     ActiveSystemService,
@@ -35,10 +38,9 @@ export class PatternsPartEditComponent implements OnInit {
   @Output() cancelChange = new EventEmitter<boolean>();
 
   private fb = inject(FormBuilder);
-
-  public data: { part: PPart, index: number } = inject(MAT_DIALOG_DATA);
   private active = inject(ActiveSystemService);
-
+  private data: { part: PPart, index: number } = inject(MAT_DIALOG_DATA);
+  private dialogRef = inject(MatDialogRef);
   status = 'New';
   deletePart = false;
 
@@ -49,17 +51,20 @@ export class PatternsPartEditComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if ('part' in this.data) {
-      this.status = 'Edit';
+    // it can initialize in NEW or EDIT mode
+
+    if (this.data) {
+      // check if data is being edited
+      if (this.data.part.name.length) {
+        this.status = 'Edit';
+      }
+  
       this.partForm.patchValue(this.data.part);
     }
   }
 
   onCancel() {
-    // it emits so the part editor not in a dialog will close
-    this.cancelChange.emit(true);
-    // it will close the dialogRef if needed
-    // this.active.closePartDialog();
+    this.dialogRef.close()
   }
 
   onDelete() {
@@ -75,13 +80,11 @@ export class PatternsPartEditComponent implements OnInit {
   onUpdate() {
     const part = this.partForm.value as PPart;
     this.active.updatePart(part, this.data.index);
-    // this.active.closePartDialog();
   }
 
   onConfirmChange(remove: boolean) {
     if (remove) {
       this.active.removePart(this.data.index);
-      // this.active.closePartDialog();
     } else {
       this.deletePart = false;
     }

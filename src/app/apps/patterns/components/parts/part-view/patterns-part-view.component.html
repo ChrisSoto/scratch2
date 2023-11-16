@@ -4,14 +4,19 @@
     <span class="dragger-line"></span>
     <span class="dragger-line"></span>
   </div>
-  <div class="flex space-between-start">
-    <div class="info">
-      <h1>{{ part.name }}</h1>
-      <p>{{ part.description }}</p>
+  <div class="m-5 mt-0">
+    <div class="flex flex-row place-content-between">
+      <div class="info">
+        <h1 class="text-2xl font-bold">{{ part.name }}</h1>
+        <p>{{ part.description }}</p>
+      </div>
+      <button mat-icon-button (click)="editPart(part, index)">
+        <mat-icon color="primary">edit</mat-icon>
+      </button>
     </div>
-    <button mat-icon-button (click)="editPart(part, index)">
-      <mat-icon>edit</mat-icon>
-    </button>
   </div>
 </div>
-<mat-divider *ngIf="!isLast"></mat-divider>
+
+@if (!isLast) {
+  <mat-divider></mat-divider>
+}

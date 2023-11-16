@@ -15,7 +15,7 @@ import { PatternsPartEditComponent } from '../../parts/part-edit/patterns-part-e
 import { CategorySelectComponent } from '../../categories/category-select/category-select.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'patterns-system-view',
@@ -46,6 +46,7 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
 
   active = inject(ActiveSystemService);
   partService = inject(SystemPartService);
+  dialog = inject(MatDialog);
   private router = inject(ActivatedRoute);
   private systemService = inject(SystemService);
 
@@ -77,12 +78,13 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
     moveItemInArray(parts, event.previousIndex, event.currentIndex);
     system.parts = parts;
     this.active.setActive(system, true);
-
   }
 
-  createPart() {
-    this.active.getPart();
-    this.showEditor = true;
+  createPart(system: PSystem) {
+    this.dialog.open(PatternsPartEditComponent, { data: {
+      part: this.partService.newPart(system),
+      index: system.parts?.length || 0
+    } })
   }
 
   onNewPartCancel(isCanceled: boolean) {

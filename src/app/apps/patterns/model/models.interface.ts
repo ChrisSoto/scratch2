@@ -16,6 +16,7 @@ export interface PPart extends Meta {
   relations?: PRelation[];
   categories?: PCategory[];
   generatorIds: string[];
+  index?: number;
 }
 
 export interface PRelation extends Meta {

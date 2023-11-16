@@ -1,33 +1,48 @@
-<mat-card *ngIf="!deleteSystem else confirmDelete" class="new-system">
-  <content class="p-1">
-    <h1>{{ status }} System</h1>
-    <form class="flex layout-column" [formGroup]="systemForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-error *ngIf="systemForm.get('name')?.hasError('required')">
-          This field is required
-        </mat-error>
-      </mat-form-field>
+@if (!deleteSystem) {
+  <mat-card class="new-system p-5">
+    <content>
+      <h1 class="text-2xl font-bold mb-5">{{ status }} System</h1>
+      <form class="flex flex-col" [formGroup]="systemForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Name" formControlName="name">
+          
+          @if (systemForm.get('name')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
+          
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
-        <textarea matInput placeholder="Description" formControlName="description"></textarea>
-        <mat-error *ngIf="systemForm.get('description')?.hasError('required')">
-          This field is required
-        </mat-error>
-      </mat-form-field>
-      <div class="layout-row layout-gap-15">
-        <button *ngIf="status === 'Edit'" mat-raised-button color="secondary" (click)="onCancel()">Cancel</button>
-        <span class="flex"></span>
-        <button *ngIf="status === 'Edit'" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
-        <button *ngIf="status === 'New'" [disabled]="systemForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
-        <button *ngIf="status === 'Edit'" [disabled]="systemForm.valid && !systemForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
-      </div>
-    </form>
-  </content>
-</mat-card>
+          @if (systemForm.get('description')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
 
-<ng-template #confirmDelete>
+        </mat-form-field>
+        <div class="flex flex-row gap-2">
+
+          @if (status === 'Edit') {
+            <button *ngIf="status === 'Edit'" mat-button color="secondary" (click)="onCancel()">Cancel</button>
+            <span class="flex"></span>
+            <button *ngIf="status === 'Edit'" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+            <button *ngIf="status === 'Edit'" [disabled]="systemForm.valid && !systemForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+          } @else if (status === 'New') {
+            <span class="flex"></span>
+            <button *ngIf="status === 'New'" [disabled]="systemForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
+          }
+
+          
+        </div>
+      </form>
+    </content>
+  </mat-card> 
+} @else {
   <pattern-confirm-delete (confirmChange)="onConfirmChange($event)"/>
-</ng-template>
+}

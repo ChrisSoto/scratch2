@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { PatternNotesService } from '../../../services/pattern-notes.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'patterns-systems-list',
@@ -19,6 +20,7 @@ import { PatternNotesService } from '../../../services/pattern-notes.service';
   styleUrls: ['./system-list.component.scss'],
   imports: [
     CommonModule,
+    MatCardModule,
     CdkTableModule,
     RouterModule,
     MatIconModule,

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -7,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './confirm-delete.component.html',
   styleUrls: ['./confirm-delete.component.scss'],
   imports: [
+    MatButtonModule,
     MatIconModule,
   ]
 })

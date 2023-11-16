@@ -51,6 +51,7 @@ export class ActiveSystemService {
           this.systemDialogRef.close({ status: 'updated', system: system });
         } else {
           this.snackBar.open('System Updated!', undefined, { duration: 3000 });
+          this.dialog.closeAll()
         }
       });
   }

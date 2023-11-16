@@ -1,44 +1,43 @@
-<table
-  cdk-table
-  [dataSource]="dataSource">
-
-  <ng-container cdkColumnDef="open">
-    <th cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Notes</th>
-    <td cdk-cell *cdkCellDef="let data">
-      <mat-icon class="link" (click)="createNotes(data.id)">notes</mat-icon>
-    </td>
-  </ng-container>
-
-  <ng-container cdkColumnDef="name">
-    <th cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Name</th>
-    <td cdk-cell *cdkCellDef="let data">
-      <a [routerLink]="['../edit/'+data.id]">{{ data.name }}</a>
-    </td>
-  </ng-container>
-
-  <ng-container cdkColumnDef="description">
-    <th [style.width]="'300px'" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Description<th>
-    <td cdk-cell *cdkCellDef="let data">{{ data.description }}</td>
-  </ng-container>
-
-  <ng-container cdkColumnDef="created">
-    <th cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Created<th>
-    <td cdk-cell *cdkCellDef="let data">{{ data.created.toDate() | date: 'short' }}</td>
-  </ng-container>
-
-  <ng-container cdkColumnDef="updated">
-    <th cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Updated<th>
-    <td cdk-cell *cdkCellDef="let data">{{ data.updated?.toDate() | date: 'short' }}</td>
-  </ng-container>
-
-  <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
-  <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
-
-</table>
-
-<mat-paginator
-  [hidePageSize]="true"
-  [pageSize]="10"
-  [length]="dataSource.count$ | async"
-  (page)="onPageChange($event)"
-></mat-paginator>
+<mat-card class="p-5 mt-5 pb-0">
+  <table class="w-full" cdk-table [dataSource]="dataSource">
+  
+    <ng-container cdkColumnDef="open">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Notes</th>
+      <td cdk-cell *cdkCellDef="let data">
+        <mat-icon class="material-symbols-outlined text-sky-500" (click)=" createNotes(data.id)">note_add</mat-icon>
+      </td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="name">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Name</th>
+      <td class="text-left text-sky-500 font-medium underline" cdk-cell *cdkCellDef="let data">
+        <a [routerLink]="['../edit/'+data.id]">{{ data.name }}</a>
+      </td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="description">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Description
+      <th>
+      <td cdk-cell *cdkCellDef="let data">{{ data.description }}</td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="created">
+      <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Created
+      <th>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.created.toDate() | date: 'short' }}</td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="updated">
+      <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Updated
+      <th>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.updated?.toDate() | date: 'short' }}</td>
+    </ng-container>
+  
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  
+  </table>
+  
+  <mat-paginator [hidePageSize]="true" [pageSize]="10" [length]="dataSource.count$ | async"
+    (page)="onPageChange($event)"></mat-paginator>
+</mat-card>

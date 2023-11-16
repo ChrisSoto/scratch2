@@ -1,28 +1,48 @@
-  <content class="p-1">
+<div class="p-5">
   <mat-form-field class="pt-1" appearance="fill">
     <mat-label>Categories</mat-label>
     <mat-select [(ngModel)]="selectedCategory" name="category">
-      <mat-option *ngFor="let category of categories" [value]="category">
-        {{ category }}
-      </mat-option>
+      @for (category of categories; track $index) {
+        <mat-option [value]="category">
+          {{ category }}
+        </mat-option>
+      }
     </mat-select>
   </mat-form-field>
 
   <div class="p-1 pb-0" [ngSwitch]="selectedCategory">
-    <pattern-cat-type-quantity *ngSwitchCase="categoryTypes.quantity"/>
-    <pattern-cat-type-place *ngSwitchCase="categoryTypes.place"/>
-    <pattern-cat-type-color *ngSwitchCase="categoryTypes.color"/>
-    <pattern-cat-type-condition *ngSwitchCase="categoryTypes.condition"/>
-    <pattern-cat-type-time *ngSwitchCase="categoryTypes.time"/>
-    <pattern-cat-type-image *ngSwitchCase="categoryTypes.image"/>
-    <div class="default" *ngSwitchDefault="">
-      Select a category!
-    </div>
+    @switch (selectedCategory) {
+      @case (categoryTypes.quantity) {
+        <pattern-cat-type-quantity *ngSwitchCase="categoryTypes.quantity" />
+      }
+      @case (categoryTypes.place) {
+        <pattern-cat-type-place *ngSwitchCase="categoryTypes.place" />
+      }
+      @case (categoryTypes.color) {
+        <pattern-cat-type-color *ngSwitchCase="categoryTypes.color" />
+      }
+      @case (categoryTypes.condition) {
+        <pattern-cat-type-condition *ngSwitchCase="categoryTypes.condition" />
+      }
+      @case (categoryTypes.time) {
+        <pattern-cat-type-time *ngSwitchCase="categoryTypes.time" />
+      }
+      @case (categoryTypes.image) {
+        <pattern-cat-type-image *ngSwitchCase="categoryTypes.image" />
+      }
+      @default {
+        <div class="default" *ngSwitchDefault="">
+          Select a category!
+        </div>
+      }
+    }
   </div>
-</content>
 
-<mat-divider></mat-divider>
-
-<div class="add-category layout-row end p-1">
-  <common-fab-button [text]="'Add Category'"/>
 </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="add-category layout-row end p-5">
+    <common-fab-button [text]="'Add Category'" />
+  </div>
+

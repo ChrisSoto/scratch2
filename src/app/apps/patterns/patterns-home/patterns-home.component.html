@@ -17,16 +17,22 @@
 
     </mat-drawer>
 
-    <mat-drawer-content class="p-0">
+  <mat-drawer-content class="p-0 bg-zinc-200">
 
       <mat-toolbar [color]="'primary'">
-        <button *ngIf="!drawer.opened" mat-icon-button (click)="drawer.toggle()">
-          <mat-icon>menu</mat-icon>
-        </button>
+        
+        @if (!drawer.opened) {
+          <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        }
+        
       </mat-toolbar>
 
-      <content class="p-1 layout-row">
-        <router-outlet></router-outlet>
+      <content class="flex justify-center items-center">
+        <div class="basis-full sm:basis-4/5 xl:basis-3/5">
+          <router-outlet></router-outlet>
+        </div>
       </content>
 
     </mat-drawer-content>

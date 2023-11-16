@@ -1,11 +1,23 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject, concatAll, concatMap, filter, from, map, mergeAll, take, toArray } from 'rxjs';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { GeneratorIdName, PSystem } from '../../../model/models.interface';
 import { SystemService } from '../../../services/system.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'generator-id-list',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule
+  ],
   templateUrl: './generator-id-list.component.html',
   styleUrls: ['./generator-id-list.component.scss'],
   providers: [
