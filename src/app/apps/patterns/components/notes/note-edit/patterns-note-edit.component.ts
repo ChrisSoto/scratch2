@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { NotesSystemPartComponent } from '../notes-system-part/notes-system-part.component';
 import { SystemPartService } from '../../../services/system-part.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'patterns-note-edit',
@@ -16,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     CommonModule,
     NotesSystemPartComponent,
     MatDialogModule,
+    MatCardModule,
   ],
   providers: [
     ActiveSystemService,

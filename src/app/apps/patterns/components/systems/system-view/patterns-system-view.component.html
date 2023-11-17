@@ -31,20 +31,14 @@
       </mat-tab-group>
   
     </mat-card>
-  
-    <div class="">
-      <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
 
-        @for (part of system.parts; track part.id) {
-          <patterns-part-view cdkDrag [part]="part" [isLast]="$last" [index]="$index"/>
-        }
-        
-      </mat-card>
-    </div>
-  
-    <div class="flex-33">
-      pull in list of stuff that uses this pattern system
-    </div>
+    <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
+
+      @for (part of system.parts; track part.id) {
+        <patterns-part-view cdkDrag [part]="part" [isLast]="$last" [index]="$index"/>
+      }
+      
+    </mat-card>
   </div>
 }
 

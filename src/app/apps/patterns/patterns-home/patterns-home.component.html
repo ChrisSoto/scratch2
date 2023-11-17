@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-  <mat-drawer-container class="example-container">
+  <mat-drawer-container class="h-screen">
 
     <mat-drawer #drawer [mode]="'side'">
       <mat-toolbar class="end">
@@ -10,7 +10,7 @@
 
       </mat-toolbar>
 
-      <content class="layout-column">
+      <content class="flex flex-col">
         <button class="m-1" mat-raised-button color="primary" (click)="newSystem()">New System</button>
         <button class="m-1 mt-0" mat-raised-button (click)="viewSystems()">View Systems</button>
       </content>

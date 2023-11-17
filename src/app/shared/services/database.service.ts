@@ -21,7 +21,7 @@ export class DatabaseService {
     private firestore: Firestore,
     private auth: AuthService) {
     // disable till this is made main database service
-    this.enableIndexedDbPersistence();
+    // this.enableIndexedDbPersistence();
   }
 
   createId(): string {
