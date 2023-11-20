@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, signal, OnInit, Output, inject, effect } from '@angular/core';
 import { FormControl, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { PPart } from '../../../model/models.interface';
+import { EditStatus, PPart } from '../../../model/models.interface';
 import { ActiveSystemService } from '../../../services/active-system.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ConfirmDeleteComponent } from '../../../util/confirm-delete/confirm-delete.component';
@@ -11,6 +11,7 @@ import { SystemPartService } from '../../../services/system-part.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { GeneratorIdListComponent } from '../generator-id-list/generator-id-list.component';
+import { PartListSelectComponent } from '../part-list-select/part-list-select.component';
 
 @Component({
   selector: 'patterns-part-edit',
@@ -24,6 +25,7 @@ import { GeneratorIdListComponent } from '../generator-id-list/generator-id-list
     ReactiveFormsModule,
     ConfirmDeleteComponent,
     GeneratorIdListComponent,
+    PartListSelectComponent,
   ],
   providers: [
     ActiveSystemService,
@@ -33,6 +35,7 @@ import { GeneratorIdListComponent } from '../generator-id-list/generator-id-list
   templateUrl: './patterns-part-edit.component.html',
   styleUrls: ['./patterns-part-edit.component.scss'],
 })
+
 export class PatternsPartEditComponent implements OnInit {
 
   @Output() cancelChange = new EventEmitter<boolean>();
@@ -41,8 +44,11 @@ export class PatternsPartEditComponent implements OnInit {
   private active = inject(ActiveSystemService);
   private data: { part: PPart, index: number } = inject(MAT_DIALOG_DATA);
   private dialogRef = inject(MatDialogRef);
-  status = 'New';
-  deletePart = false;
+
+  Status = EditStatus;
+  status = signal(EditStatus.NEW);
+  deletePart = signal(false);
+  selectedPartId = signal('');
 
   partForm = this.fb.group({
     name: new FormControl<string>('', Validators.required),
@@ -56,19 +62,16 @@ export class PatternsPartEditComponent implements OnInit {
     if (this.data) {
       // check if data is being edited
       if (this.data.part.name.length) {
-        this.status = 'Edit';
+        this.status.set(EditStatus.EDIT);
       }
   
       this.partForm.patchValue(this.data.part);
     }
+  
   }
 
   onCancel() {
     this.dialogRef.close()
-  }
-
-  onDelete() {
-    this.deletePart = true;
   }
 
   onSave() {
@@ -86,7 +89,7 @@ export class PatternsPartEditComponent implements OnInit {
     if (remove) {
       this.active.removePart(this.data.index);
     } else {
-      this.deletePart = false;
+      this.deletePart.set(false);
     }
   }
 

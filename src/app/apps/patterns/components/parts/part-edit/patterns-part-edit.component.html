@@ -1,41 +1,77 @@
-@if (!deletePart) {
+
+
+@if (!deletePart()) {
   <div class="p-5">
-    <h2 class="text-2xl font-bold mb-5">{{ status }} Part</h2>
 
-    <form class="flex flex-col" [formGroup]="partForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-error *ngIf="partForm.get('name')?.hasError('required')">
-          This field is required
-        </mat-error>
-      </mat-form-field>
+    <h2 class="text-2xl font-bold mb-5">{{ status() }} Part</h2>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
-        <textarea matInput placeholder="Description" formControlName="description"></textarea>
-        <mat-error *ngIf="partForm.get('description')?.hasError('required')">
-          This field is required
-        </mat-error>
-      </mat-form-field>
+    @if (status() === Status.REUSE) {
+      
+      <span class="text-lg font-bold">Select from existing parts:</span>
+      <pattern-part-list-select (partIdChange)="selectedPartId.set($event)"/>
 
-      <generator-id-list class="pb-2" formControlName="generatorIds"/>
+    } @else if (status() === Status.NEW || status() === Status.EDIT) {
 
-    </form>
+      <span class="text-lg font-bold">Create {{ status() }} part:</span>
+      <form class="flex flex-col" [formGroup]="partForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Name" formControlName="name">
+          
+          @if (partForm.get('name')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
+
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
+
+          @if (partForm.get('description')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
+
+        </mat-form-field>
+  
+        <generator-id-list class="pb-2" formControlName="generatorIds"/>
+      </form>
+    }
+
+    <div class="flex flex-col items-center">
+
+      @if(status() === Status.REUSE) {
+        <span>Or</span>
+        <button class="w-full my-5" color="primary" mat-raised-button (click)="status.set(Status.NEW)">Create New Part</button>
+      } @else if (status() === Status.NEW) {
+        <span>Or</span>
+        <button class="w-full my-5" color="primary" mat-raised-button (click)="status.set(Status.REUSE)">Use Existing Part</button>
+      }
+
+    </div>
 
     <div class="flex flex-row gap-2">
       <button mat-button color="secondary" (click)="onCancel()">Cancel</button>
-      <span class="flex"></span>
+      <span class="flex-1"></span>
 
-      @if (status === 'Edit') {
+      @if (status() === Status.EDIT) {
 
-        <button *ngIf="status === 'Edit'" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
-        <button *ngIf="status === 'Edit'" [disabled]="partForm.valid && !partForm.dirty" mat-raised-button color="primary"
+        <button mat-raised-button color="warn" (click)="deletePart.set(true)">Delete</button>
+        <button [disabled]="partForm.valid && !partForm.dirty" mat-raised-button color="primary"
           (click)="onUpdate()">Update</button>
 
-      } @else if (status === 'New') {
+      } @else if (status() === Status.NEW) {
 
-        <button *ngIf="status === 'New'" [disabled]="partForm.invalid" mat-raised-button color="primary"
+        <button [disabled]="partForm.invalid" mat-raised-button color="primary"
+          (click)="onSave()">Create</button>
+
+      } @else if (status() === Status.REUSE) {
+
+        <button [disabled]="!selectedPartId().length" mat-raised-button color="primary"
           (click)="onSave()">Create</button>
       }
 
