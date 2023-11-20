@@ -41,7 +41,6 @@ export class SystemDataSource extends DataSource<PSystem> {
   }
 
   loadPaginated(sort?: GeneralQuery[], pageEvent?: PageEvent) {
-    console.log('load');
     if (!sort) sort = [{ name: 'orderBy', field: 'created', direction: 'desc' }];
     if (pageEvent) {
       const start = this.paginate.start(pageEvent);
@@ -54,7 +53,6 @@ export class SystemDataSource extends DataSource<PSystem> {
         take(1)
       )
       .subscribe((res) => {
-        console.log('res', res.data);
         this.systems$.next(res.data);
         this.paginate.savePage(res.next, pageEvent);
         this.isLoading$.next(false);
