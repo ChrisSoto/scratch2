@@ -1,4 +1,4 @@
-import { Meta } from "src/app/shared/interface/meta.model";
+import { GenericMeta, Meta } from "src/app/shared/interface/meta.model";
 
 export interface PSystem extends Meta {
   name: string;
@@ -12,11 +12,16 @@ export interface PSystem extends Meta {
 export interface PPart extends Meta {
   name: string;
   description: string;
-  notes?: string;
   relations?: PRelation[];
   categories?: PCategory[];
   generatorIds: string[];
   index?: number;
+  notes?: string[]
+}
+
+export interface PNote extends Meta {
+  systemId: string;
+  partId: string;
 }
 
 export interface PRelation extends Meta {
@@ -32,9 +37,15 @@ export interface PCategory extends Meta {
   category_type: PCategoryType;
 }
 
+export enum EditStatus {
+  NEW = 'New',
+  REUSE = 'Re-use',
+  EDIT = 'Edit',
+}
+
 export enum PRelationType {
-  Foward = 'FORWARD',
-  Backward = 'BACKWARD',
+  FORWARD = 'Forward',
+  BACKWARD = 'Backward',
 }
 
 export enum PCategoryType {

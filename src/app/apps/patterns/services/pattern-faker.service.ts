@@ -22,7 +22,7 @@ export class PatternFakerService {
     let random = this.getRandomInt(1, 11);
     for (let i = 0; i < random; i++) {
       parts.push({
-        id: i + '', // convert number to string
+        id: '',
         name: 'Part Name' + i,
         description: 'Part Description',
         generatorIds: []
