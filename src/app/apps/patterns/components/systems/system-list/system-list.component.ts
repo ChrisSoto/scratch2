@@ -38,7 +38,7 @@ export class PatternsSystemListComponent implements OnInit {
   systemService = inject(SystemService);
   pagination = inject(PaginationService);
   sortToQuery = inject(SortToQueryConstraintsService);
-  notesService = inject(PatternNotesCreatorService)
+  notesService = inject(PatternNotesCreatorService);
 
   dataSource = new SystemDataSource(this.systemService, this.pagination);
   lastSort: Sort = { active: 'created', direction: 'desc' };
@@ -46,7 +46,6 @@ export class PatternsSystemListComponent implements OnInit {
   displayedColumns: string[] = ['open', 'name', 'description', 'created', 'updated'];
 
   ngOnInit(): void {
-    console.log('run');
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });
     this.dataSource.loadPaginated(query);
@@ -76,7 +75,6 @@ export class PatternsSystemListComponent implements OnInit {
   }
 
   sortSystems(sort: Sort) {
-    console.log('sort');
     this.lastSort = sort;
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });
