@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -17,13 +17,11 @@ export class ActiveSystemService {
 
   private systemDialogRef!: MatDialogRef<PatternsSystemEditComponent>;
 
-
-  constructor(
-    private systemService: SystemService,
-    private partService: SystemPartService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    private router: Router) { }
+  private systemService = inject(SystemService);
+  private partService = inject(SystemPartService);
+  private dialog = inject(MatDialog);
+  private snackbar = inject(MatSnackBar);
+  private router = inject(Router);
 
   get system(): PSystem {
     return this._system$.value as PSystem;
@@ -50,7 +48,7 @@ export class ActiveSystemService {
         if (this.systemDialogRef) {
           this.systemDialogRef.close({ status: 'updated', system: system });
         } else {
-          this.snackBar.open('System Updated!', undefined, { duration: 3000 });
+          this.snackbar.open('System Updated!', undefined, { duration: 3000 });
           this.dialog.closeAll()
         }
       });
@@ -59,15 +57,6 @@ export class ActiveSystemService {
   edit() {
     this.systemDialogRef = this.dialog.open(PatternsSystemEditComponent, { data: this.system });
   }
-
-  // editPart(part: PPart, index: number) {
-  //   this.partDialogRef = this.dialog.open(PatternsPartEditComponent, {
-  //     data: {
-  //       part: part,
-  //       index: index,
-  //     }
-  //   });
-  // }
 
   remove(id: string): Promise<void> {
     return this.systemService.remove(id)
@@ -87,7 +76,7 @@ export class ActiveSystemService {
     this.systemService.update(system)
       .then(() => {
         this.setActive(system);
-        this.snackBar.open('System Part Added!', undefined, { duration: 3000 })
+        this.snackbar.open('System Part Added!', undefined, { duration: 3000 })
       });
   }
 
@@ -103,7 +92,7 @@ export class ActiveSystemService {
       system.parts.splice(index, 1);
       this.systemService.update(system)
         .then(() => {
-          this.snackBar.open('System Part Removed!', undefined, { duration: 3000 })
+          this.snackbar.open('System Part Removed!', undefined, { duration: 3000 })
         });
     }
   }
@@ -114,7 +103,7 @@ export class ActiveSystemService {
     system.parts[index] = part as PPart;
     this.systemService.update(system)
       .then(() => {
-        this.snackBar.open('System Part Updated!', undefined, { duration: 3000 })
+        this.snackbar.open('System Part Updated!', undefined, { duration: 3000 })
       });
   }
 
