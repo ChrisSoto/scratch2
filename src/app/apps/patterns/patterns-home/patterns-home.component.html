@@ -1,8 +1,8 @@
 <mat-sidenav-container>
   <mat-drawer-container class="h-screen">
 
-    <mat-drawer #drawer [mode]="'side'">
-      <mat-toolbar class="end">
+    <mat-drawer class="w-[200px]" #drawer [mode]="'side'">
+      <mat-toolbar class="flex justify-end">
         
         <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon *ngIf="drawer.opened">close</mat-icon>
