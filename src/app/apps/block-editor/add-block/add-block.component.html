@@ -1,0 +1,33 @@
+
+<div cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+    <div *ngIf="!buttonMode" class="insert-data" fxLayout="row" fxLayoutAlign="center center" (click)="openEditor()" >
+        <div class="insert-data-line" fxLayout="row" fxLayoutAlign="center center" tabindex="2">
+            <span class="insert-button-holder"></span>
+        </div>
+    </div>
+    
+    
+    <div *ngIf="buttonMode" fxLayout="row" class="margin">
+        <span fxFlex></span>
+        <span>
+            <span class="mr-1">New Note</span>
+            <button mat-mini-fab color="primary" (click)="openEditor()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </span>
+    </div>
+</div>
+
+<ng-template 
+    cdkConnectedOverlay
+    cdkConnectedOverlayHasBackdrop
+    [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
+    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="editorOpen$ | async">
+
+    <div class="edit-buttons mat-elevation-z3">
+        <block-type-menu (addBlockEditorChange)="addBlock($event)"></block-type-menu>
+    </div>
+
+</ng-template>

@@ -1,0 +1,6 @@
+<be-block-title (titleChange)="titleChange.emit($event)" [title]="blockGroup.title"></be-block-title>
+<ng-container *ngFor="let block of blockGroup.blocks; let index = index;" >
+    <be-textarea-block (updateChange)="updateChange.emit($event)" (removeChange)="removeChange.emit($event)" [block]="block"></be-textarea-block>
+    <be-add-block (addBlockChange)="addChange.emit($event)" [index]="index"></be-add-block>
+</ng-container>
+<be-add-block *ngIf="!blockGroup?.blocks?.length" (addBlockChange)="addChange.emit($event)" [index]="0"></be-add-block>
