@@ -5,11 +5,16 @@ import { PatternsSystemListComponent } from './components/systems/system-list/sy
 import { PatternsSystemEditComponent } from './components/systems/system-edit/patterns-system-edit.component';
 import { PatternsSystemViewComponent } from './components/systems/system-view/patterns-system-view.component';
 import { PatternsNoteEditComponent } from './components/notes/note-edit/patterns-note-edit.component';
+import { PatternsPartListComponent } from './components/parts/part-list/part-list.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 export const PatternsRouting: Routes = [
   {
     path: '',
     component: PatternsHomeComponent,
+    providers: [
+      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '350px' } }
+    ],
     children: [
       {
         path: 'new',
@@ -26,6 +31,10 @@ export const PatternsRouting: Routes = [
       {
         path: 'notes/:id',
         component: PatternsNoteEditComponent,
+      },
+      {
+        path: 'parts',
+        component: PatternsPartListComponent,
       }
     ]
   }
