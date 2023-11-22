@@ -6,10 +6,10 @@ import { PPart, PSystem } from '../model/models.interface';
 import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { PaginatedCollection } from 'src/app/shared/interface/pagination.model';
 import { DatabaseService } from 'src/app/shared/services/database.service';
-import { SystemService } from './system.service';
+import { PatternSystemService } from './pattern-system.service';
 
 @Injectable()
-export class SystemPartService {
+export class PatternSystemPartService {
 
   // I need to add each part as it's own because
   //    I want to resuse them
@@ -18,7 +18,7 @@ export class SystemPartService {
 
   path = 'p_parts';
 
-  private systemService = inject(SystemService);
+  private systemService = inject(PatternSystemService);
   private database = inject(DatabaseService);
   private sortToQuery = inject(SortToQueryConstraintsService);
 

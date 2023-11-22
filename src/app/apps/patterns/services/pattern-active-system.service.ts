@@ -2,26 +2,24 @@
 import { Injectable, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { PPart, PSystem, SystemDialogClose } from '../model/models.interface';
-import { SystemPartService } from './system-part.service';
-import { SystemService } from './system.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { PPart, PSystem } from '../model/models.interface';
+import { PatternSystemPartService } from './pattern-system-part.service';
+import { PatternSystemService } from './pattern-system.service';
 import { PatternsSystemEditComponent } from '../components/systems/system-edit/patterns-system-edit.component';
 
 @Injectable()
-export class ActiveSystemService {
+export class PatternActiveSystemService {
 
   public _system$: BehaviorSubject<PSystem | null> = new BehaviorSubject<PSystem | null>(null);
   public system$: Observable<PSystem | null> = this._system$.asObservable();
 
   private systemDialogRef!: MatDialogRef<PatternsSystemEditComponent>;
 
-  private systemService = inject(SystemService);
-  private partService = inject(SystemPartService);
+  private systemService = inject(PatternSystemService);
+  private partService = inject(PatternSystemPartService);
   private dialog = inject(MatDialog);
   private snackbar = inject(MatSnackBar);
-  private router = inject(Router);
 
   get system(): PSystem {
     return this._system$.value as PSystem;

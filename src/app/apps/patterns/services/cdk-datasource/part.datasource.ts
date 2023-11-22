@@ -3,39 +3,39 @@ import { Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { BehaviorSubject, Observable, take } from 'rxjs';
-import { PSystem } from '../model/models.interface';
-import { SystemService } from './system.service';
+import { PPart } from '../../model/models.interface';
 import { GeneralQuery } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { PaginationService } from 'src/app/shared/services/pagination.service';
+import { PatternSystemPartService } from '../pattern-system-part.service';
 
 @Injectable()
-export class SystemDataSource extends DataSource<PSystem> {
+export class PartDataSource extends DataSource<PPart> {
 
-  systems$ = new BehaviorSubject<PSystem[]>([]);
+  parts$ = new BehaviorSubject<PPart[]>([]);
   isLoading$ = new BehaviorSubject<boolean>(false);
   nextPage$ = new BehaviorSubject<QueryDocumentSnapshot | null>(null);
   count$ = new BehaviorSubject<number>(0);
 
   constructor(
-    private systemService: SystemService,
+    private partService: PatternSystemPartService,
     private paginate: PaginationService,
   ) {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<PSystem[]> {
-    return this.systems$.asObservable();
+  connect(_collectionViewer: CollectionViewer): Observable<PPart[]> {
+    return this.parts$.asObservable();
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
-    this.systems$.complete();
+  disconnect(_collectionViewer: CollectionViewer): void {
+    this.parts$.complete();
   }
 
   load(sort?: GeneralQuery[]) {
     this.isLoading$.next(true);
-    this.systemService.list$(sort)
-      .subscribe((systems: PSystem[]) => {
-        this.systems$.next(systems);
+    this.partService.list$(sort)
+      .subscribe((parts: PPart[]) => {
+        this.parts$.next(parts);
         this.isLoading$.next(false);
       });
   }
@@ -48,12 +48,12 @@ export class SystemDataSource extends DataSource<PSystem> {
     }
 
     this.isLoading$.next(true);
-    this.systemService.listPaginated$(sort)
+    this.partService.listPaginated$(sort)
       .pipe(
         take(1)
       )
       .subscribe((res) => {
-        this.systems$.next(res.data);
+        this.parts$.next(res.data);
         this.paginate.savePage(res.next, pageEvent);
         this.isLoading$.next(false);
         this.count$.next(res.count);

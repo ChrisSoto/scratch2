@@ -8,7 +8,7 @@ import { PaginatedCollection } from 'src/app/shared/interface/pagination.model';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 
 @Injectable()
-export class SystemService {
+export class PatternSystemService {
 
   path = 'p_systems';
 
