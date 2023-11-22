@@ -5,16 +5,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'notes-system-part',
+  selector: 'patterns-data-system-part',
   standalone: true,
   imports: [
     MatCardModule,
     MatIconModule,
     MatButtonModule,
   ],
-  templateUrl: './notes-system-part.component.html',
-  styleUrls: ['./notes-system-part.component.scss']
+  templateUrl: './patterns-data-system-part.component.html',
+  styleUrls: ['./patterns-data-system-part.component.scss']
 })
-export class NotesSystemPartComponent {
+export class PatternsDataSystemPartComponent {
   @Input() part!: PPart;
 }

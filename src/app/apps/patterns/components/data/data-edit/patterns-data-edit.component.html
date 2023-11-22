@@ -1,0 +1,28 @@
+@if (active.system) {
+
+  <mat-card class="p-5 mt-5 mb-5">
+    <h1 class="text-2xl font-bold mb-2">{{ active.system.name }}</h1>
+    <p>{{ active.system.description }}</p>
+  </mat-card>
+
+    
+  <div class="flex flex-row">
+    <div class="text-2xl font-bold mr-5 mt-5 text-zinc-500">1</div>
+    <div class="flex flex-col w-full">
+      @for (part of active.system.parts; track $index) {
+        <patterns-data-system-part class="w-full" [part]="part" />
+      }
+    </div>
+  </div>
+
+  <div class="p-5 pr-0">
+    <div class="flex justify-end">
+      <common-fab-button [color]="'primary'" [text]="'Add'" (buttonChange)="addPart()"/>
+    </div>
+  </div>
+
+  @if (blockGroup) {
+    <be-block-group [blockGroup]="blockGroup" (addChange)="onAddChange($event)"/>
+  }
+
+}

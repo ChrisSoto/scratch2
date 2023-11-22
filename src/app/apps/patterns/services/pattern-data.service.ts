@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { DocumentReference, DocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { PSystem } from '../model/models.interface';
+import { PPart, PSystem } from '../model/models.interface';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
+import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
 
 @Injectable()
-export class PatternNotesService {
+export class PatternDataService {
 
   path = 'p_notes';
 
@@ -39,5 +40,22 @@ export class PatternNotesService {
 
   remove(id: string): Promise<void> {
     return this.database.delete(this.path + '/' + id);
+  }
+
+  addNoteToSystemPart(system: PSystem) {
+    // return;
+  }
+
+  partToBlockGroup(part: PPart): BlockGroup {
+    return {
+      title: part.name,
+      blocks: [
+        {
+          type: BlockTypes.TXT,
+          data: part.description,
+          order: 0
+        }
+      ]
+    }
   }
 }

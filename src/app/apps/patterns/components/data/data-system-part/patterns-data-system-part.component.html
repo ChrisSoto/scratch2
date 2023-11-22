@@ -13,8 +13,10 @@
     I should probably always move nested arrays to a new note
     I can experiment with this
   -->
-  <button mat-icon-button color="primary">
-    <mat-icon>add</mat-icon>
-  </button>
+  @if (part.generatorIds) {
+    <button class="mt-5" mat-icon-button color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  }
 </div>
 
