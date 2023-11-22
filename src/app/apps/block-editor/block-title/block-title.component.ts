@@ -1,7 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'be-block-title',
+  standalone: true,
+  imports: [
+    FormsModule,
+  ],
   templateUrl: './block-title.component.html',
   styleUrls: ['./block-title.component.scss']
 })

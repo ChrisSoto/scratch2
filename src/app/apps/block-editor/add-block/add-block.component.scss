@@ -4,21 +4,6 @@
     box-sizing: border-box;
 }
 
-.margin {
-    margin-bottom: 15px;
-    margin-top: 30px;
-    margin-right: 15px;
-}
-
-// .mat-tab-body-content {
-//     height: 100%;
-//     overflow: hidden;
-// }
-
-.headline {
-    // text-transform: capitalize;
-}
-
 .remove-block {
     cursor: pointer;
     margin-top: 5px;
@@ -26,44 +11,23 @@
     color: rgb(233, 86, 86);
 }
 
-.insert-data {
-    cursor: pointer;
-    position: relative;
-    height: 20px;
+.add-block-wrapper {
+    .add-block-plus {
+        visibility: hidden;
+    }
     &:hover {
-        .insert-data-line {
-            outline: none;
-            border-bottom: 3px dashed rgb(198, 198, 198);
+        .add-block-dashed-line {
+            border-bottom-color: rgb(116, 109, 109);
         }
-        .insert-button-holder {
+        .add-block-plus {
             visibility: visible;
+            top: -7px;
+            &:after {
+                position: relative;
+                left: 8px;
+            }
         }
     }
-}
-
-.insert-button-holder {
-    visibility: hidden;
-    width: 19px;
-    height: 19px;
-    border-radius: 10px;
-    position: relative;
-    top: 2px;
-    background-color: #7a7a7a;
-    color: white;
-    font-weight: bold;
-    &::after {
-        left: 6px;
-        bottom: -1px;
-        position: absolute;
-        content: '+';
-    }
-}
-
-.insert-data-line {
-    height: 5px;
-    width: 100%;
-    border-bottom: 2px dashed #eee;
-    outline: none;
 }
 
 .text-note {

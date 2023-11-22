@@ -1,24 +1,29 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { text } from '@fortawesome/fontawesome-svg-core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { BlockGroupService } from '../../block-group/block-group.service';
-import { Block, BlockTypes } from '../../models/block.model';
+import { Block } from '../../models/block.model';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'be-textarea-block',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './textarea-block.component.html',
   styleUrls: ['./textarea-block.component.scss']
 })
 export class TextareaBlockComponent implements OnInit {
   
   @ViewChild('textArea', { static: true })
-  textArea: ElementRef<HTMLTextAreaElement>;
-
-  // @ViewChild('textAreaDiv', { static: true })
-  // textAreaDiv: ElementRef<HTMLDivElement>;
+  textArea!: ElementRef<HTMLTextAreaElement>;
 
   @Input()
-  block: Block;
+  block!: Block;
 
   @Output()
   updateChange = new EventEmitter<Block>();
@@ -27,13 +32,11 @@ export class TextareaBlockComponent implements OnInit {
   removeChange = new EventEmitter<Block>();
 
   edit: boolean = false;
-  height: number = null;
+  height!: number;
   control = new UntypedFormControl();
 
-  constructor(
-    public fb: UntypedFormBuilder,
-    public groupService: BlockGroupService,
-  ) { }
+  fb = inject(UntypedFormBuilder);
+  groupService = inject(BlockGroupService);
 
   ngOnInit(): void {
     this.groupService.add(this.textArea);

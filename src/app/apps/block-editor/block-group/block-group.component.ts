@@ -1,9 +1,18 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Block, BlockGroup, BlockTypes } from '../models/block.model';
 import { BlockGroupService } from './block-group.service';
+import { BlockTitleComponent } from '../block-title/block-title.component';
+import { TextareaBlockComponent } from '../blocks/textarea-block/textarea-block.component';
+import { AddBlockComponent } from '../add-block/add-block.component';
 
 @Component({
   selector: 'be-block-group',
+  standalone: true,
+  imports: [
+    BlockTitleComponent,
+    TextareaBlockComponent,
+    AddBlockComponent,
+  ],
   templateUrl: './block-group.component.html',
   styleUrls: ['./block-group.component.scss'],
   host: {
@@ -13,7 +22,7 @@ import { BlockGroupService } from './block-group.service';
 export class BlockGroupComponent {
 
   @Input()
-  blockGroup: BlockGroup;
+  blockGroup!: BlockGroup;
 
   @Output()
   titleChange = new EventEmitter<string>();

@@ -1,21 +1,21 @@
 
 <div cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-    <div *ngIf="!buttonMode" class="insert-data" fxLayout="row" fxLayoutAlign="center center" (click)="openEditor()" >
-        <div class="insert-data-line" fxLayout="row" fxLayoutAlign="center center" tabindex="2">
-            <span class="insert-button-holder"></span>
+    
+    @if (!buttonMode) {
+        <div class="add-block-wrapper cursor-pointer relative h-5 py-2" (click)="editorActive.set(true)" >
+            <div class="add-block-dashed-line flex justify-center items-center border-b-2 border-zinc-300 border-dashed hover:border-b-2 hover:border-zinc-400 ">
+                <span class="add-block-plus after:content-['+'] font-bold absolute text-2xl text-zinc-600 bg-white rounded-full w-[30px]"></span>
+            </div>
         </div>
-    </div>
-    
-    
-    <div *ngIf="buttonMode" fxLayout="row" class="margin">
-        <span fxFlex></span>
-        <span>
-            <span class="mr-1">New Note</span>
-            <button mat-mini-fab color="primary" (click)="openEditor()">
+    } @else {
+        <div class="flex flex-row justify-between">
+            <span>New Note</span>
+            <button mat-mini-fab color="primary" (click)="editorActive.set(true)">
                 <mat-icon>add</mat-icon>
             </button>
-        </span>
-    </div>
+        </div>
+    }
+    
 </div>
 
 <ng-template 
@@ -24,7 +24,7 @@
     [cdkConnectedOverlayScrollStrategy]="scrollStrategy"
     [cdkConnectedOverlayPositions]="positions"
     [cdkConnectedOverlayOrigin]="trigger"
-    [cdkConnectedOverlayOpen]="editorOpen$ | async">
+    [cdkConnectedOverlayOpen]="editorActive()">
 
     <div class="edit-buttons mat-elevation-z3">
         <block-type-menu (addBlockEditorChange)="addBlock($event)"></block-type-menu>

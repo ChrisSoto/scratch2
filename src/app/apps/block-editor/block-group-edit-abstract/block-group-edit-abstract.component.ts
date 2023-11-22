@@ -5,6 +5,7 @@ import { BlockGroupEditService } from './block-group-edit.service';
 
 @Component({
   selector: 'app-block-group-edit-abstract',
+  standalone: true,
   templateUrl: './block-group-edit-abstract.component.html',
   styleUrls: ['./block-group-edit-abstract.component.scss']
 })

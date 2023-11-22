@@ -1,5 +1,4 @@
 import { ElementRef, Injectable } from '@angular/core';
-import { BlockEditorModule } from '../block-editor.module';
 
 @Injectable({
   providedIn: 'root'
