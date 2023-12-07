@@ -14,5 +14,5 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class ConfirmDeleteComponent {
   @Input() text: string = 'Are you sure you want to delete this?';
-  @Output() confirmChange = new EventEmitter<boolean>();
+  @Output() deleteChange = new EventEmitter<boolean>();
 }

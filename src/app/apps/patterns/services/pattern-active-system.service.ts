@@ -1,12 +1,9 @@
-
 import { Injectable, inject } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { PPart, PSystem } from '../model/models.interface';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { DialogReturn, DialogStatus, PPart, PSystem } from '../model/models.interface';
 import { PatternSystemPartService } from './pattern-system-part.service';
 import { PatternSystemService } from './pattern-system.service';
-import { PatternsSystemEditComponent } from '../components/systems/system-edit/patterns-system-edit.component';
 
 @Injectable()
 export class PatternActiveSystemService {
@@ -14,50 +11,66 @@ export class PatternActiveSystemService {
   public _system$: BehaviorSubject<PSystem | null> = new BehaviorSubject<PSystem | null>(null);
   public system$: Observable<PSystem | null> = this._system$.asObservable();
 
-  private systemDialogRef!: MatDialogRef<PatternsSystemEditComponent>;
-
   private systemService = inject(PatternSystemService);
   private partService = inject(PatternSystemPartService);
-  private dialog = inject(MatDialog);
+
   private snackbar = inject(MatSnackBar);
 
   get system(): PSystem {
     return this._system$.value as PSystem;
   }
 
-  setActive(system: PSystem, update?: boolean) {
-    if (update) {
-      this.update(system);
+  setActive(system: PSystem, updateDB?: boolean) {
+    if (updateDB) {
+      this.updateSystem(system);
     } else {
       this._system$.next(system);
     }
   }
 
+  //
+  //
+  // Systems
+  //
+
+  editSystem(value: DialogReturn<PSystem>): Promise<DialogReturn<PSystem>> {
+    if (!value) return this.nullDialog<PSystem>();
+    const system = value.data as PSystem;
+    if (value.status === 'create') {
+      return this.createSystem(system)
+        .then(_ => {
+          return this.dialogStatus<PSystem>(value);
+        })
+    } else if (value.status === 'update') {
+      return this.updateSystem(system)
+        .then(_ => {
+          return this.dialogStatus<PSystem>(value);
+        });
+    } else if (value.status === 'delete') {
+      return this.removeSystem(system.id)
+        .then(_ => {
+          return this.dialogStatus<PSystem>(value);
+        });
+    } else {
+      return this.nullDialog<PSystem>();
+    }
+  }
+
+  createSystem(system: Partial<PSystem>) {
+    return this.systemService.create(system);
+  }
+
+  updateSystem(system: Partial<PSystem>): Promise<void> {
+    return this.systemService.update(system)
+      .then(_ => this.setActive(system as PSystem, false));
+  }
+
+  removeSystem(id: string): Promise<void> {
+    return this.systemService.remove(id);
+  }
+
   clear() {
     this._system$.next(null);
-  }
-
-  update(system: Partial<PSystem>) {
-    this.systemService.update(system)
-      .then(() => {
-        this.setActive(system as PSystem);
-
-        // no good
-        if (this.systemDialogRef) {
-          this.systemDialogRef.close({ status: 'updated', system: system });
-        } else {
-          this.snackbar.open('System Updated!', undefined, { duration: 3000 });
-          this.dialog.closeAll()
-        }
-      });
-  }
-
-  edit() {
-    this.systemDialogRef = this.dialog.open(PatternsSystemEditComponent, { data: this.system });
-  }
-
-  remove(id: string): Promise<void> {
-    return this.systemService.remove(id)
   }
 
   //
@@ -65,17 +78,44 @@ export class PatternActiveSystemService {
   // Part Services
   //
 
-  addPart(part: Partial<PPart>) {
-    const system = this._system$.value;
-    if (!system) return;
-    // create parts array if it doesn't exist
-    if (!('parts' in system) || !system.parts) system.parts = [];
-    system.parts.push(part as PPart); // I don't know why I have to do this.
-    this.systemService.update(system)
-      .then(() => {
-        this.setActive(system);
-        this.snackbar.open('System Part Added!', undefined, { duration: 3000 })
-      });
+  editPart(value: DialogReturn<PPart>): Promise<DialogReturn<PPart>> {
+    if (!value) return this.nullDialog<PPart>();
+    const part = value.data as PPart;
+    if (value.status === 're-use') {
+      return this.addPart(part)
+        .then(_ => {
+          return this.dialogStatus<PPart>(value);
+        })
+    } else if (value.status === 'create') {
+      return this.createPart(part)
+        .then(_ => {
+          return this.dialogStatus<PPart>(value);
+        })
+    } else if (value.status === 'update') {
+      return this.updatePart(part)
+        .then(_ => {
+          return this.dialogStatus<PPart>(value);
+        });
+    } else if (value.status === 'delete') {
+      return this.removePart(part)
+        .then(_ => {
+          return this.dialogStatus<PPart>(value);
+        });
+    } else {
+      return this.nullDialog<PPart>();
+    }
+  }
+
+  createPart(part: Partial<PPart>) {
+    // create part then attatch it to the system
+    return this.partService.create(part)
+      .then(doc => {
+        return this.partService.read(doc.id);
+      })
+      .then(res => {
+        const part = Object.assign( { id: res.id }, res.data()) as PPart;
+        return this.addPart(part);
+      })
   }
 
   getPart() {
@@ -84,42 +124,71 @@ export class PatternActiveSystemService {
     return this.partService.newPart(system);
   }
 
-  removePart(index: number) {
-    const system = this._system$.value;
-    if (system && system.parts) {
-      system.parts.splice(index, 1);
-      this.systemService.update(system)
-        .then(() => {
-          this.snackbar.open('System Part Removed!', undefined, { duration: 3000 })
-        });
-    }
+  addPart(part: PPart) {
+    const system = this._system$.value as PSystem;
+    // attatch part to system
+    part.order = this.nextPartIndex();
+    system.parts.push(part);
+    return this.systemService.update(system);
   }
 
-  updatePart(part: Partial<PPart>, index: number) {
-    const system = this._system$.value;
-    if (!system || !system.parts) return;
-    system.parts[index] = part as PPart;
-    this.systemService.update(system)
-      .then(() => {
-        this.snackbar.open('System Part Updated!', undefined, { duration: 3000 })
+  updatePart(part: PPart): Promise<void> {
+    const system = this._system$.value as PSystem;
+    system.parts[part.order - 1] = part;
+    return this.systemService.update(system)
+      .then(_ => {
+        return this.setActive(system, false);
+      }, error => {
+        console.error(error);
+      });
+  }
+
+  removePart(part: PPart): Promise<void> {
+    const system = this._system$.value as PSystem;
+    // remove
+    system.parts.splice(part.order - 1, 1);
+    // re-order
+    this.orderParts();
+    // save
+    return this.systemService.update(system)
+      .then(_ => {
+        return this.setActive(system, false);
       });
   }
 
   //
   //
-  // dialog services
+  // other
   //
 
-  // closePartDialog(): MatDialogRef<PatternsPartEditComponent> | undefined {
-  //   if (!this.partDialogRef) return;
-  //   this.partDialogRef.close();
-  //   return this.partDialogRef;
-  // }
+  dialogStatus<T>(value: DialogReturn<T>): Promise<DialogReturn<T>> {
+    return new Promise(resolve => {
+      if (value.data) {
+        resolve(value);
+      } else {
+        resolve({ status: value.status, data: null });
+      }
+    });
+  }
 
-  closeSystemDialog(): MatDialogRef<PatternsSystemEditComponent> | undefined {
-    if (!this.systemDialogRef) return;
-    this.systemDialogRef.close();
-    return this.systemDialogRef;
+  orderParts(): void {
+    const system = this._system$.value as PSystem;
+    const parts = system.parts;
+    if (parts.length) {
+      parts.forEach((part, index) => {
+        part.order = index + 1;
+      });
+    }
+  }
+
+  nextPartIndex(): number {
+    const system = this._system$.value as PSystem;
+    return system.parts.length + 1;
+  }
+
+  // move this to a dialogReturn service
+  nullDialog<T>(): Promise<DialogReturn<T>> {
+    return new Promise((resolve) => resolve({ status: 'cancel', data: null }))
   }
 
 }

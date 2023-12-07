@@ -9,10 +9,11 @@ export class CustomErrorHandler implements ErrorHandler {
     private zone: NgZone) { }
 
   handleError(error: unknown): void {
+
     this.zone.run(() => {
       this.snack.open(error as string, 'close');
     });
-
     console.warn(error)
+
   }
 }

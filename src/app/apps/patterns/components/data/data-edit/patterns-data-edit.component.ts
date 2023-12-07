@@ -76,7 +76,7 @@ export class PatternsDataEditComponent {
         name: 'Test',
         description: 'Description',
         generatorIds: system.parts[0].generatorIds,
-        index: 0
+        order: 0
       });
     }
 

@@ -1,10 +1,10 @@
 import { Timestamp } from '@angular/fire/firestore';
 
-export interface Meta extends GenericMeta {
+export interface Meta extends DateMeta {
     id: string;
 }
 
-export interface GenericMeta {
+export interface DateMeta {
     created?: Timestamp;
     createdBy?: string;
     updated?: Timestamp;

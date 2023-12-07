@@ -1,17 +1,22 @@
+<h1 class="text-2xl font-bold mt-5">System list</h1>
+
 <mat-card class="p-5 mt-5 pb-0">
-  <table class="w-full" cdk-table [dataSource]="dataSource">
+  <table class="w-full" cdk-table [dataSource]="dataSource" [trackBy]="trackFn">
   
-    <ng-container cdkColumnDef="open">
-      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Notes</th>
+    <ng-container cdkColumnDef="new-pattern">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef></th>
       <td cdk-cell *cdkCellDef="let data">
-        <mat-icon class="material-symbols-outlined text-sky-500" (click)=" createNotes(data.id)">note_add</mat-icon>
+        <mat-icon class="cursor-pointer text-sky-500 hover:text-sky-600 text-4xl" (click)="createPattern(data.id)" fontIcon="texture_add" />
       </td>
     </ng-container>
   
     <ng-container cdkColumnDef="name">
       <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Name</th>
-      <td class="text-left text-sky-500 font-medium underline" cdk-cell *cdkCellDef="let data">
-        <a [routerLink]="['../edit/'+data.id]">{{ data.name }}</a>
+      <td class="text-left text-sky-500 hover:text-sky-600 hover:underline" cdk-cell *cdkCellDef="let data">
+        <a [routerLink]="['../edit/'+data.id]">
+          {{ data.name }}
+          <mat-icon class="text-sm material-symbols-outlined" fontIcon="edit"/>
+        </a>
       </td>
     </ng-container>
   
@@ -24,13 +29,13 @@
     <ng-container cdkColumnDef="created">
       <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Created
       <th>
-      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.created.toDate() | date: 'short' }}</td>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.created?.toDate() | date: 'shortDate' }}</td>
     </ng-container>
   
     <ng-container cdkColumnDef="updated">
       <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Updated
       <th>
-      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.updated?.toDate() | date: 'short' }}</td>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.updated?.toDate() | date: 'shortDate' }}</td>
     </ng-container>
   
     <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>

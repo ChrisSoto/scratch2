@@ -10,28 +10,28 @@
     </mat-select>
   </mat-form-field>
 
-  <div class="p-1 pb-0" [ngSwitch]="selectedCategory">
+  <div class="p-1 pb-0">
     @switch (selectedCategory) {
-      @case (categoryTypes.quantity) {
-        <pattern-cat-type-quantity *ngSwitchCase="categoryTypes.quantity" />
+      @case (Categories.QUANTITY) {
+        <pattern-cat-type-quantity />
       }
-      @case (categoryTypes.place) {
-        <pattern-cat-type-place *ngSwitchCase="categoryTypes.place" />
+      @case (Categories.PLACE) {
+        <pattern-cat-type-place />
       }
-      @case (categoryTypes.color) {
-        <pattern-cat-type-color *ngSwitchCase="categoryTypes.color" />
+      @case (Categories.COLOR) {
+        <pattern-cat-type-color />
       }
-      @case (categoryTypes.condition) {
-        <pattern-cat-type-condition *ngSwitchCase="categoryTypes.condition" />
+      @case (Categories.CONDITION) {
+        <pattern-cat-type-condition />
       }
-      @case (categoryTypes.time) {
-        <pattern-cat-type-time *ngSwitchCase="categoryTypes.time" />
+      @case (Categories.TIME) {
+        <pattern-cat-type-time />
       }
-      @case (categoryTypes.image) {
-        <pattern-cat-type-image *ngSwitchCase="categoryTypes.image" />
+      @case (Categories.IMAGE) {
+        <pattern-cat-type-image />
       }
       @default {
-        <div class="default" *ngSwitchDefault="">
+        <div class="default">
           Select a category!
         </div>
       }
@@ -40,9 +40,9 @@
 
 </div>
 
-  <mat-divider></mat-divider>
+<mat-divider></mat-divider>
 
-  <div class="add-category layout-row end p-5">
-    <common-fab-button [text]="'Add Category'" />
-  </div>
+<div class="add-category layout-row end p-5">
+  <common-fab-button [text]="'Add Category'" />
+</div>
 

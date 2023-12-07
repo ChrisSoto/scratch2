@@ -6,25 +6,32 @@
       <mat-tab-group>
 
         <mat-tab label="System">
-          <div class="m-5">
-            <div class="flex flex-row place-content-between">
-              <div class="info mb-5">
-                <h1 class="text-3xl font-bold">{{ system.name }}</h1>
-                <p class="prose">{{ system.description }}</p>
+          <content>
+            <div class="p-5">
+              <div class="flex flex-row place-content-between">
+                <div class="info mb-5">
+                  <h1 class="text-3xl font-bold">{{ system.name }}</h1>
+                  <p class="prose">{{ system.description }}</p>
+                </div>
+                <button mat-icon-button (click)="editSystem()">
+                  <mat-icon color="primary">edit</mat-icon>
+                </button>
               </div>
-              <button mat-icon-button (click)="active.edit()">
-                <mat-icon color="primary">edit</mat-icon>
-              </button>
             </div>
+
+            <mat-divider></mat-divider>
             
-            <div class="layout-row end p-1">
-              <common-fab-button [disabled]="showEditor" [color]="'primary'" [text]="'Add Part'" (buttonChange)="createPart(system)"/>
+            <div class="p-5">
+              <div class="layout-row end p-1">
+                <common-fab-button [disabled]="showEditor" [color]="'primary'" [text]="'Add Part'" (buttonChange)="addPart()"/>
+              </div>
             </div>
-          </div>
+          </content>
 
         </mat-tab>
 
         <mat-tab label="Categories">
+          <p class="p-5 pb-0">These categories will be made available to the parts for use.</p>
           <pattern-category-select></pattern-category-select>
         </mat-tab>
 
@@ -34,7 +41,7 @@
 
     <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
 
-      @for (part of system.parts; track part.id) {
+      @for (part of system.parts; track $index) {
         <patterns-part-view cdkDrag [part]="part" [isLast]="$last" [index]="$index"/>
       }
       

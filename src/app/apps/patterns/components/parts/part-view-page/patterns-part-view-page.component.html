@@ -1,0 +1,41 @@
+@if (part(); as part) {
+  <mat-card class="mt-5">
+    <div class="flex flex-row p-5">
+      <button mat-button (click)="back()">Back</button>
+      <span class="flex-1"></span>
+      <button mat-raised-button color="primary" (click)="editPart()">Edit</button>
+    </div>
+    <mat-divider/>
+    <div class="flex flex-row p-5">
+      <div class="flex flex-col basis-1/2">
+        <p class="font-bold text-4xl">{{ part.name }}</p>
+        <p class="text-lg">{{ part.description }}</p>
+      </div>
+      <div class="flex flex-row basis-1/2">
+        <div class="flex flex-col">
+          <p class="text-sm font-bold">Created By:</p>
+          @if (part.updated) {
+            <p class="text-sm font-bold">Updated By:</p>
+          }
+        </div>
+        <div class="flex flex-col pl-3">
+          @if(part.created && part.createdBy) {
+            <p class="text-sm">{{ part.createdBy | user | async }} - {{ part.created | firebaseDate | date: 'shortDate'  }}</p>
+          }
+          @if (part.updated && part.updatedBy) {
+            <p class="text-sm">{{ part.updatedBy | user | async  }} - {{ part.updated | firebaseDate | date: 'shortDate'  }}</p>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col p-5">
+      <p class="font-bold text-2xl">Generators:</p>
+      @for (generatorId of part.generatorIds; track $index) {
+        <p>{{ generatorId | system | async }}</p>
+      }
+    </div>
+  </mat-card>
+}
+
+
+

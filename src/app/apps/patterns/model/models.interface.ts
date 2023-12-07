@@ -1,10 +1,11 @@
-import { GenericMeta, Meta } from "src/app/shared/interface/meta.model";
+import { Meta } from "src/app/shared/interface/meta.model";
+import { BlockGroup } from "../../block-editor/models/block.model";
 
 export interface PSystem extends Meta {
   name: string;
   description: string;
+  parts: PPart[];
   categories?: PCategory[];
-  parts?: PPart[];
   parentId?: string; // this system is the child of another system
   systemId?: string;
 }
@@ -12,16 +13,20 @@ export interface PSystem extends Meta {
 export interface PPart extends Meta {
   name: string;
   description: string;
+  order: number;
+  generatorIds?: string[];
   relations?: PRelation[];
   categories?: PCategory[];
-  generatorIds: string[];
-  index?: number;
-  notes?: string[]
+  notes?: string;
+  data?: PData[]; // exists on patterns
 }
 
-export interface PNote extends Meta {
+export interface PData extends Meta {
   systemId: string;
+  parentId: string;
   partId: string;
+  order: number;
+  blocks?: BlockGroup[];
 }
 
 export interface PRelation extends Meta {
@@ -49,21 +54,21 @@ export enum PRelationType {
 }
 
 export enum PCategoryType {
-  quantity = 'QUANTITY',
-  place = 'PLACE',
-  time = 'TIME',
-  condition = 'CONDITION',
-  color = 'COLOR',
-  image = 'IMAGE',
+  QUANTITY = 'Quantity',
+  PLACE = 'Place',
+  TIME = 'Time',
+  CONDITION = 'Condition',
+  COLOR = 'Color',
+  IMAGE = 'Image',
 }
 
 // util
 
-export type DialogDataStatus = 'update' | 'delete' | 'cancel';
+export type DialogStatus = 're-use' | 'create' | 'update' | 'delete' | 'cancel';
 
-export interface SystemDialogClose {
-  status: DialogDataStatus;
-  data?: PSystem | PPart;
+export interface DialogReturn<T> {
+  status: DialogStatus;
+  data: T | null;
 }
 
 export interface GeneratorIdName {

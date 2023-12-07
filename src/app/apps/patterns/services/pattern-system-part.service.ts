@@ -74,7 +74,6 @@ export class PatternSystemPartService {
     return {
       name: '',
       description: '',
-      generatorIds: []
     };
   }
 }

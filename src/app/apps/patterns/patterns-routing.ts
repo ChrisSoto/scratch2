@@ -1,19 +1,22 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { PatternsHomeComponent } from './patterns-home/patterns-home.component';
 import { PatternsSystemListComponent } from './components/systems/system-list/system-list.component';
 import { PatternsSystemEditComponent } from './components/systems/system-edit/patterns-system-edit.component';
 import { PatternsSystemViewComponent } from './components/systems/system-view/patterns-system-view.component';
-import { PatternsNoteEditComponent } from './components/notes/note-edit/patterns-note-edit.component';
 import { PatternsPartListComponent } from './components/parts/part-list/part-list.component';
+import { PatternsDataEditComponent } from './components/data/data-edit/patterns-data-edit.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { PatternsPartViewPageComponent } from './components/parts/part-view-page/patterns-part-view-page.component';
 
 export const PatternsRouting: Routes = [
   {
     path: '',
     component: PatternsHomeComponent,
     providers: [
-      { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { width: '350px' } }
+      { 
+        provide: MAT_DIALOG_DEFAULT_OPTIONS, 
+        useValue: { width: '350px' }
+      },
     ],
     children: [
       {
@@ -21,7 +24,7 @@ export const PatternsRouting: Routes = [
         component: PatternsSystemEditComponent,
       },
       {
-        path: 'view',
+        path: 'view', // change to "systems"
         component: PatternsSystemListComponent,
       },
       {
@@ -29,12 +32,20 @@ export const PatternsRouting: Routes = [
         component: PatternsSystemViewComponent,
       },
       {
-        path: 'notes/:id',
-        component: PatternsNoteEditComponent,
+        path: 'patterns',
+        component: PatternsDataEditComponent,
+      },
+      {
+        path: 'patterns/:id',
+        component: PatternsDataEditComponent,
       },
       {
         path: 'parts',
         component: PatternsPartListComponent,
+      },
+      {
+        path: 'parts/:id',
+        component: PatternsPartViewPageComponent,
       }
     ]
   }

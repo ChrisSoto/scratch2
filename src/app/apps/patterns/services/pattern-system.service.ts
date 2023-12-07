@@ -17,6 +17,8 @@ export class PatternSystemService {
     private sortToQuery: SortToQueryConstraintsService) { }
 
   create(system: Partial<PSystem>): Promise<DocumentReference<any>> {
+    // add empty parts to system
+    system.parts = [];
     return this.database.add(this.path, system);
   }
 

@@ -1,12 +1,20 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { PatternFakerService } from '../services/pattern-faker.service';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CommonModule } from '@angular/common';
-import { SystemService } from '../services/system.service';
+import { PatternSystemService } from '../services/pattern-system.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { PatternsSystemEditComponent } from '../components/systems/system-edit/patterns-system-edit.component';
+import { PatternActiveSystemService } from '../services/pattern-active-system.service';
+import { PatternService } from '../services/pattern.service';
+import { PatternSystemPartService } from '../services/pattern-system-part.service';
+import { switchMap } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { PSystem } from '../model/models.interface';
+import { PatternDialogReturnService } from '../services/pattern-dialog-return.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -16,28 +24,57 @@ import { SystemService } from '../services/system.service';
   imports: [
     CommonModule,
     RouterModule,
+    MatDialogModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     MatSidenavModule,
   ],
   providers: [
-    PatternFakerService,
-    SystemService,
+    PatternActiveSystemService,
+    PatternSystemPartService,
+    PatternSystemService,
+    PatternService,
+    PatternDialogReturnService,
+    MatDialog,
   ]
 })
 export class PatternsHomeComponent {
 
+  private dialog = inject(MatDialog);
+
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private faker = inject(PatternFakerService);
+  private activatedRoute = inject(ActivatedRoute);
+
+  private systemService = inject(PatternSystemService);
+  private snackbar = inject(MatSnackBar)
 
   newSystem() {
-    this.router.navigate(['new'], { relativeTo: this.route });
+    this.dialog.open(PatternsSystemEditComponent)
+      .afterClosed()
+      .pipe(
+        switchMap(value => {
+          return this.systemService.create(value.data)
+            .then(_ => {
+              return {
+                status: 'create',
+                data: value.data as PSystem
+              }
+            })
+        })
+      )
+      .subscribe(value => {
+        this.snackbar.open(`System "${ value.data.name }" Created`, undefined, { duration: 3000 });
+      });
   }
 
   viewSystems() {
-    this.router.navigate(['view'], { relativeTo: this.route });
+    this.router.navigate(['view'], { relativeTo: this.activatedRoute });
+  }
+
+  viewParts() {
+    this.router.navigate(['parts'], { relativeTo: this.activatedRoute });
   }
 
 }

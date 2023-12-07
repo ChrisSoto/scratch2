@@ -1,5 +1,3 @@
-
-
 @if (!deletePart()) {
   <div class="p-5">
 
@@ -8,7 +6,7 @@
     @if (status() === Status.REUSE) {
       
       <span class="text-lg font-bold">Select from existing parts:</span>
-      <pattern-part-list-select (partIdChange)="selectedPartId.set($event)"/>
+      <pattern-part-list-select (partChange)="onPartChange($event)" [part]="selectedPart()"/>
 
     } @else if (status() === Status.NEW || status() === Status.EDIT) {
 
@@ -46,10 +44,10 @@
 
       @if(status() === Status.REUSE) {
         <span>Or</span>
-        <button class="w-full my-5" color="primary" mat-raised-button (click)="status.set(Status.NEW)">Create New Part</button>
+        <button class="w-full my-5" mat-raised-button (click)="onCreateNewPart()">Create New Part</button>
       } @else if (status() === Status.NEW) {
         <span>Or</span>
-        <button class="w-full my-5" color="primary" mat-raised-button (click)="status.set(Status.REUSE)">Use Existing Part</button>
+        <button class="w-full my-5" mat-raised-button (click)="onUseExistingPart()">Use Existing Part</button>
       }
 
     </div>
@@ -67,17 +65,21 @@
       } @else if (status() === Status.NEW) {
 
         <button [disabled]="partForm.invalid" mat-raised-button color="primary"
-          (click)="onSave()">Create</button>
+          (click)="onCreate()">New Part</button>
 
       } @else if (status() === Status.REUSE) {
 
-        <button [disabled]="!selectedPartId().length" mat-raised-button color="primary"
-          (click)="onSave()">Create</button>
+        <button [disabled]="!selectedPart()" mat-raised-button
+          (click)="onCopy()">Copy</button>
+
+        <button [disabled]="!selectedPart()" mat-raised-button color="primary"
+          (click)="onCreate()">Re-Use Part</button>
+
       }
 
     </div>
 
   </div>
 } @else {
-  <pattern-confirm-delete (confirmChange)="onConfirmChange($event)" />
+  <pattern-confirm-delete (deleteChange)="onDeleteChange($event)" />
 }

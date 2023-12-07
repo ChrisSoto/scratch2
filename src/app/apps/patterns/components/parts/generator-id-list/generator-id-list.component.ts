@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { GeneratorIdName, PSystem } from '../../../model/models.interface';
-import { SystemService } from '../../../services/system.service';
+import { PatternSystemService } from '../../../services/pattern-system.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './generator-id-list.component.html',
   styleUrls: ['./generator-id-list.component.scss'],
   providers: [
+    PatternSystemService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
@@ -30,8 +31,7 @@ import { CommonModule } from '@angular/common';
 })
 export class GeneratorIdListComponent implements ControlValueAccessor, OnInit {
 
-  systemService = inject(SystemService);
-
+  systemService = inject(PatternSystemService);
   generatorIds: string[] = [];
   systemsList$ = new BehaviorSubject<PSystem[]>([]);
   namedIds$ = new BehaviorSubject<GeneratorIdName[]>([]);

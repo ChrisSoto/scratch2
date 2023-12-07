@@ -34,7 +34,7 @@ import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-b
   styleUrls: ['./category-select.component.scss']
 })
 export class CategorySelectComponent {
-  categoryTypes = PCategoryType;
+  Categories = PCategoryType;
   categories: string[] = Object.values(PCategoryType);
   selectedCategory!: string;
 }

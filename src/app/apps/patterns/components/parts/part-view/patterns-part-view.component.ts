@@ -1,11 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { PPart } from '../../../model/models.interface';
-import { ActiveSystemService } from '../../../services/active-system.service';
+import { Component, Input, inject, signal } from '@angular/core';
+import { DialogReturn, PPart } from '../../../model/models.interface';
+import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDivider, MatDividerModule } from '@angular/material/divider';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PatternsPartEditComponent } from '../part-edit/patterns-part-edit.component';
+import { switchMap } from 'rxjs';
+import { PatternsPartNoteEditComponent } from '../part-note-edit/patterns-part-note-edit.component';
 
 @Component({
   selector: 'patterns-part-view',
@@ -20,21 +22,36 @@ import { PatternsPartEditComponent } from '../part-edit/patterns-part-edit.compo
   styleUrls: ['./patterns-part-view.component.scss']
 })
 export class PatternsPartViewComponent {
+  @Input() id!: string;
   @Input() part!: PPart;
   @Input() isLast!: boolean;
   @Input() index!: number;
 
   private dialog = inject(MatDialog);
+  private active = inject(PatternActiveSystemService);
 
-  partDialogRef!: MatDialogRef<PatternsPartEditComponent>;
+  original = signal(false);
 
-  editPart(part: PPart, index: number) {
-    this.partDialogRef = this.dialog.open(PatternsPartEditComponent, {
-      data: {
-        part: part,
-        index: index,
-      }
-    });
+  addNote() {
+    this.dialog.open(PatternsPartNoteEditComponent, { data: this.part })
+      .afterClosed()
+      .pipe(
+        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.active.editPart(value))
+      )
+      .subscribe(value => {
+        console.log(value);
+      })
+  }
+
+  editPart() {
+    this.dialog.open(PatternsPartEditComponent, { data: this.part })
+      .afterClosed()
+      .pipe(
+        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.active.editPart(value))
+      )
+      .subscribe(value => {
+        console.log(value);
+      })
   }
 
 }

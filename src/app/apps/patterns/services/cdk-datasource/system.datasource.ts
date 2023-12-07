@@ -49,9 +49,6 @@ export class SystemDataSource extends DataSource<PSystem> {
 
     this.isLoading$.next(true);
     this.systemService.listPaginated$(sort)
-      .pipe(
-        take(1)
-      )
       .subscribe((res) => {
         this.systems$.next(res.data);
         this.paginate.savePage(res.next, pageEvent);

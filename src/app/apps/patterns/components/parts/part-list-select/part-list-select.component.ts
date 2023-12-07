@@ -1,11 +1,12 @@
-import { Output, Component, inject, signal, EventEmitter } from '@angular/core';
+import { Output, Component, inject, signal, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { SystemPartService } from '../../../services/system-part.service';
+import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
 import { PPart } from '../../../model/models.interface';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { PatternSystemService } from '../../../services/pattern-system.service';
 
 @Component({
   selector: 'pattern-part-list-select',
@@ -16,24 +17,33 @@ import { Observable } from 'rxjs';
     FormsModule,
     MatSelectModule,
   ],
+  providers: [
+    PatternSystemService,
+    PatternSystemPartService
+  ],
   templateUrl: './part-list-select.component.html',
   styleUrl: './part-list-select.component.scss'
 })
 export class PartListSelectComponent {
 
-  @Output() partIdChange = new EventEmitter<string>();
+  @Input() part!: PPart | null;
+  @Output() partChange = new EventEmitter<PPart>();
 
-  partService = inject(SystemPartService);
+  partService = inject(PatternSystemPartService);
   partList$!: Observable<PPart[]>;
 
-  selectedPart = signal('');
+  selectedPart = signal<PPart | null>(null);
 
   ngOnInit() {
-    this.partList$ = this.partService.list$([{field: 'created', name: 'orderBy', 'direction': 'desc'}]);
-  }
-
-  selectPart(partId: string) {
-    this.selectedPart.set(partId);
+    this.partList$ = this.partService.list$([{field: 'created', name: 'orderBy', 'direction': 'desc'}])
+      .pipe(
+        // was trying to get this to reapply the previous selected value, not working
+        tap(_ => {
+          if (this.part) {
+            this.selectedPart.set(this.part);
+          }
+        })
+      );
   }
 
 }

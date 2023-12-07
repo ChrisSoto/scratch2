@@ -9,10 +9,21 @@
       <div class="info">
         <h1 class="text-2xl font-bold">{{ part.name }}</h1>
         <p>{{ part.description }}</p>
+        
+        @if (part.notes) {
+          <p>{{ part.notes }}</p>
+        }
+        
       </div>
-      <button mat-icon-button (click)="editPart(part, index)">
-        <mat-icon color="primary">edit</mat-icon>
-      </button>
+      @if (!original()) {
+        <button mat-icon-button (click)="addNote()">
+          <mat-icon color="primary">edit_note</mat-icon>
+        </button>
+      } @else {
+        <button mat-icon-button (click)="editPart()">
+          <mat-icon color="primary">edit</mat-icon>
+        </button>
+      }
     </div>
   </div>
 </div>

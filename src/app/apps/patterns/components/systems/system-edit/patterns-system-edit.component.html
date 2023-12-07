@@ -1,7 +1,7 @@
-@if (!deleteSystem) {
+@if (!deleteSystem()) {
   <mat-card class="new-system p-5">
     <content>
-      <h1 class="text-2xl font-bold mb-5">{{ status }} System</h1>
+      <h1 class="text-2xl font-bold mb-5">{{ status() }} System</h1>
       <form class="flex flex-col" [formGroup]="systemForm">
         <mat-form-field appearance="fill">
           <mat-label>Name</mat-label>
@@ -26,23 +26,25 @@
           }
 
         </mat-form-field>
-        <div class="flex flex-row gap-2">
 
-          @if (status === 'Edit') {
-            <button *ngIf="status === 'Edit'" mat-button color="secondary" (click)="onCancel()">Cancel</button>
-            <span class="flex"></span>
-            <button *ngIf="status === 'Edit'" mat-raised-button color="warn" (click)="onDelete()">Delete</button>
-            <button *ngIf="status === 'Edit'" [disabled]="systemForm.valid && !systemForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
-          } @else if (status === 'New') {
-            <span class="flex"></span>
-            <button *ngIf="status === 'New'" [disabled]="systemForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
+        <div class="flex flex-row justify-between">
+
+          <button mat-button color="secondary" (click)="onCancel()">Cancel</button>
+          
+          @if (status() === Status.EDIT) {
+            <div class="flex gap-2">
+              <button mat-raised-button color="warn" (click)="deleteSystem.set(true)">Delete</button>
+              <button [disabled]="systemForm.valid && !systemForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+            </div>
+          } @else if (status() === Status.NEW) {
+            <button [disabled]="systemForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
           }
 
-          
         </div>
+
       </form>
     </content>
   </mat-card> 
 } @else {
-  <pattern-confirm-delete (confirmChange)="onConfirmChange($event)"/>
+  <pattern-confirm-delete (deleteChange)="onDeleteChange($event)"/>
 }
