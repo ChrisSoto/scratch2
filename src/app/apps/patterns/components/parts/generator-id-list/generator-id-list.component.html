@@ -1,7 +1,7 @@
 <mat-form-field appearance="fill" style="width: 100%;">
   <mat-label>Generator</mat-label>
   <mat-select placeholder="Generator" [ngModel]="generatorIds[0]" (ngModelChange)="addId($event)">
-    @for (system of systemsList$ | async; track system.id) {
+    @for (system of systemsList(); track system.id) {
       <mat-option [value]="system.id">
         {{ system.name }}
       </mat-option>
@@ -10,7 +10,7 @@
 </mat-form-field>
 
 <div class="current-ids">
-  @for (item of namedIds$ | async; track item.id;) {
+  @for (item of namedIds(); track item.id;) {
     <div class="generator-id flex flex-row place-content-between pb-1" [ngClass]="{ 'noPB': $last }">
       <span>{{ item.name }}</span>
       <button color="primary" mat-mini-fab (click)="removeId(item.id)">

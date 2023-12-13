@@ -1,6 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { GeneratorIdName, PSystem } from '../../../model/models.interface';
 import { PatternSystemService } from '../../../services/pattern-system.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,8 +32,9 @@ export class GeneratorIdListComponent implements ControlValueAccessor, OnInit {
 
   systemService = inject(PatternSystemService);
   generatorIds: string[] = [];
-  systemsList$ = new BehaviorSubject<PSystem[]>([]);
-  namedIds$ = new BehaviorSubject<GeneratorIdName[]>([]);
+  systemsList = signal<PSystem[]>([]);
+  namedIds = signal<GeneratorIdName[]>([]);
+
   touched = false;
 
   private systemList: PSystem[] = [];
@@ -70,7 +70,7 @@ export class GeneratorIdListComponent implements ControlValueAccessor, OnInit {
 
   filterSelectedGeneratorIds() {
     const list = this.systemList.filter(system => !this.isInList(system));
-    this.systemsList$.next(list);
+    this.systemsList.set(list);
   }
 
   isInList(system: PSystem) {
@@ -93,14 +93,14 @@ export class GeneratorIdListComponent implements ControlValueAccessor, OnInit {
       // hack because I couldn't figure out a way to filter null values
     }).filter(d => d.name !== '');
 
-    this.namedIds$.next(namedList);
+    this.namedIds.set(namedList);
   }
 
   writeValue(generatorIds: string[]): void {
     this.generatorIds = generatorIds;
   }
 
-  onChange = (generatedIds: string[]) => { };
+  onChange = (_generatedIds: string[]) => { };
 
   registerOnChange(onChange: any): void {
     this.onChange = onChange;
