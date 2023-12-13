@@ -3,12 +3,13 @@ import { Sort } from '@angular/material/sort';
 import { DocumentReference, DocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { PPart, PSystem } from '../model/models.interface';
-import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
+import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { PatternSystemService } from './pattern-system.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PaginatedCollection } from 'src/app/shared/interface/pagination.model';
 
 @Injectable()
 export class PatternService {
@@ -35,7 +36,7 @@ export class PatternService {
         return this.create(system);
       })
       .then((res) => {
-        return this.router.navigate(['patterns/pattern/' + res.id]);
+        return this.router.navigate(['patterns/patterns/' + res.id]);
       })
       .then(() => {
         this.snack.open('Note System Created!', undefined, { duration: 3000 });
@@ -50,14 +51,28 @@ export class PatternService {
     return this.db.get(this.path + '/' + id);
   }
 
-  list$(sort?: Sort): Observable<PSystem[]> {
-    // convert sort to Firebase QueryConstraint
-    if (sort) {
-      const query = this.sortToQuery.convertFromSort(sort)
-      return this.db.list(this.path, ...this.sortToQuery.convert(query));
-    } else {
+  list$(sort?: GeneralQuery[]): Observable<PSystem[]> {
+    if (!sort) {
       return this.db.list(this.path);
     }
+    return this.db.list(this.path, ...this.sortToQuery.convert(sort));
+  }
+
+  // list$(sort?: Sort): Observable<PSystem[]> {
+  //   // convert sort to Firebase QueryConstraint
+  //   if (sort) {
+  //     const query = this.sortToQuery.convertFromSort(sort)
+  //     return this.db.list(this.path, ...this.sortToQuery.convert(query));
+  //   } else {
+  //     return this.db.list(this.path);
+  //   }
+  // }
+
+  listPaginated$(sort?: GeneralQuery[]): Observable<PaginatedCollection<PSystem>> {
+    if (!sort) {
+      return this.db.listPaginated(this.path);
+    }
+    return this.db.listPaginated(this.path, ...this.sortToQuery.convert(sort));
   }
 
   update(system: Partial<PSystem>) {

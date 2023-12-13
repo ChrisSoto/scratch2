@@ -1,0 +1,47 @@
+<h1 class="text-2xl font-bold mt-5">Pattern List</h1>
+
+<mat-card class="p-5 mt-5 pb-0">
+  <table class="w-full" cdk-table [dataSource]="dataSource" [trackBy]="trackFn">
+  
+    <ng-container cdkColumnDef="new-pattern">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef></th>
+      <td cdk-cell *cdkCellDef="let data">
+        <mat-icon class="cursor-pointer text-sky-500 hover:text-sky-600 text-4xl" (click)="newPattern()" fontIcon="texture_add" />
+      </td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="name">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Name</th>
+      <td class="text-left text-sky-500 font-medium underline" cdk-cell *cdkCellDef="let data">
+        <a [routerLink]="['../patterns/'+data.id]">
+          {{ data.name }}
+        </a>
+      </td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="description">
+      <th class="text-left" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Description
+      <th>
+      <td cdk-cell *cdkCellDef="let data">{{ data.description }}</td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="created">
+      <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Created
+      <th>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.created?.toDate() | date: 'shortDate' }}</td>
+    </ng-container>
+  
+    <ng-container cdkColumnDef="updated">
+      <th class="text-center" cdk-header-cell cdk-sort-header *cdkHeaderCellDef>Updated
+      <th>
+      <td class="text-center" cdk-cell *cdkCellDef="let data">{{ data.updated?.toDate() | date: 'shortDate' }}</td>
+    </ng-container>
+  
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+  
+  </table>
+  
+  <mat-paginator [hidePageSize]="true" [pageSize]="10" [length]="dataSource.count$ | async"
+    (page)="onPageChange($event)"></mat-paginator>
+</mat-card>

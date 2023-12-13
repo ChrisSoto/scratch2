@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogReturn, PPart } from '../../../model/models.interface';
 import { filter, switchMap } from 'rxjs';
-import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
+import { PatternPartService } from '../../../services/pattern-part.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,7 +35,7 @@ export class PatternsPartViewPageComponent {
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private partService = inject(PatternSystemPartService);
+  private partService = inject(PatternPartService);
   private dialogReturn = inject(PatternDialogReturnService);
   private dialog = inject(MatDialog);
   private snackbar = inject(MatSnackBar);

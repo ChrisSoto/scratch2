@@ -10,11 +10,13 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PatternsSystemEditComponent } from '../components/systems/system-edit/patterns-system-edit.component';
 import { PatternActiveSystemService } from '../services/pattern-active-system.service';
 import { PatternService } from '../services/pattern.service';
-import { PatternSystemPartService } from '../services/pattern-system-part.service';
+import { PatternPartService } from '../services/pattern-part.service';
 import { switchMap } from 'rxjs';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PSystem } from '../model/models.interface';
 import { PatternDialogReturnService } from '../services/pattern-dialog-return.service';
+import { PatternEditPartService } from '../services/pattern-edit-part.service';
+import { PatternEditSystemService } from '../services/pattern-edit-system.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -33,8 +35,10 @@ import { PatternDialogReturnService } from '../services/pattern-dialog-return.se
   ],
   providers: [
     PatternActiveSystemService,
-    PatternSystemPartService,
     PatternSystemService,
+    PatternEditSystemService,
+    PatternPartService,
+    PatternEditPartService,
     PatternService,
     PatternDialogReturnService,
     MatDialog,

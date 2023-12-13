@@ -3,39 +3,39 @@ import { Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import { BehaviorSubject, Observable, take } from 'rxjs';
-import { PPart } from '../../model/models.interface';
+import { PSystem } from '../../model/models.interface';
 import { GeneralQuery } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { PaginationService } from 'src/app/shared/services/pagination.service';
-import { PatternPartService } from '../pattern-part.service';
+import { PatternService } from '../pattern.service';
 
 @Injectable()
-export class PartDataSource extends DataSource<PPart> {
+export class PatternDataSource extends DataSource<PSystem> {
 
-  parts$ = new BehaviorSubject<PPart[]>([]);
+  patterns$ = new BehaviorSubject<PSystem[]>([]);
   isLoading$ = new BehaviorSubject<boolean>(false);
   nextPage$ = new BehaviorSubject<QueryDocumentSnapshot | null>(null);
   count$ = new BehaviorSubject<number>(0);
 
   constructor(
-    private partService: PatternPartService,
+    private patternService: PatternService,
     private paginate: PaginationService,
   ) {
     super();
   }
 
-  connect(_collectionViewer: CollectionViewer): Observable<PPart[]> {
-    return this.parts$.asObservable();
+  connect(_collectionViewer: CollectionViewer): Observable<PSystem[]> {
+    return this.patterns$.asObservable();
   }
 
   disconnect(_collectionViewer: CollectionViewer): void {
-    this.parts$.complete();
+    this.patterns$.complete();
   }
 
   load(sort?: GeneralQuery[]) {
     this.isLoading$.next(true);
-    this.partService.list$(sort)
-      .subscribe((parts: PPart[]) => {
-        this.parts$.next(parts);
+    this.patternService.list$(sort)
+      .subscribe((patterns: PSystem[]) => {
+        this.patterns$.next(patterns);
         this.isLoading$.next(false);
       });
   }
@@ -48,12 +48,12 @@ export class PartDataSource extends DataSource<PPart> {
     }
 
     this.isLoading$.next(true);
-    this.partService.listPaginated$(sort)
+    this.patternService.listPaginated$(sort)
       .pipe(
         take(1)
       )
       .subscribe((res) => {
-        this.parts$.next(res.data);
+        this.patterns$.next(res.data);
         this.paginate.savePage(res.next, pageEvent);
         this.isLoading$.next(false);
         this.count$.next(res.count);

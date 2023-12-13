@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginationService } from 'src/app/shared/services/pagination.service';
 import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
-import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
+import { PatternPartService } from '../../../services/pattern-part.service';
 import { Sort } from '@angular/material/sort';
 import { PartDataSource } from '../../../services/cdk-datasource/part.datasource';
 import { MatDividerModule } from '@angular/material/divider';
@@ -33,7 +33,7 @@ import { PatternDialogReturnService } from '../../../services/pattern-dialog-ret
     MatDividerModule,
   ],
   providers: [
-    PatternSystemPartService,
+    PatternPartService,
     PaginationService,
     SortToQueryConstraintsService,
   ],
@@ -43,7 +43,7 @@ import { PatternDialogReturnService } from '../../../services/pattern-dialog-ret
 export class PatternsPartListComponent {
 
   private dialog = inject(MatDialog);
-  private partService = inject(PatternSystemPartService);
+  private partService = inject(PatternPartService);
   private pagination = inject(PaginationService);
   private sortToQuery = inject(SortToQueryConstraintsService);
   private dialogReturn = inject(PatternDialogReturnService);

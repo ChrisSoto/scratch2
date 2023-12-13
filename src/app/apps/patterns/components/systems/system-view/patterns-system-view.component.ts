@@ -1,10 +1,9 @@
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, of, switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import { PSystem, PPart, DialogReturn } from '../../../model/models.interface';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
-import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
 import { PatternSystemService } from '../../../services/pattern-system.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,6 +17,8 @@ import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-b
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PatternsSystemEditComponent } from '../system-edit/patterns-system-edit.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PatternEditPartService } from '../../../services/pattern-edit-part.service';
+import { PatternEditSystemService } from '../../../services/pattern-edit-system.service';
 
 @Component({
   selector: 'patterns-system-view',
@@ -43,8 +44,10 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
   showEditor = false;
 
   active = inject(PatternActiveSystemService);
-  partService = inject(PatternSystemPartService);
-  dialog = inject(MatDialog);
+
+  private part = inject(PatternEditPartService);
+  private system = inject(PatternEditSystemService);
+  private dialog = inject(MatDialog);
   private activatedRouter = inject(ActivatedRoute);
   private router = inject(Router);
   private systemService = inject(PatternSystemService);
@@ -70,19 +73,19 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<PPart>) {
-    const system = this.active._system$.value;
+    const system = this.active.system(); // check for parts below
     if (!system || !system.parts) return;
     const parts = system.parts;
     moveItemInArray(parts, event.previousIndex, event.currentIndex);
     system.parts = parts;
-    this.active.setActive(system, true);
+    this.active.setActive(system);
   }
 
   addPart() {
     this.dialog.open(PatternsPartEditComponent, { data: null })
     .afterClosed()
     .pipe(
-      switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.active.editPart(value))
+      switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.part.edit(value))
     )
     .subscribe(value => {
       console.log(value);
@@ -90,10 +93,10 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
   }
 
   editSystem() {
-    this.dialog.open(PatternsSystemEditComponent, { data: this.active._system$.value })
+    this.dialog.open(PatternsSystemEditComponent, { data: this.active.system() })
       .afterClosed()
       .pipe(
-        switchMap((value: DialogReturn<PSystem>): PromiseLike<DialogReturn<PSystem>> => this.active.editSystem(value))
+        switchMap((value: DialogReturn<PSystem>): PromiseLike<DialogReturn<PSystem>> => this.system.edit(value))
       )
       .subscribe(value => {
         if (value.status === 'create') {

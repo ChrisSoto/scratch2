@@ -8,6 +8,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { PatternsPartEditComponent } from '../part-edit/patterns-part-edit.component';
 import { switchMap } from 'rxjs';
 import { PatternsPartNoteEditComponent } from '../part-note-edit/patterns-part-note-edit.component';
+import { PatternEditPartService } from '../../../services/pattern-edit-part.service';
 
 @Component({
   selector: 'patterns-part-view',
@@ -28,7 +29,7 @@ export class PatternsPartViewComponent {
   @Input() index!: number;
 
   private dialog = inject(MatDialog);
-  private active = inject(PatternActiveSystemService);
+  private partService = inject(PatternEditPartService);
 
   original = signal(false);
 
@@ -36,7 +37,7 @@ export class PatternsPartViewComponent {
     this.dialog.open(PatternsPartNoteEditComponent, { data: this.part })
       .afterClosed()
       .pipe(
-        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.active.editPart(value))
+        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.partService.edit(value))
       )
       .subscribe(value => {
         console.log(value);
@@ -47,7 +48,7 @@ export class PatternsPartViewComponent {
     this.dialog.open(PatternsPartEditComponent, { data: this.part })
       .afterClosed()
       .pipe(
-        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.active.editPart(value))
+        switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.partService.edit(value))
       )
       .subscribe(value => {
         console.log(value);

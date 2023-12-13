@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
+import { PatternPartService } from '../../../services/pattern-part.service';
 import { PPart } from '../../../model/models.interface';
 import { Observable, tap } from 'rxjs';
 import { PatternSystemService } from '../../../services/pattern-system.service';
@@ -19,7 +19,7 @@ import { PatternSystemService } from '../../../services/pattern-system.service';
   ],
   providers: [
     PatternSystemService,
-    PatternSystemPartService
+    PatternPartService
   ],
   templateUrl: './part-list-select.component.html',
   styleUrl: './part-list-select.component.scss'
@@ -29,7 +29,7 @@ export class PartListSelectComponent {
   @Input() part!: PPart | null;
   @Output() partChange = new EventEmitter<PPart>();
 
-  partService = inject(PatternSystemPartService);
+  partService = inject(PatternPartService);
   partList$!: Observable<PPart[]>;
 
   selectedPart = signal<PPart | null>(null);

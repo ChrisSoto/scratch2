@@ -9,7 +9,7 @@ import { DatabaseService } from 'src/app/shared/services/database.service';
 import { PatternSystemService } from './pattern-system.service';
 
 @Injectable()
-export class PatternSystemPartService {
+export class PatternPartService {
 
   // I need to add each part as it's own because
   //    I want to resuse them

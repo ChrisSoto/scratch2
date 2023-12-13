@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
 import { PSystem } from '../../../model/models.interface';
 import { CommonModule } from '@angular/common';
-import { PatternSystemPartService } from '../../../services/pattern-system-part.service';
+import { PatternPartService } from '../../../services/pattern-part.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
@@ -12,6 +12,8 @@ import { BlockGroupComponent } from 'src/app/apps/block-editor/block-group/block
 import { Block, BlockGroup } from 'src/app/apps/block-editor/models/block.model';
 import { PatternService } from '../../../services/pattern.service';
 import { PatternsDataSystemPartComponent } from '../data-system-part/patterns-data-system-part.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'patterns-data-edit',
@@ -20,14 +22,16 @@ import { PatternsDataSystemPartComponent } from '../data-system-part/patterns-da
     CommonModule,
     PatternsDataSystemPartComponent,
     MatDialogModule,
+    MatDividerModule,
     MatCardModule,
+    MatIconModule,
     CommonFabButtonComponent,
-    BlockGroupComponent
+    BlockGroupComponent,
   ],
   providers: [
     PatternActiveSystemService,
     PatternService,
-    PatternSystemPartService,
+    PatternPartService,
   ],
   templateUrl: './patterns-data-edit.component.html',
   styleUrls: ['./patterns-data-edit.component.scss']
@@ -59,27 +63,10 @@ export class PatternsDataEditComponent {
   }
 
   onAddChange(block: Block) {
-    // add this to the notes property
-    const system = this.active._system$.value as PSystem;
-    const updatedSystem = this.patternService.addNoteToSystemPart(system);
-    this.active._system$.next(system);
+    console.log(block);
   }
 
-  addPart() {
-    const system = this.active._system$.getValue() as PSystem;
+  onGenerationChange() {
     
-    if (!Array.isArray(system.parts)) {
-      system.parts = [];
-    } else {
-      system.parts.push({
-        id: '',
-        name: 'Test',
-        description: 'Description',
-        generatorIds: system.parts[0].generatorIds,
-        order: 0
-      });
-    }
-
-    this.active._system$.next(system);
-  } 
+  }
 }
