@@ -7,6 +7,7 @@ import { PatternsPartListComponent } from './components/parts/part-list/part-lis
 import { PatternsDataEditComponent } from './components/data/data-edit/patterns-data-edit.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { PatternsPartViewPageComponent } from './components/parts/part-view-page/patterns-part-view-page.component';
+import { PatternsDataListComponent } from './components/data/patterns-data-list/patterns-data-list.component';
 
 export const PatternsRouting: Routes = [
   {
@@ -33,7 +34,7 @@ export const PatternsRouting: Routes = [
       },
       {
         path: 'patterns',
-        component: PatternsDataEditComponent,
+        component: PatternsDataListComponent,
       },
       {
         path: 'patterns/:id',
