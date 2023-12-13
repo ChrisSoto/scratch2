@@ -1,0 +1,11 @@
+<div class="flex flex-row justify-between justify-items-center">
+
+    <textarea [hidden]="!edit" #textArea (blur)="onLeave(textArea)" cdkTextareaAutosize class="text-note" [formControl]="control" placeholder="Click to add text" (keydown.tab)="tabbed();false"></textarea>
+
+    <div class="flex flex-row justify-between justify-items-start" class="display" (click)="onEnter(textArea)">
+        <div class="markdown" *ngIf="!edit" #mark markdown ngPreserveWhitespaces>{{ control.value }}</div>
+    </div>
+
+    <mat-icon (click)="remove()" color="warn">delete</mat-icon>
+    
+</div>

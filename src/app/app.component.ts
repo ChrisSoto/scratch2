@@ -3,6 +3,7 @@ import { ScreenHeightService } from './shared/services/screen-height.service';
 import { AuthService } from './shared/user/auth.service';
 import { ToolbarService } from './shared/services/toolbar.service';
 import { DevelopmentService } from './shared/services/development.service';
+import { NgxMarkdownTailwindService } from './shared/services/ngx-markdown-tailwind.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ export class AppComponent {
   public screenHeight = inject(ScreenHeightService);
   public dev = inject(DevelopmentService);
   public toolbar = inject(ToolbarService);
-  public auth = inject(AuthService);
+
+  private auth = inject(AuthService);
+  private markdownTailwind = inject(NgxMarkdownTailwindService);
 
   constructor() { }
 

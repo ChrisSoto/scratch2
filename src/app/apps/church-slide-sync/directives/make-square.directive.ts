@@ -29,7 +29,7 @@ export class MakeSquareDirective implements OnInit, AfterViewChecked {
     const height = parent.offsetHeight;
     // take smaller
     const smaller = width > height ? height : width;
-    this.renderer.setStyle(this.domElement, 'width', `${smaller * 0.9}px`);
+    this.renderer.setStyle(this.domElement, 'width', `${smaller * 1.2}px`);
     this.renderer.setStyle(this.domElement, 'height', `${smaller * 0.9}px`);
   }
 

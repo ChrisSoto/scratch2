@@ -10,5 +10,5 @@ import { PortfolioProject } from '../../services/portfolio-project.service';
   styleUrls: ['./project-summary.component.scss']
 })
 export class ProjectSummaryComponent {
-  @Input() project!: PortfolioProject;
+  @Input() project!: PortfolioProject | null;
 }

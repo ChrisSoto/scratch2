@@ -1,0 +1,33 @@
+<div class="pattern-part layout-row p-1">
+  <div class="dragger">
+    <span class="dragger-line"></span>
+    <span class="dragger-line"></span>
+    <span class="dragger-line"></span>
+  </div>
+  <div class="m-5 mt-0">
+    <div class="flex flex-row place-content-between">
+      <div class="info">
+        <h1 class="text-2xl font-bold">{{ part.name }}</h1>
+        <p>{{ part.description }}</p>
+        
+        @if (part.notes) {
+          <p>{{ part.notes }}</p>
+        }
+        
+      </div>
+      @if (!original()) {
+        <button mat-icon-button (click)="addNote()">
+          <mat-icon color="primary">edit_note</mat-icon>
+        </button>
+      } @else {
+        <button mat-icon-button (click)="editPart()">
+          <mat-icon color="primary">edit</mat-icon>
+        </button>
+      }
+    </div>
+  </div>
+</div>
+
+@if (!isLast) {
+  <mat-divider></mat-divider>
+}

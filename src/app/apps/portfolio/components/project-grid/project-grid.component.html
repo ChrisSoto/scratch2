@@ -1,6 +1,12 @@
 <div class="container m-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 place-items-stretch gap-4 h-full">
-  <div (click)="openProject(project)" *ngFor="let project of projects$ | async" class="tile bg-white hover:bg-slate-100 cursor-pointer transition-all border-4 border-sky-300 border-solid visited:border-sky-500">
-    <project-summary [project]="project"/>
-  </div>
+
+  @for(project of projects; track project.id) {
+    <div (click)="openProject(project)" class="tile bg-white hover:bg-slate-100 cursor-pointer transition-all border-4 hover:border-amber-600 border-amber-500 border-solid visited:border-sky-500">
+      <project-summary [project]="project"/>
+    </div>
+  } @empty {
+    Nothing to see here
+  }
+  
 </div>
 

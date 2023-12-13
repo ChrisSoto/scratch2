@@ -1,0 +1,48 @@
+<div class="p-5">
+  <mat-form-field class="pt-1" appearance="fill">
+    <mat-label>Categories</mat-label>
+    <mat-select [(ngModel)]="selectedCategory" name="category">
+      @for (category of categories; track $index) {
+        <mat-option [value]="category">
+          {{ category }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <div class="p-1 pb-0">
+    @switch (selectedCategory) {
+      @case (Categories.QUANTITY) {
+        <pattern-cat-type-quantity />
+      }
+      @case (Categories.PLACE) {
+        <pattern-cat-type-place />
+      }
+      @case (Categories.COLOR) {
+        <pattern-cat-type-color />
+      }
+      @case (Categories.CONDITION) {
+        <pattern-cat-type-condition />
+      }
+      @case (Categories.TIME) {
+        <pattern-cat-type-time />
+      }
+      @case (Categories.IMAGE) {
+        <pattern-cat-type-image />
+      }
+      @default {
+        <div class="default">
+          Select a category!
+        </div>
+      }
+    }
+  </div>
+
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="add-category layout-row end p-5">
+  <common-fab-button [text]="'Add Category'" />
+</div>
+

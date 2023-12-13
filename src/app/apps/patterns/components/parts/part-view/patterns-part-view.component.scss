@@ -1,0 +1,18 @@
+.pattern-part {
+  background-color: white;
+}
+
+.cdk-drag-placeholder {
+  box-shadow: 6px 6px 6px -3px rgba(0,0,0,0.5);
+}
+
+.dragger {
+  min-width: 20px;
+  cursor: move;
+  .dragger-line {
+    height: 100%;
+    border-left: 1px solid #bfbfbf;
+    margin-right: 3px;
+    display: inline-block;
+  }
+}

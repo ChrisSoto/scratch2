@@ -1,0 +1,10 @@
+<mat-form-field appearance="fill" style="width: 100%;">
+  <mat-label>Parts</mat-label>
+  <mat-select placeholder="Part List" [ngModel]="selectedPart()" (ngModelChange)="partChange.emit($event)">
+    @for (part of partList$ | async; track part.id) {
+      <mat-option [value]="part">
+        {{ part.name }}
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

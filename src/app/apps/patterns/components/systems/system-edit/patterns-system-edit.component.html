@@ -1,0 +1,50 @@
+@if (!deleteSystem()) {
+  <mat-card class="new-system p-5">
+    <content>
+      <h1 class="text-2xl font-bold mb-5">{{ status() }} System</h1>
+      <form class="flex flex-col" [formGroup]="systemForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput placeholder="Name" formControlName="name">
+          
+          @if (systemForm.get('name')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
+          
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput placeholder="Description" formControlName="description"></textarea>
+
+          @if (systemForm.get('description')?.hasError('required')) {
+            <mat-error>
+              This field is required
+            </mat-error>
+          }
+
+        </mat-form-field>
+
+        <div class="flex flex-row justify-between">
+
+          <button mat-button color="secondary" (click)="onCancel()">Cancel</button>
+          
+          @if (status() === Status.EDIT) {
+            <div class="flex gap-2">
+              <button mat-raised-button color="warn" (click)="deleteSystem.set(true)">Delete</button>
+              <button [disabled]="systemForm.valid && !systemForm.dirty" mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+            </div>
+          } @else if (status() === Status.NEW) {
+            <button [disabled]="systemForm.invalid" mat-raised-button color="primary" (click)="onSave()">Create</button>
+          }
+
+        </div>
+
+      </form>
+    </content>
+  </mat-card> 
+} @else {
+  <pattern-confirm-delete (deleteChange)="onDeleteChange($event)"/>
+}

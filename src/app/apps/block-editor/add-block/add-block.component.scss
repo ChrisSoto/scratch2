@@ -1,0 +1,46 @@
+.edit-buttons {
+    background-color: white;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.remove-block {
+    cursor: pointer;
+    margin-top: 5px;
+    margin-left: 10px;
+    color: rgb(233, 86, 86);
+}
+
+.add-block-wrapper {
+    .add-block-plus {
+        visibility: hidden;
+    }
+    &:hover {
+        .add-block-dashed-line {
+            border-bottom-color: rgb(116, 109, 109);
+        }
+        .add-block-plus {
+            visibility: visible;
+            top: -7px;
+            &:after {
+                position: relative;
+                left: 8px;
+            }
+        }
+    }
+}
+
+.text-note {
+    outline: none;
+}
+
+.ZZZZZZZ {
+    width: 100%;
+    .mat-menu-content {
+        flex-direction: row;
+        box-sizing: border-box;
+        display: flex;
+        place-content: center space-around;
+        align-items: center;
+    }
+}

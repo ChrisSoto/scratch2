@@ -1,0 +1,30 @@
+textarea {
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    width: 100%;
+    outline: 1px solid transparent;
+    overflow-wrap: break-spaces;
+    vertical-align: top;
+    background-color: transparent;
+    border: none;
+    resize: none;
+}
+
+.markdown, .text-area {
+    display: block;
+}
+
+.markdown {
+    display: block;
+}
+
+.text-area {
+    display: block;
+}
+
+.trash {
+    margin-top: 10px;
+}

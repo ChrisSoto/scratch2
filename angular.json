@@ -34,7 +34,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/marked/marked.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -67,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "scratch2:build:production"
+              "buildTarget": "scratch2:build:production"
             },
             "development": {
-              "browserTarget": "scratch2:build:development"
+              "buildTarget": "scratch2:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "scratch2:build"
+            "buildTarget": "scratch2:build"
           }
         },
         "test": {
@@ -104,6 +106,6 @@
     }
   },
   "cli": {
-    "analytics": "e35950ec-ff72-4751-adb0-fb827a561259"
+    "analytics": "66b03295-84a0-4821-9d03-f9c0ba027428"
   }
 }

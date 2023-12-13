@@ -1,6 +1,11 @@
 import { NgModule, inject } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes, withComponentInputBinding } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { UserRouteGuard } from './shared/user/route.guard';
+
+import { PortfolioProjectService } from './apps/portfolio/services/portfolio-project.service';
+import { PortfolioNavService } from './apps/portfolio/services/project-navigation.service';
+import { AuthService } from './shared/user/auth.service';
+import { UserService } from './shared/user/user.service';
 
 export const AppRoutes: Routes = [
   {
@@ -12,13 +17,20 @@ export const AppRoutes: Routes = [
     path: 'login',
     title: 'Login',
     loadComponent: () => import('./shared/user/login/login.component').then(c => c.LoginComponent),
-
   },
   {
     path: 'register',
     title: 'Register',
     loadComponent: () => import('./shared/user/register/register.component').then(c => c.RegisterComponent),
-
+  },
+  {
+    path: 'portfolio',
+    title: 'Chris Grimm\'s Portfolio',
+    loadChildren: () => import('./apps/portfolio/portfolio.routing').then(r => r.PortfolioRouting),
+    providers: [
+      PortfolioProjectService,
+      PortfolioNavService,
+    ],
   },
   //
   //
@@ -26,6 +38,9 @@ export const AppRoutes: Routes = [
   //
   {
     path: '',
+    providers: [
+      AuthService
+    ],
     canActivate: [
       (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => inject(UserRouteGuard).canActivate(route, state)
     ],
@@ -36,14 +51,19 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./apps/church-slide-sync/church-slide-sync.routing').then(r => r.ChurchListRoutes)
       },
       {
-        path: 'portfolio',
-        title: 'Chris Grimm\'s Portfolio',
-        loadChildren: () => import('./apps/portfolio/portfolio.routing').then(r => r.PortfolioRouting)
-      },
-      {
         path: 'weldmac',
         title: 'WELDMAC - Roll Weld',
         loadChildren: () => import('./apps/weldmac/weldmac.routing').then(r => r.WeldmacRouting)
+      },
+      {
+        path: 'patterns',
+        title: 'Pattern Program',
+        loadChildren: () => import('./apps/patterns/patterns-routing').then(r => r.PatternsRouting)
+      },
+      {
+        path: 'life',
+        title: 'Life Game',
+        loadChildren: () => import('./apps/life-game/life.routing').then(r => r.LifeRouting)
       }
     ],
   }

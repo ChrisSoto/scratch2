@@ -1,0 +1,24 @@
+<div class="p-5">
+
+  <h2 class="text-2xl font-bold mb-5">{{ status() }} Note</h2>
+
+  <form class="flex flex-col" [formGroup]="noteForm">
+
+    <mat-form-field appearance="fill">
+      <textarea cdkTextareaAutosize formControlName="notes" matInput placeholder="Click to add note"></textarea>
+    </mat-form-field>
+
+  </form>
+
+  <div class="flex flex-row gap-2">
+
+    <button mat-button color="secondary" (click)="onCancel()">Cancel</button>
+
+    <span class="flex-1"></span>
+
+    <button [disabled]="!noteForm.valid" mat-raised-button color="primary"
+      (click)="onUpdate()">Add Note</button>
+
+  </div>
+
+</div>

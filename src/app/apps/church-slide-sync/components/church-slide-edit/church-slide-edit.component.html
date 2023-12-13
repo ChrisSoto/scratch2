@@ -1,5 +1,5 @@
 <div class="sticky top-0 bg-white z-10 shadow-md pl-2">
-  <h1 class="text-xl font-bold tracking-tight text-black sm:text-2xl mb-5">{{ active.title$| async }}</h1>
+  <h1 class="text-xl font-bold tracking-tight text-black sm:text-2xl mb-5">{{ active.title$ | async }}</h1>
 
   <div class="pr-4">
     <common-select [options]="slideOptions" (addOptionChange)="onAddOptionChange($event)"/>
@@ -7,7 +7,11 @@
 </div>
 
 <div class="slide-list" cdkDropList (cdkDropListDropped)="move($event)">
-  <div class="bg-white" *ngFor="let slide of active.slides$ | async; let i = index" cdkDrag>
-    <church-slide-type-edit [slide]="slide" [order]="i"/>
-  </div>
+  
+  @for (slide of active.slides$ | async; track $index) {
+    <div class="bg-white" cdkDrag>
+      <church-slide-type-edit [slide]="slide" [order]="$index"/>
+    </div>
+  }
+  
 </div>

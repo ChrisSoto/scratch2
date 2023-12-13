@@ -1,9 +1,5 @@
-<h1 class="text-center text-2xl p-2">
-  {{ project.name }}
-</h1>
+<img src="{{ project?.thumbnail }}" alt="">
 
-<img src="{{ project.thumbnail }}" alt="">
-
-<p class="p-2">
-  {{ project.shortDescription }}
+<p class="p-2 text-center text-slate-700">
+  {{ project?.shortDescription }}
 </p>

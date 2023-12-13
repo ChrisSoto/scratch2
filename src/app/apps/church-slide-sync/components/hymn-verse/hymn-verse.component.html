@@ -1,27 +1,32 @@
 
-<div *ngIf="order == 1" class="relative">
-  <span class="number absolute font-bold text-slate-500">{{ hymn?.number}}</span>
-  <h1 class="title font-bold text-slate-900">{{ hymn?.title }}</h1>
-</div>
+@if (order == 1) {
+  <div class="relative">
+    <span class="number absolute font-bold text-slate-500">{{ hymn?.number }}</span>
+    <h1 class="title font-bold text-slate-900">{{ hymn?.title }}</h1>
+  </div>
+}
+
 
 <div class="relative">
+
+  @if (order) {
+    <span class="order font-bold absolute text-slate-500">{{ order }}</span>
+  }
   
-  <span *ngIf="order" class="order font-bold absolute text-slate-500">{{ order }}</span>
+  @for (line of verse; track line) {
+    @if (line == '[Refrain]') {
 
-  <ng-container *ngFor="let line of verse">
-    <ng-container *ngIf="line == '[Refrain]' else default">
+      <div class="refrain border-l-8 border-slate-400 pl-4">        
+        
+        @for (line of refrain; track line) {
+          <p class="refrain-line" [innerHTML]="line | newLine: 40"></p>
+        }
 
-      <div class="refrain border-l-8 border-slate-400 pl-4">
-        <ng-container *ngFor="let line of refrain">
-          <p class="refrain-line" [innerHTML]="line | newLine: 35"></p>
-        </ng-container>
       </div>
-
-    </ng-container>
-    <ng-template #default>
-      <p class="verse-line" [innerHtml]="line | newLine : 30"></p>
-    </ng-template>
-  </ng-container>
-
+      
+    } @else {
+      <p class="verse-line" [innerHtml]="line | newLine : 38"></p>
+    }
+  }
 
 </div>

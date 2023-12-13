@@ -9,7 +9,7 @@ export class ScreenHeightService {
 
   fullClass = "h-full"; // tailwind
 
-  readonly fullScreen = signal('');
+  readonly fullScreen = signal('h-full');
 
   constructor() { }
 

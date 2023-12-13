@@ -1,17 +1,28 @@
-import { Component } from '@angular/core';
-import { CommonModule, NgTemplateOutlet } from '@angular/common';
-import { CdkStepperModule, CdkStepper } from '@angular/cdk/stepper';
+import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { PortfolioNavService } from '../../services/project-navigation.service';
+import { OrderByPipe } from 'src/app/shared/pipes/order-by.pipe';
 
 @Component({
   selector: 'project-stepper',
   standalone: true,
-  imports: [NgTemplateOutlet, CdkStepperModule, CommonModule],
-  providers: [{provide: CdkStepper, useExisting: ProjectStepper}],
+  imports: [
+    CommonModule,
+    OrderByPipe,
+  ],
   templateUrl: './project-stepper.component.html',
   styleUrls: ['./project-stepper.component.scss']
 })
-export class ProjectStepper extends CdkStepper {
+export class ProjectStepper {
+  @Input() steps!: any[];
+  @Output() stepChange = new EventEmitter<number>();
+
+  selectedIndex$ = inject(PortfolioNavService).selectedIndex$;
+  nav = inject(PortfolioNavService);
+
   selectStepByIndex(index: number): void {
-    this.selectedIndex = index;
+    this.stepChange.emit(index);
+    this.selectedIndex$.next(index);
   }
 }

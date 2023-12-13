@@ -1,0 +1,41 @@
+<mat-sidenav-container>
+  <mat-drawer-container class="h-screen">
+
+    <mat-drawer class="w-[200px]" #drawer [mode]="'side'">
+      <mat-toolbar class="flex justify-end">
+        
+        <button mat-icon-button (click)="drawer.toggle()">
+          <mat-icon *ngIf="drawer.opened">close</mat-icon>
+        </button>
+
+      </mat-toolbar>
+
+      <content class="flex flex-col">
+        <button class="m-1" mat-raised-button color="primary" (click)="newSystem()">New System</button>
+        <button class="m-1 mt-0" mat-raised-button (click)="viewSystems()">View Systems</button>
+        <button class="m-1 mt-0" mat-raised-button (click)="viewParts()">View Parts</button>
+      </content>
+
+    </mat-drawer>
+
+  <mat-drawer-content class="p-0 bg-zinc-200">
+
+      <mat-toolbar [color]="'primary'">
+        
+        @if (!drawer.opened) {
+          <button mat-icon-button (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        }
+        
+      </mat-toolbar>
+
+      <content class="flex justify-center items-center">
+        <div class="basis-full sm:basis-4/5 xl:basis-3/5">
+          <router-outlet></router-outlet>
+        </div>
+      </content>
+
+    </mat-drawer-content>
+  </mat-drawer-container>
+</mat-sidenav-container>
