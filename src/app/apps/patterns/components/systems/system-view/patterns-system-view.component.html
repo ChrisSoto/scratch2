@@ -19,10 +19,13 @@
               </div>
             </div>
 
-            <mat-divider></mat-divider>
+            <mat-divider/>
             
             <div class="p-5">
-              <div class="layout-row end p-1">
+              <div class="flex flex-row justify-between p-1">
+                <div class="flex flex-row">
+                  <mat-checkbox [ngModel]="system.isSubSystem" (ngModelChange)="onSubSystemChange($event)">Sub-system</mat-checkbox>
+                </div>
                 <common-fab-button [disabled]="showEditor" [color]="'primary'" [text]="'Add Part'" (buttonChange)="addPart()"/>
               </div>
             </div>
@@ -32,7 +35,7 @@
 
         <mat-tab label="Categories">
           <p class="p-5 pb-0">These categories will be made available to the parts for use.</p>
-          <pattern-category-select></pattern-category-select>
+          <pattern-category-select/>
         </mat-tab>
 
       </mat-tab-group>
@@ -42,7 +45,7 @@
     <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
 
       @for (part of system.parts; track $index) {
-        <patterns-part-view cdkDrag [part]="part" [isLast]="$last" [index]="$index"/>
+        <patterns-part-view cdkDrag (removeChange)="onRemoveChange($event)" [part]="part" [isLast]="$last" [index]="$index"/>
       }
       
     </mat-card>

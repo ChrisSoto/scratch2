@@ -59,7 +59,11 @@ export class SortToQueryConstraintsService {
 
     switch (sort.name) {
       case ('where'):
-        return sort.field && sort.operator ? where(sort.field, sort.operator, sort.value) : this.defaultQuery();
+        if (sort.field && sort.operator) {
+          return where(sort.field, sort.operator, sort.value);
+        } else {
+          return this.defaultQuery();
+        }
       case ('orderBy'):
         return sort.field && sort.direction ? orderBy(sort.field, sort.direction) : this.defaultQuery();
       case ('limit'):

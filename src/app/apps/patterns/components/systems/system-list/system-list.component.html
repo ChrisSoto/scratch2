@@ -1,6 +1,15 @@
 <h1 class="text-2xl font-bold mt-5">System list</h1>
 
+<div class="flex flex-row justify-end">
+  <mat-checkbox 
+    [ngModel]="showSubSystems()" 
+    (ngModelChange)="onSubSystemChange($event)">
+      Show Subsystems
+  </mat-checkbox>
+</div>
+
 <mat-card class="p-5 mt-5 pb-0">
+
   <table class="w-full" cdk-table [dataSource]="dataSource" [trackBy]="trackFn">
   
     <ng-container cdkColumnDef="new-pattern">

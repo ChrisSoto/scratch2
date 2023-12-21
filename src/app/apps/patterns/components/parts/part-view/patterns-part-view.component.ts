@@ -1,6 +1,5 @@
-import { Component, Input, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { DialogReturn, PPart } from '../../../model/models.interface';
-import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
@@ -27,6 +26,8 @@ export class PatternsPartViewComponent {
   @Input() part!: PPart;
   @Input() isLast!: boolean;
   @Input() index!: number;
+
+  @Output() removeChange = new EventEmitter<number>();
 
   private dialog = inject(MatDialog);
   private partService = inject(PatternEditPartService);

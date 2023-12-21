@@ -9,23 +9,34 @@
   
     <mat-divider/>
 
-    <div class="flex flex-row p-5">
-      <div class="flex flex-col w-full">
+    <div class="flex flex-col p-5">
+      <h2 class="text-2xl font-bold pb-5">Parts:</h2>
+      <div class="flex flex-col w-full pl-5">
         @for (part of system.parts; track $index) {
-          <patterns-data-system-part class="w-full" [part]="part" />
+          <patterns-data-system-part class="w-full" [part]="part" [view]="'simple'"/>
         }
       </div>
     </div>
 
   </mat-card>
 
-  <div class="p-5">
-    @if (blockGroup) {
-      <div class="flex flex-row items-center">
-        <be-block-group class="flex-1 pr-5" [blockGroup]="blockGroup" (addChange)="onAddChange($event)"/>
-        <common-fab-button [icon]="'air'" (buttonChange)="onGenerationChange()"></common-fab-button>
-      </div>
-    }
-  </div>
+  @if (patternData(); as pdata) {
+    <div class="p-5 pl-0 pr-0">
+        @for (d of pdata; track $index) {
+          <div  [ngClass]="{ 'border-solid border-4 border-l-sky-600 pl-3': true }" class="flex flex-row items-center">
+
+            <be-block-group 
+              class="flex-1 pr-5" 
+              [blockGroup]="d.data"
+              (addChange)="onAddChange($event, $index, d)"
+              (titleChange)="onTitleChange($event, $index, d)"
+              (updateChange)="onUpdateChange($event, $index, d)"
+              (removeChange)="onRemoveChange($event, d)"/>
+
+            <common-fab-button [icon]="'air'" (buttonChange)="onGenerationChange()"/>
+          </div>
+        }
+    </div>
+  }
 
 }

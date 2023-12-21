@@ -8,6 +8,8 @@ export interface PSystem extends Meta {
   categories?: PCategory[];
   parentId?: string; // this system is the child of another system
   systemId?: string;
+  hasData?: boolean;
+  isSubSystem?: boolean;
 }
 
 export interface PPart extends Meta {
@@ -18,28 +20,29 @@ export interface PPart extends Meta {
   relations?: PRelation[];
   categories?: PCategory[];
   notes?: string;
-  data?: PData[]; // exists on patterns
 }
 
 export interface PData extends Meta {
   systemId: string;
-  parentId: string;
   partId: string;
+  patternId: string;
+  parentId: string;
   order: number;
-  blocks?: BlockGroup[];
+  depth: number;
+  data: BlockGroup;
 }
 
 export interface PRelation extends Meta {
   name: string;
   description: string;
-  relation_type: PRelationType;
+  relationType: PRelationType;
 }
 
 export interface PCategory extends Meta {
   name: string;
   description?: string;
   suffix?: string;
-  category_type: PCategoryType;
+  categoryType: PCategoryType;
 }
 
 export enum EditStatus {

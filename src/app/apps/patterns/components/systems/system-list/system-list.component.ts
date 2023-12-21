@@ -1,10 +1,10 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { SystemDataSource } from '../../../services/cdk-datasource/system.datasource';
 import { PatternSystemService } from '../../../services/pattern-system.service';
 import { PaginationService } from 'src/app/shared/services/pagination.service';
-import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
+import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { CdkTableModule } from '@angular/cdk/table';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { PatternDataService } from '../../../services/pattern-data.service';
 import { MatCardModule } from '@angular/material/card';
 import { PatternService } from '../../../services/pattern.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'patterns-systems-list',
@@ -22,6 +24,8 @@ import { PatternService } from '../../../services/pattern.service';
     CommonModule,
     MatCardModule,
     CdkTableModule,
+    MatCheckboxModule,
+    FormsModule,
     RouterModule,
     MatIconModule,
     MatPaginatorModule,
@@ -38,51 +42,50 @@ export class PatternsSystemListComponent implements OnInit {
   sortToQuery = inject(SortToQueryConstraintsService);
   patternService = inject(PatternService);
 
+  showSubSystems = signal<boolean>(false);
+
   dataSource = new SystemDataSource(this.systemService, this.pagination);
   lastSort: Sort = { active: 'created', direction: 'desc' };
   limit: number = 10;
   displayedColumns: string[] = ['new-pattern', 'name', 'description', 'created', 'updated'];
 
   ngOnInit(): void {
-    const query = this.sortToQuery.convertFromSort(this.lastSort);
-    query.push({ name: 'limit', limit: this.limit });
-    this.dataSource.loadPaginated(query);
+    this.dataSource.loadPaginated(this.createQuery());
   }
 
   onPageChange(pageEvent: PageEvent) {
-    const query = this.sortToQuery.convertFromSort(this.lastSort);
-    query.push({ name: 'limit', limit: this.limit });
-    this.dataSource.loadPaginated(query, pageEvent);
+    this.dataSource.loadPaginated(this.createQuery(), pageEvent);
   }
 
-  trackFn() {
+  onSubSystemChange(showSubSystems: boolean) {
+    this.showSubSystems.set(showSubSystems);
+    this.dataSource.loadPaginated(this.createQuery());
   }
 
-  nextPage() {
+  trackFn() {}
 
-  }
+  nextPage() {}
 
-  previousPage() {
+  previousPage() {}
 
-  }
+  firstPage() {}
 
-  firstPage() {
-
-  }
-
-  lastPage() {
-
-  }
+  lastPage() {}
 
   sortSystems(sort: Sort) {
     this.lastSort = sort;
-    const query = this.sortToQuery.convertFromSort(this.lastSort);
-    query.push({ name: 'limit', limit: this.limit });
-    this.dataSource.loadPaginated(query);
+    this.dataSource.loadPaginated(this.createQuery());
   }
 
   createPattern(patternId: string) {
     this.patternService.createFromId(patternId);
+  }
+
+  createQuery(): GeneralQuery[] {
+    const query = this.sortToQuery.convertFromSort(this.lastSort);
+    query.push({ name: 'limit', limit: this.limit });
+    query.push({ name: 'where', field: 'isSubSystem', operator: '==', value: this.showSubSystems() });
+    return query;
   }
 
 }

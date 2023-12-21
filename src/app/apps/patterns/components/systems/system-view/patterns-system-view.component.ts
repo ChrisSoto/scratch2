@@ -19,15 +19,20 @@ import { PatternsSystemEditComponent } from '../system-edit/patterns-system-edit
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PatternEditPartService } from '../../../services/pattern-edit-part.service';
 import { PatternEditSystemService } from '../../../services/pattern-edit-system.service';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'patterns-system-view',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     MatCardModule,
     MatIconModule,
     MatTabsModule,
+    MatCheckboxModule,
     MatDividerModule,
     MatDialogModule,
     DragDropModule,
@@ -88,7 +93,17 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
       switchMap((value: DialogReturn<PPart>): PromiseLike<DialogReturn<PPart>> => this.part.edit(value))
     )
     .subscribe(value => {
-      console.log(value);
+      if (value.status === 'create') {
+        const system = value.data as PPart;
+        this.snackBar.open('New Part Created!', undefined, { duration: 3000 });
+      } else if (value.status === 'update') {
+        const system = value.data as PPart;
+        this.snackBar.open('Part Updated!', undefined, { duration: 3000 });
+      } else if (value.status === 'delete') {
+        this.snackBar.open('Part Deleted!', undefined, { duration: 3000 });
+      } else {
+        // cancel
+      }
     })
   }
 
@@ -113,6 +128,26 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
           // cancel
         }
       });
+  }
+
+  onSubSystemChange(checked: boolean) {
+    const system = this.active.system() as PSystem;
+    system.isSubSystem = checked;
+    this.system.edit({ status: 'update', data: system })
+      .then(_ => {
+        this.snackBar.open('System Updated!', undefined, { duration: 3000 });
+      });
+  }
+
+  onRemoveChange(index: number) {
+    if (index > -1) {
+      const system = this.active.system();
+      system?.parts.splice(index, 1);
+      this.system.edit({ status: 'update', data: system })
+        .then(val => {
+          this.snackBar.open('System Updated!', undefined, { duration: 3000 });
+        });
+    }
   }
 
   ngOnDestroy(): void {

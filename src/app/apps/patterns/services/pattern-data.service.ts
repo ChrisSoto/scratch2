@@ -1,49 +1,64 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { DocumentReference, DocumentSnapshot, DocumentData } from 'firebase/firestore';
+import { DocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { PPart, PSystem } from '../model/models.interface';
+import { PData, PPart, PSystem } from '../model/models.interface';
 import { DatabaseService } from 'src/app/shared/services/database.service';
-import { SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
+import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
 import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
 
 @Injectable()
 export class PatternDataService {
 
-  path = 'p_notes';
+  path = 'p_data';
 
-  constructor(
-    private database: DatabaseService,
-    private sortToQuery: SortToQueryConstraintsService) { }
+  private database = inject(DatabaseService);
+  private sortToQuery = inject(SortToQueryConstraintsService);
 
-  create(system: Partial<PSystem>): Promise<DocumentReference<any>> {
-    return this.database.add(this.path, system);
+  // get pattern id, attatch it to p_data
+  // System
+  //  Part
+  //    Data
+  //
+  
+  create(data: PData, index: number): Promise<void> {
+    data.id = this.database.createId();
+    data.order = index;
+    return this.database.set(`${this.path + '/' + data.id}`, data);
+  }
+
+  private createData(system: PSystem, blockGroup: BlockGroup, index: number): PData {
+    return {
+      id: this.database.createId(),
+      systemId: system.systemId as string,
+      patternId: system.id,
+      parentId: '',
+      partId: system.parts[index].id,
+      order: index,
+      depth: 0,
+      data: blockGroup
+    }
   }
 
   read(id: string): Promise<DocumentSnapshot<DocumentData>> {
     return this.database.get(this.path + '/' + id);
   }
 
-  list$(sort?: Sort): Observable<PSystem[]> {
+  list$(sort?: GeneralQuery[]): Observable<PData[]> {
     // convert sort to Firebase QueryConstraint
     if (sort) {
-      const query = this.sortToQuery.convertFromSort(sort)
-      return this.database.list(this.path, ...this.sortToQuery.convert(query));
+      return this.database.list(this.path, ...this.sortToQuery.convert(sort));
     } else {
       return this.database.list(this.path);
     }
   }
 
-  update(system: Partial<PSystem>) {
-    return this.database.update(this.path + '/' + system.id, system);
+  update(data: Partial<PData>) {
+    return this.database.update(this.path + '/' + data.id, data);
   }
 
   remove(id: string): Promise<void> {
     return this.database.delete(this.path + '/' + id);
-  }
-
-  addNoteToSystemPart(system: PSystem) {
-    // return;
   }
 
   partToBlockGroup(part: PPart): BlockGroup {
