@@ -1,14 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { Sort } from '@angular/material/sort';
 import { DocumentReference, DocumentSnapshot, DocumentData } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { PPart, PSystem } from '../model/models.interface';
+import { PSystem } from '../model/models.interface';
 import { GeneralQuery, SortToQueryConstraintsService } from 'src/app/shared/services/sort-to-query-constraints.service';
-import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { PatternSystemService } from './pattern-system.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { PaginatedCollection } from 'src/app/shared/interface/pagination.model';
 
 @Injectable()
@@ -20,7 +17,6 @@ export class PatternService {
   sortToQuery = inject(SortToQueryConstraintsService);
   systemService = inject(PatternSystemService);
   router = inject(Router);
-  snack = inject(MatSnackBar);
 
   createFromId(patternId: string) {
     // get the pattern by ID
@@ -37,9 +33,6 @@ export class PatternService {
       })
       .then((res) => {
         return this.router.navigate(['patterns/patterns/' + res.id]);
-      })
-      .then(() => {
-        this.snack.open('Note System Created!', undefined, { duration: 3000 });
       });
   }
 
@@ -50,6 +43,11 @@ export class PatternService {
   read(id: string): Promise<DocumentSnapshot<DocumentData>> {
     return this.db.get(this.path + '/' + id);
   }
+
+  read$(id: string) {
+    return this.db.observe(this.path + '/' + id);
+  }
+
 
   list$(sort?: GeneralQuery[]): Observable<PSystem[]> {
     if (!sort) {
@@ -87,16 +85,4 @@ export class PatternService {
     // return;
   }
 
-  partToBlockGroup(part: PPart): BlockGroup {
-    return {
-      title: part.name,
-      blocks: [
-        {
-          type: BlockTypes.TXT,
-          data: part.description,
-          order: 0
-        }
-      ]
-    }
-  }
 }
