@@ -1,6 +1,5 @@
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
-import { Block, BlockGroup, BlockTypes } from '../models/block.model';
-import { BlockGroupService } from './block-group.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Block, BlockGroup } from '../models/block.model';
 import { BlockTitleComponent } from '../block-title/block-title.component';
 import { TextareaBlockComponent } from '../blocks/textarea-block/textarea-block.component';
 import { AddBlockComponent } from '../add-block/add-block.component';
