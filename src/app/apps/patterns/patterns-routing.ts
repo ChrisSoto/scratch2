@@ -41,6 +41,10 @@ export const PatternsRouting: Routes = [
         component: PatternsDataEditComponent,
       },
       {
+        path: 'patterns/:id/:depth',
+        component: PatternsDataEditComponent,
+      },
+      {
         path: 'parts',
         component: PatternsPartListComponent,
       },
