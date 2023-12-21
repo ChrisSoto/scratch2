@@ -16,7 +16,7 @@ export interface BlockGroup {
 export interface Block {
     type: BlockTypes;
     data: string;
-    order?: number;
+    order: number;
 }
 
 export enum BlockTypes {
