@@ -17,6 +17,7 @@ import { PSystem } from '../model/models.interface';
 import { PatternDialogReturnService } from '../services/pattern-dialog-return.service';
 import { PatternEditPartService } from '../services/pattern-edit-part.service';
 import { PatternEditSystemService } from '../services/pattern-edit-system.service';
+import { PatternDataService } from '../services/pattern-data.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -40,6 +41,7 @@ import { PatternEditSystemService } from '../services/pattern-edit-system.servic
     PatternPartService,
     PatternEditPartService,
     PatternService,
+    PatternDataService,
     PatternDialogReturnService,
     MatDialog,
   ]
@@ -71,6 +73,10 @@ export class PatternsHomeComponent {
       .subscribe(value => {
         this.snackbar.open(`System "${ value.data.name }" Created`, undefined, { duration: 3000 });
       });
+  }
+
+  viewPatterns() {
+    this.router.navigate(['patterns'], { relativeTo: this.activatedRoute })
   }
 
   viewSystems() {
