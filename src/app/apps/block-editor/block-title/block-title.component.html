@@ -1,1 +1,7 @@
-<input class="appearance-none outline-none bg-transparent font-bold text-2xl w-full mb-2" placeholder="Enter Title" (focusout)="onFocusOutChange()" [(ngModel)]="title" (ngModelChange)="change($event)" tabindex="1">
+<input 
+  id="{{id()}}"
+  class="appearance-none outline-none font-bold text-2xl w-full mb-2 bg-slate-500" 
+  placeholder="Enter Title" 
+  [(ngModel)]="title" 
+  (ngModelChange)="change()"
+  (focusout)="onFocusOutChange()">

@@ -26,7 +26,8 @@
           <div  [ngClass]="{ 'border-solid border-4 border-l-sky-600 pl-3': true }" class="flex flex-row items-center">
 
             <be-block-group 
-              class="flex-1 pr-5" 
+              class="flex-1 pr-5"
+              [index]="$index"
               [blockGroup]="d.data"
               (addChange)="onAddChange($event, $index, d)"
               (titleChange)="onTitleChange($event, $index, d)"

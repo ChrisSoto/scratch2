@@ -1,7 +1,14 @@
-<be-block-title (titleChange)="titleChange.emit($event)" [title]="blockGroup.title"/>
+<be-block-title (titleChange)="titleChange.emit($event)" [title]="blockGroup.title" [index]="index"/>
 
     @for (block of blockGroup.blocks; track block.data) {
-        <be-textarea-block (updateChange)="updateChange.emit($event)" (removeChange)="removeChange.emit($event)" [block]="block"/>
+        
+        <be-textarea-block
+            (updateChange)="updateChange.emit($event)" 
+            (removeChange)="removeChange.emit($event)" 
+            [block]="block" 
+            [pIndex]="index"
+            [index]="$index"/> 
+
         <be-add-block (addBlockChange)="addChange.emit($event)" [index]="$index + 1"/>
     }
 

@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Block, BlockGroup } from '../models/block.model';
 import { BlockTitleComponent } from '../block-title/block-title.component';
 import { TextareaBlockComponent } from '../blocks/textarea-block/textarea-block.component';
 import { AddBlockComponent } from '../add-block/add-block.component';
+import { BlockTabService } from '../services/block-tab.service';
+import { MarkdownModule, MarkdownPipe } from 'ngx-markdown';
 
 @Component({
   selector: 'be-block-group',
@@ -11,6 +13,9 @@ import { AddBlockComponent } from '../add-block/add-block.component';
     BlockTitleComponent,
     TextareaBlockComponent,
     AddBlockComponent,
+  ],
+  providers: [
+    BlockTabService,
   ],
   templateUrl: './block-group.component.html',
   styleUrls: ['./block-group.component.scss'],
@@ -22,6 +27,9 @@ export class BlockGroupComponent {
 
   @Input()
   blockGroup!: BlockGroup;
+
+  @Input()
+  index = 0;
 
   @Output()
   titleChange = new EventEmitter<string>();
@@ -35,9 +43,13 @@ export class BlockGroupComponent {
   @Output()
   removeChange = new EventEmitter<Block>();
 
-  handleTab(event: KeyboardEvent) { 
-    if (event.code === 'Tab') {
-      console.log('tab')
+  tabService = inject(BlockTabService);
+
+  handleTab(event: KeyboardEvent) {
+    if (event.code === 'ArrowDown') {
+      this.tabService.tabDown();
+    } else if (event.code === 'ArrowUp') {
+      this.tabService.tabUp();
     }
   };
 
