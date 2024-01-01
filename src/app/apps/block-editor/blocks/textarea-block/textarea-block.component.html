@@ -1,21 +1,22 @@
-<div id="{{id()}}" class="flex flex-row justify-between justify-items-center bg-slate-400 w-full">
+<div id="{{id()}}" class="flex flex-row justify-between justify-items-center w-full">
 
     <textarea 
-        class="block-input bg-red-500"
-        [hidden]="!edit()" 
-        #textArea 
-        cdkTextareaAutosize
+        [hidden]="!edit()"
+        class="block-input bg-red-500 tracking-wide leading-relaxed font-normal text-justify mb-1"
+        placeholder="Click to add text"
         (blur)="onLeave(textArea)" 
         [formControl]="control" 
-        placeholder="Click to add text">
+        rows="1"
+        #textArea>
     </textarea>
 
-    <div #display class="flex-1" (click)="onEnter(textArea)">
-        @if(!edit()) {
-            <span class="block markdown bg-blue-500" ngPreserveWhitespaces>{{ control.value }}</span>
+    <div [hidden]="edit()" #display class="flex-1 pr-2" (click)="onEnter()">
+        @if (control.value | markdown | async; as text) {
+            <span class="block" [innerHTML]="text"></span>
         }
     </div>
 
-    <mat-icon (click)="removeChange.emit(block)" color="warn">delete</mat-icon>
+
+    <mat-icon class="mt-2" (click)="removeChange.emit(block)" color="warn">delete</mat-icon>
     
 </div>

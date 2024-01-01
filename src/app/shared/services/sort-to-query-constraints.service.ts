@@ -61,11 +61,17 @@ export class SortToQueryConstraintsService {
       case ('where'):
         if (sort.field && sort.operator) {
           return where(sort.field, sort.operator, sort.value);
-        } else {
-          return this.defaultQuery();
         }
+
+        return this.defaultQuery();
       case ('orderBy'):
-        return sort.field && sort.direction ? orderBy(sort.field, sort.direction) : this.defaultQuery();
+        if (sort.field && sort.direction) {
+          return orderBy(sort.field, sort.direction);
+        } else if (sort.field) {
+          return orderBy(sort.field);
+        }
+        
+        return this.defaultQuery();
       case ('limit'):
         return sort.limit ? limit(sort.limit) : this.defaultQuery();
       case ('limitToLast'):

@@ -1,14 +1,9 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PPart } from '../model/models.interface';
 import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
-import { PatternDataService } from './pattern-data.service';
 
 @Injectable()
 export class PatternBlockService {
-
-  dataService = inject(PatternDataService);
-
-  
 
   partsToBlockGroups(parts: PPart[]): BlockGroup[] {
     return parts.map(part => this.convert(part));

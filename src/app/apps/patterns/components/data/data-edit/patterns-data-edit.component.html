@@ -1,11 +1,16 @@
 @if (active.system(); as system) {
 
-  <mat-card class="mt-5">
+  <mat-card class="mt-5 mb-5">
 
-    <div class="p-5">
-      <h1 class="text-2xl font-bold mb-2">{{ system.name }}</h1>
-      <p>{{ system.description }}</p>
+    <div class="flex flex-row justify-between p-5">
+      <div>
+        <h1 class="text-2xl font-bold mb-2">{{ system.name }}</h1>
+        <p>{{ system.description }}</p>
+      </div>
+      
+      <common-fab-button [icon]="'edit'" (buttonChange)="onEditPattern()"></common-fab-button>
     </div>
+
   
     <mat-divider/>
 
@@ -20,23 +25,23 @@
 
   </mat-card>
 
+  @if (system.hasSiblings) {
+    <div class="flex flex-row justify-end">
+      <common-fab-button [text]="'Add Sibling'" [icon]="'call_split'" (buttonChange)="onAddSiblingChange()"/>
+    </div>
+  }
+
   @if (patternData(); as pdata) {
-    <div class="p-5 pl-0 pr-0">
-        @for (d of pdata; track $index) {
-          <div  [ngClass]="{ 'border-solid border-4 border-l-sky-600 pl-3': true }" class="flex flex-row items-center">
+    <div class="pb-5">
 
-            <be-block-group 
-              class="flex-1 pr-5"
-              [index]="$index"
-              [blockGroup]="d.data"
-              (addChange)="onAddChange($event, $index, d)"
-              (titleChange)="onTitleChange($event, $index, d)"
-              (updateChange)="onUpdateChange($event, $index, d)"
-              (removeChange)="onRemoveChange($event, d)"/>
+      <patterns-data-display
+        [data]="pdata"
+        (addChange)="onAddChange($event)"
+        (titleChange)="onTitleChange($event)"
+        (updateChange)="onUpdateChange($event)"
+        (removeChange)="onRemoveChange($event)"
+        (generateChange)="onGenerateChange($event)"/>
 
-            <common-fab-button [icon]="'air'" (buttonChange)="onGenerationChange()"/>
-          </div>
-        }
     </div>
   }
 

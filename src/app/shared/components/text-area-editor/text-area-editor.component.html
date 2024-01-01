@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <span *ngIf="!editMode()"  [innerHtml]="text | markdown"></span>
+  <span *ngIf="!editMode()"  [innerHtml]="text | markdown | async"></span>
 
   <mat-form-field *ngIf="editMode()">
     <textarea matInput

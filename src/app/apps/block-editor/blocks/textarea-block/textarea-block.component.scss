@@ -1,30 +1,3 @@
-// textarea {
-//     width: 100%;
-//     margin: 0px;
-//     padding: 0px;
-//     overflow: hidden;
-//     overflow-wrap: break-word;
-//     width: 100%;
-//     outline: 1px solid transparent;
-//     overflow-wrap: break-spaces;
-//     vertical-align: top;
-//     background-color: green;
-//     border: none;
-//     resize: none;
-// }
-
-// .markdown, .text-area {
-//     display: block;
-// }
-
-// .markdown {
-//     display: block;
-// }
-
-// .text-area {
-//     display: block;
-// }
-
 .trash {
     margin-top: 10px;
 }
@@ -37,7 +10,7 @@
     overflow: hidden;
     vertical-align: top;
     margin-top: -1px;
-    // background-color: transparent;
+    background-color: transparent;
     padding-top: 4px;
     padding-bottom: 4px;
     letter-spacing: inherit;
@@ -46,18 +19,17 @@
 }
 
 .block-input {
-    line-height: 1.5em;
+    // line-height: 1.5em;
     width: 100%;
     outline: 1px solid transparent;
     overflow-wrap: break-spaces;
     overflow: hidden;
     vertical-align: top;
     margin-top: -1px;
-    // background-color: transparent;
+    background-color: transparent;
     padding-top: 4px;
     padding-bottom: 4px;
-    margin-bottom: 8px;
-    letter-spacing: inherit;
+    // letter-spacing: inherit;
     border: none;
     resize: none;
 }

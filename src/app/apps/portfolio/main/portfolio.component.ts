@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, provideImageKitLoader } from '@angular/common';
 import { ScreenHeightService } from 'src/app/shared/services/screen-height.service';
 import { ProjectGridComponent } from '../components/project-grid/project-grid.component';
 import { RouterModule } from '@angular/router';
 import { PortfolioProjectService } from '../services/portfolio-project.service';
 import { BackgroundService } from 'src/app/shared/services/background.service';
+import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 
 @Component({
   selector: 'app-portfolio',

@@ -18,6 +18,8 @@ import { PatternDialogReturnService } from '../services/pattern-dialog-return.se
 import { PatternEditPartService } from '../services/pattern-edit-part.service';
 import { PatternEditSystemService } from '../services/pattern-edit-system.service';
 import { PatternDataService } from '../services/pattern-data.service';
+import { PatternBlockService } from '../services/pattern-block.service';
+import { PatternEditPatternService } from '../services/pattern-edit-pattern.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -38,10 +40,12 @@ import { PatternDataService } from '../services/pattern-data.service';
     PatternActiveSystemService,
     PatternSystemService,
     PatternEditSystemService,
+    PatternEditPatternService,
     PatternPartService,
     PatternEditPartService,
     PatternService,
     PatternDataService,
+    PatternBlockService,
     PatternDialogReturnService,
     MatDialog,
   ]

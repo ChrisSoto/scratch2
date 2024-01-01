@@ -19,8 +19,7 @@ import { PatternsSystemEditComponent } from '../system-edit/patterns-system-edit
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PatternEditPartService } from '../../../services/pattern-edit-part.service';
 import { PatternEditSystemService } from '../../../services/pattern-edit-system.service';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -133,6 +132,15 @@ export class PatternsSystemViewComponent implements OnInit, OnDestroy {
   onSubSystemChange(checked: boolean) {
     const system = this.active.system() as PSystem;
     system.isSubSystem = checked;
+    this.system.edit({ status: 'update', data: system })
+      .then(_ => {
+        this.snackBar.open('System Updated!', undefined, { duration: 3000 });
+      });
+  }
+
+  onSiblingsChange(checked: boolean) {
+    const system = this.active.system() as PSystem;
+    system.hasSiblings = checked;
     this.system.edit({ status: 'update', data: system })
       .then(_ => {
         this.snackBar.open('System Updated!', undefined, { duration: 3000 });

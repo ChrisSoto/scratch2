@@ -4,7 +4,6 @@ import { BlockTitleComponent } from '../block-title/block-title.component';
 import { TextareaBlockComponent } from '../blocks/textarea-block/textarea-block.component';
 import { AddBlockComponent } from '../add-block/add-block.component';
 import { BlockTabService } from '../services/block-tab.service';
-import { MarkdownModule, MarkdownPipe } from 'ngx-markdown';
 
 @Component({
   selector: 'be-block-group',
@@ -27,6 +26,9 @@ export class BlockGroupComponent {
 
   @Input()
   blockGroup!: BlockGroup;
+
+  @Input()
+  OnlyTitle = false;
 
   @Input()
   index = 0;

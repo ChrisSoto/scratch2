@@ -4,7 +4,7 @@ import { ProjectStepper } from '../project-stepper/project-stepper.component';
 import { PortfolioNavService } from '../../services/project-navigation.service';
 import { PortfolioProjectService, ProjectPage } from '../../services/portfolio-project.service';
 import { ProjectViewerComponent } from '../project-viewer/project-viewer.component';
-import { BehaviorSubject, combineLatest, mergeAll, mergeMap, of } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MarkdownModule } from 'ngx-markdown';
 import { TextAreaEditorComponent } from 'src/app/shared/components/text-area-editor/text-area-editor.component';

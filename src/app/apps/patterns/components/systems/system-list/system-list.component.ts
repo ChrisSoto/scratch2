@@ -62,7 +62,9 @@ export class PatternsSystemListComponent implements OnInit {
     this.dataSource.loadPaginated(this.createQuery());
   }
 
-  trackFn() {}
+  trackFn(_index: number, value: any) {
+    return value.id;
+  }
 
   nextPage() {}
 
@@ -84,7 +86,9 @@ export class PatternsSystemListComponent implements OnInit {
   createQuery(): GeneralQuery[] {
     const query = this.sortToQuery.convertFromSort(this.lastSort);
     query.push({ name: 'limit', limit: this.limit });
-    query.push({ name: 'where', field: 'isSubSystem', operator: '==', value: this.showSubSystems() });
+    if (!this.showSubSystems()) {
+      query.push({ name: 'where', field: 'isSubSystem', operator: '==', value: this.showSubSystems() });
+    }
     return query;
   }
 

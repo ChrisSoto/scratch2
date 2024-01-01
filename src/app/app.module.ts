@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule, importProvidersFrom } from '@angular/core';
+import { ErrorHandler, NgModule, enableProdMode, importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,7 +13,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from './shared/services/custom-error-handler.service';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MarkdownModule, MarkdownService } from 'ngx-markdown';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -34,18 +34,19 @@ import { MarkdownModule, MarkdownService } from 'ngx-markdown';
   providers: [
     importProvidersFrom(
       provideFirestore(() => 
-      initializeFirestore(getApp(), {
-        localCache: persistentLocalCache({
-          tabManager: persistentMultipleTabManager(),
+        initializeFirestore(getApp(), {
+          localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager(),
+          })
         })
-      }))
+      )
     ),
     {
       provide: ErrorHandler,
       useClass: CustomErrorHandler
     },
-    MarkdownService,
   ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

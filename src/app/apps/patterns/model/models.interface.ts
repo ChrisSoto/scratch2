@@ -1,5 +1,5 @@
 import { Meta } from "src/app/shared/interface/meta.model";
-import { BlockGroup } from "../../block-editor/models/block.model";
+import { Block, BlockGroup } from "../../block-editor/models/block.model";
 
 export interface PSystem extends Meta {
   name: string;
@@ -7,10 +7,13 @@ export interface PSystem extends Meta {
   parts: PPart[];
   categories?: PCategory[];
   parentId?: string; // this system is the child of another system
-  systemId?: string;
+  systemId?: string; // only on patterns
   hasData?: boolean;
+  hasSiblings?: boolean;
   isSubSystem?: boolean;
 }
+
+export type PSystemType = 'Pattern' | 'System';
 
 export interface PPart extends Meta {
   name: string;
@@ -29,7 +32,17 @@ export interface PData extends Meta {
   parentId: string;
   order: number;
   depth: number;
+  generatorIds: string[];
   data: BlockGroup;
+}
+
+export interface PDataTree {
+  id: string;
+  self: PData;
+  children: PData[];
+  child: boolean;
+  generator: boolean;
+  onlyTitle: boolean;
 }
 
 export interface PRelation extends Meta {
@@ -43,6 +56,13 @@ export interface PCategory extends Meta {
   description?: string;
   suffix?: string;
   categoryType: PCategoryType;
+}
+
+export interface PDataUpdate {
+  block?: Block;
+  index: number;
+  data: PData;
+  title?: string;
 }
 
 export enum EditStatus {

@@ -23,8 +23,9 @@
             
             <div class="p-5">
               <div class="flex flex-row justify-between p-1">
-                <div class="flex flex-row">
+                <div class="flex flex-row gap-8">
                   <mat-checkbox [ngModel]="system.isSubSystem" (ngModelChange)="onSubSystemChange($event)">Sub-system</mat-checkbox>
+                  <mat-checkbox [ngModel]="system.hasSiblings" (ngModelChange)="onSiblingsChange($event)">Siblings</mat-checkbox>
                 </div>
                 <common-fab-button [disabled]="showEditor" [color]="'primary'" [text]="'Add Part'" (buttonChange)="addPart()"/>
               </div>

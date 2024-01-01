@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { of, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, of, switchMap } from 'rxjs';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
-import { PData, PSystem } from '../../../model/models.interface';
+import { DialogReturn, PData, PDataTree, PDataUpdate, PSystem } from '../../../model/models.interface';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
 import { BlockGroupComponent } from 'src/app/apps/block-editor/block-group/block-group.component';
@@ -14,8 +14,12 @@ import { PatternsDataSystemPartComponent } from '../data-system-part/patterns-da
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { PatternDataService } from '../../../services/pattern-data.service';
-import { PatternBlockService } from '../../../services/pattern-block.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PatternSystemService } from '../../../services/pattern-system.service';
+import { PatternsDataDisplayComponent } from '../patterns-data-display/patterns-data-display.component';
+import { PatternsSystemEditComponent } from '../../systems/system-edit/patterns-system-edit.component';
+import { PatternEditPatternService } from '../../../services/pattern-edit-pattern.service';
+
 
 @Component({
   selector: 'patterns-data-edit',
@@ -29,9 +33,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatIconModule,
     CommonFabButtonComponent,
     BlockGroupComponent,
-  ],
-  providers: [
-    PatternBlockService,
+    PatternsDataDisplayComponent,
   ],
   templateUrl: './patterns-data-edit.component.html',
   styleUrls: ['./patterns-data-edit.component.scss']
@@ -39,19 +41,23 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class PatternsDataEditComponent {
 
   public active = inject(PatternActiveSystemService);
-  public patternData = signal<PData[]>([]);
+  public patternData = signal<PData[] | null>(null);
 
   private patternId!: string;
   private depth: number = 0;
+  private sub$$!: Subscription;
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private dataService = inject(PatternDataService);
   private patternService = inject(PatternService);
-  private patternBlockService = inject(PatternBlockService);
+  private patternEdit = inject(PatternEditPatternService);
+  private systemService = inject(PatternSystemService);
   private snackbar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   ngOnInit() {
-    this.route.params
+    this.sub$$ = this.route.params
       .pipe(
         switchMap(params => {
           this.patternId = params['id'];
@@ -70,65 +76,72 @@ export class PatternsDataEditComponent {
 
           if (system.hasData) {
             return this.dataService.list$([
+              { name: 'orderBy', field: 'depth' },
+              { name: 'where', field: 'depth', operator: '<', value: this.depth + 3 },
               { name: 'where', field: 'patternId', operator: '==', value: system.id },
-              { name: 'where', field: 'depth', operator: '==', value: this.depth }
-            ])
+              { name: 'orderBy', field: 'order', direction: 'asc' },
+            ]) // why two?
           }
 
-          return of(this.setupParts(system));
-        })
+          return of(this.dataService.convertPartsToData(system, null));
+        }),
       )
       .subscribe((data: PData[]) => {
+        // console.log('loaded', data);
         this.patternData.set(data);
       })
   }
 
-  onTitleChange(title: string, index: number, data: PData) {
-    data.data.title = title;
-    if (data.id) {
-      this.updateData(data, 'Title');
+  onTitleChange(update: PDataUpdate) {
+    update.data.data.title = update.title as string;
+    if (update.data.id) {
+      this.updateData(update.data, 'Title');
     } else {
-      this.createData(data, index, 'Data');
+      this.createData(update.data, update.index, 'Data');
     }
   }
-  
-  onAddChange(block: Block, index: number, data: PData) {
+
+  onUpdateChange(update: PDataUpdate) {
+    const block = update.block as Block;
+    update.data.data.blocks[block.order] = block;
+    if (update.data.id) {
+      this.updateData(update.data, 'Data');
+    } else {
+      this.createData(update.data, update.index, 'Data');
+    }
+  }
+
+  onAddChange(update: PDataUpdate) {
+    const block = update.block as Block;
     // if inserting at the end
-    if (block.order === data.data.blocks.length) {
-      data.data.blocks[block.order] = block;
+    if (block.order === update.data.data.blocks.length) {
+      update.data.data.blocks[block.order] = block;
     // if inserting in the middle
     } else {
-      data.data.blocks.splice(block.order, 0, block);
+      update.data.data.blocks.splice(block.order, 0, block);
     }
 
-    data.data.blocks.map((block, index) => block.order = index);
-    if (data.id) {
-      this.updateData(data, 'Block Addded');
+    update.data.data.blocks.map((block, index) => block.order = index);
+    if (update.data.id) {
+      this.updateData(update.data, 'Block Addded');
     } else {
-      this.createData(data, index, 'Data');
-    }
-  }
-
-  onUpdateChange(block: Block, index: number, data: PData) {
-    data.data.blocks[block.order] = block;
-    if (data.id) {
-      this.updateData(data, 'Data');
-    } else {
-      this.createData(data, index, 'Data');
+      this.createData(update.data, update.index, 'Data');
     }
   }
 
-  onRemoveChange(block: Block, data: PData) {
-    if (data.data.blocks.length > 1) {
-      data.data.blocks.splice(block.order, 1);
-      data.data.blocks.map((block, index) => block.order = index);
-      this.updateData(data, 'Blocks');
+  onRemoveChange(update: PDataUpdate) {
+    const block = update.block as Block;
+    if (update.data.data.blocks.length > 1) {
+      update.data.data.blocks.splice(block.order, 1);
+      update.data.data.blocks.map((block, index) => block.order = index);
+      this.updateData(update.data, 'Blocks');
     } else {
-      if (this.patternData().length === 1) {
+      const data = this.patternData() as PData[];
+      if (data.length === 1) {
         // last data attached to system
         const system = this.active.system() as PSystem;
         system.hasData = false;
-        this.dataService.remove(data.id)
+        this.dataService.remove(update.data.id)
           .then(_ => {
             return this.patternService.update(system);
           })
@@ -136,7 +149,7 @@ export class PatternsDataEditComponent {
             this.snackbar.open('Data Removed!', undefined, { duration: 3000 });
           });
       } else {
-        this.dataService.remove(data.id)
+        this.dataService.remove(update.data.id)
           .then(_ => {
             this.snackbar.open('Data Removed!', undefined, { duration: 3000 });
           });  
@@ -144,10 +157,42 @@ export class PatternsDataEditComponent {
     }
   }
 
+  onGenerateChange(dataTree: PDataTree) {
+    const data = dataTree.self;
+    if (data.generatorIds && data.generatorIds?.length === 1) {
+      // generate
+      this.systemService.read(data.generatorIds[0])
+        .then(res => {
+          if (res.exists()) {
+            const system = res.data() as PSystem;
+            system['id'] = res.id;
+            const patternData = this.dataService.convertPartsToData(system, data);
+            return this.dataService.create(patternData, dataTree.children.length, data.depth + 1);
+          } else {
+            return new Promise(r => r('Error'));
+          }
+        })
+        .then(_ => {
+          this.snackbar.open(`Generated!`, undefined, { duration: 3000 });
+        });
+
+      return;
+    }
+
+    // show a selection list
+  }
+
+  onAddSiblingChange() {
+    const system = this.active.system() as PSystem;
+    const parts = this.dataService.convertPartsToData(system, null);
+    const data = this.patternData() as PData[];
+    this.createData(parts[0], data.length, 'Pattern');
+  }
+
   createData(data: PData, index: number, updateTo: string) {
     const system = this.active.system() as PSystem;
     system.hasData = true;
-    this.dataService.create(data, index)
+    this.dataService.create([data], index)
       .then(_ => {
         return this.patternService.update(system);
       })
@@ -163,27 +208,28 @@ export class PatternsDataEditComponent {
       });
   }
 
-  onGenerationChange() {
-    console.log(this.active.system())
+  onEditPattern() {
+    this.dialog.open(PatternsSystemEditComponent, { data: this.active.system() })
+      .afterClosed()
+      .pipe(
+        switchMap((value: DialogReturn<PSystem>): PromiseLike<DialogReturn<PSystem>> => this.patternEdit.edit(value))
+      )
+      .subscribe(value => {
+        if (value.status === 'create') {
+          this.snackbar.open('New System Created!', undefined, { duration: 3000 });
+        } else if (value.status === 'update') {
+          this.snackbar.open('System Updated!', undefined, { duration: 3000 });
+        } else if (value.status === 'delete') {
+          this.snackbar.open('System Deleted!', undefined, { duration: 3000 });
+        } else {
+          // cancel
+        }
+      });
   }
 
-  setupParts(system: PSystem) {
-    let parts = [];
-    for (let i = 0; i < system.parts.length; i++) {
-      const part = system.parts[i];
-      const dataPart =  {
-        id: '',
-        systemId: system.systemId as string,
-        patternId: system.id,
-        parentId: '',
-        partId: part.id,
-        order: i,
-        depth: 0,
-        data: this.patternBlockService.convert(part)
-      }
-      parts.push(dataPart);
-    }
-    return parts;
+  ngOnDestroy() {
+    this.sub$$.unsubscribe();
+    this.active.clear();
   }
 
 }

@@ -18,7 +18,7 @@ export class NgxMarkdownTailwindService {
     }
 
     this.mkRender.renderer.paragraph = (text) => {
-      return '<p class="text-base leading-relaxed tracking-wide font-normal text-justify mb-4">' + text + '</p>';
+      return '<p class="text-base leading-relaxed tracking-wide font-normal text-justify">' + text + '</p>';
     }
 
     this.mkRender.renderer.image = (href, desc, altText) => {

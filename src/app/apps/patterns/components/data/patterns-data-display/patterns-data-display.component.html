@@ -1,0 +1,32 @@
+<div class="left-border pl-2 mb-2">
+  @for (d of data; track d.id) {
+    <div class="flex flex-row items-end">
+      <!-- {{ d.self.order }} - {{ d.self.depth }} -->
+      <be-block-group 
+        class="flex-1"
+        [index]="$index"
+        [blockGroup]="d.self.data"
+        (addChange)="onAddChange($event, $index, d.self)"
+        (titleChange)="onTitleChange($event, $index, d.self)"
+        (updateChange)="onUpdateChange($event, $index, d.self)"
+        (removeChange)="onRemoveChange($event, d.self)"/>
+  
+      @if(d.generator) {
+        <common-fab-button [icon]="'air'" (buttonChange)="onGenerateChange(d)"/>
+      }
+    
+    </div>
+  
+    @if(d.children.length) {
+      <div class="pl-5">
+        <patterns-data-display
+          [data]="d.children"
+          (addChange)="addChange.emit($event)"
+          (titleChange)="titleChange.emit($event)"
+          (updateChange)="updateChange.emit($event)"
+          (removeChange)="removeChange.emit($event)"
+          (generateChange)="generateChange.emit($event)"/>
+      </div>
+    }
+  }
+</div>

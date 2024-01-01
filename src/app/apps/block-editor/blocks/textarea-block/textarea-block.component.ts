@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild, inject, signal } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { BlockGroupService } from '../../block-group/block-group.service';
 import { Block } from '../../models/block.model';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { BlockTabService } from '../../services/block-tab.service';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { take } from 'rxjs';
-import { MarkdownPipe } from 'ngx-markdown';
+import { MarkdownModule, MarkdownPipe, provideMarkdown } from 'ngx-markdown';
 
 @Component({
   selector: 'be-textarea-block',
@@ -18,14 +18,12 @@ import { MarkdownPipe } from 'ngx-markdown';
     FormsModule,
     TextFieldModule,
     ReactiveFormsModule,
-  ],
-  providers: [
-    MarkdownPipe
+    MarkdownModule,
   ],
   templateUrl: './textarea-block.component.html',
   styleUrls: ['./textarea-block.component.scss']
 })
-export class TextareaBlockComponent implements OnInit {
+export class TextareaBlockComponent implements OnInit, AfterViewChecked {
   
   @ViewChild('textArea', { static: true })
   textArea!: ElementRef<HTMLTextAreaElement>;
@@ -55,6 +53,7 @@ export class TextareaBlockComponent implements OnInit {
   // height!: number;
   control = new UntypedFormControl();
 
+  displayHeight = signal(0);
   edit = signal<boolean>(false);
   id = signal<string>('data');
 
@@ -79,10 +78,6 @@ export class TextareaBlockComponent implements OnInit {
     this.id.set(this.tabService.createId(this.pIndex, this.index));
     this.tabService.addInput(this.id());
 
-    this.display.nativeElement.addEventListener('focusin', () => {
-      console.log('focused!')
-    })
-
     this.groupService.add(this.textArea);
 
     if (this.block.data) {
@@ -92,25 +87,55 @@ export class TextareaBlockComponent implements OnInit {
       this.edit.set(true);
     }
 
-    // this.triggerResize();
+    this.control.valueChanges
+      .subscribe(data => {
+        if (this.textArea) {
+          this.resizeTextArea(this.textArea.nativeElement);
+        }
+      })
+  }
+
+  ngAfterViewChecked(): void {
+    this.setDisplayHeight()
   }
 
   onLeave(textArea: HTMLTextAreaElement) {
     if (!this.control.pristine) {
       this.block.data = this.control.value;
       this.updateChange.emit(this.block);
+      this.control.markAsPristine();
     }
 
-    this.edit.set(this.block.data.length === 0);
+    this.setDisplayHeight();
+    this.edit.set(this.control.value.length === 0);
   }
 
-  onEnter(textArea: HTMLTextAreaElement) {
+  onEnter() {
     this.edit.set(true);
     const timeout = setTimeout(() => {
+      const textArea = this.textArea.nativeElement;
+      this.resizeTextArea(textArea);
       textArea.focus();
       textArea.setSelectionRange(textArea.value.length, textArea.value.length);
       clearTimeout(timeout);
     }, 0);
+  }
+
+  private resizeTextArea(textArea: HTMLTextAreaElement) {
+    // reset the height fixes issue where the height is too long.
+    textArea.style.height = '';
+    const scrollHeight = textArea.scrollHeight - 4;
+    const displayHeight = this.displayHeight();
+    const height = Math.max(scrollHeight, displayHeight);
+    textArea.style.height = `${scrollHeight}px`;
+  }
+
+  private setDisplayHeight() {
+    const display = this.display.nativeElement;
+    if (display.clientHeight > 0) {
+      this.displayHeight.set(display.clientHeight);
+    }
+    
   }
 
 }

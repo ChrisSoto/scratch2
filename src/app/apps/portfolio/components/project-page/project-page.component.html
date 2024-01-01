@@ -14,7 +14,7 @@
 
       <div class="flex flex-row justify-between center-items">
 
-        <div [innerHTML]="project.name | markdown"></div>
+        <div [innerHTML]="project.name | markdown | async"></div>
 
         <button color="primary" (click)="goHome()"  mat-button>Home</button>
 

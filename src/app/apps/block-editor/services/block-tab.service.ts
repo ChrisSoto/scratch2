@@ -25,7 +25,6 @@ export class BlockTabService {
     this.timeout = setTimeout(() => {
       this.ready.set(true);
       this.setFocus();
-      console.log(this.inputs());
       this.setTabIndex();
     }, 500);
 

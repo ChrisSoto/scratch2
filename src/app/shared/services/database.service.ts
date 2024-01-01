@@ -5,7 +5,7 @@ import {
   collection, Firestore, DocumentReference, DocumentSnapshot, DocumentData, enableIndexedDbPersistence
 } from '@angular/fire/firestore';
 import { getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
-import { catchError, combineLatest, from, map, mergeMap, Observable, of, throwError, Unsubscribable } from 'rxjs';
+import { catchError, combineLatest, from, map, mergeMap, Observable, of, take, tap, throwError, Unsubscribable } from 'rxjs';
 import { AuthService } from '../user/auth.service';
 import { PaginatedCollection } from '../interface/pagination.model';
 
@@ -30,7 +30,7 @@ export class DatabaseService {
 
   private async listPaginate<T>(path: string, ...q: QueryConstraint[]) {
     const coll = collection(this.firestore, path) as CollectionReference<T>;
-    const first = query<T>(coll, ...q);
+    const first = query<T, DocumentData>(coll, ...q);
     const documentSnapshots = await getDocs(first);
     const count = await getCountFromServer(coll);
     const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length - 1];
@@ -42,9 +42,9 @@ export class DatabaseService {
   }
 
   list<T>(path: string, ...q: QueryConstraint[]): Observable<T[]> {
-    return collectionData<T>(
-      query<T>(
-        collection(this.firestore, path) as CollectionReference<T>,
+    return collectionData(
+      query(
+        collection(this.firestore, path) as CollectionReference<T & { id: string }>,
         ...q
       ), { idField: 'id' }
     ).pipe(
@@ -54,11 +54,29 @@ export class DatabaseService {
     );
   }
 
+  listCustomId<T>(path: string, idField: string, ...q: QueryConstraint[]): Observable<T[]> {
+    return collectionData(
+      query(
+        collection(this.firestore, path) as CollectionReference<T & { [key: string]: string }>,
+        ...q
+      ), { idField: idField }
+    ).pipe(
+      catchError(err => {
+        return throwError(() => new Error(`Database List Custom Id did not work: ${err}`));
+      })
+    );
+  }
+
+  private getId(idField: string): string {
+    return idField ? idField : 'id';
+  }
+
   listPaginated<T>(path: string, ...q: QueryConstraint[]): Observable<PaginatedCollection<T>> {
     return from(this.listPaginate<T>(path, ...q))
       .pipe(
         mergeMap(data => combineLatest([
-          collectionData<T>(data.query, { idField: 'id' }),
+          // @ts-ignore
+          collectionData<T & { id: string }, string>(data.query, { idField: 'id' }),
           of(data.next),
           of(data.count.data().count),
         ])),
@@ -73,19 +91,6 @@ export class DatabaseService {
           return throwError(() => new Error(`Database List Paginated did not work: ${err}`));
         })
       )
-  }
-
-  listCustomId<T>(path: string, idField: string, ...q: QueryConstraint[]): Observable<T[]> {
-    return collectionData<T>(
-      query<T>(
-        collection(this.firestore, path) as CollectionReference<T>,
-        ...q
-      ), { idField: idField || 'id' }
-    ).pipe(
-      catchError(err => {
-        return throwError(() => new Error(`Database List Custom Id did not work: ${err}`));
-      })
-    );
   }
 
   add(path: string, data: any): Promise<DocumentReference<any>> {
