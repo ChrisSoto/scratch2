@@ -1,7 +1,7 @@
 
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { Block } from 'src/app/apps/block-editor/models/block.model';
-import { PData, PDataTree, PDataUpdate } from '../../../model/models.interface';
+import { PData, PDataTree, PDataTree2, PDataUpdate } from '../../../model/models.interface';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
 import { BlockGroupComponent } from 'src/app/apps/block-editor/block-group/block-group.component';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
@@ -62,6 +62,9 @@ function toDataTree(data: PData[]): PDataTree[] {
 })
 export class PatternsDataDisplayComponent {
 
+  @Input()
+  dataTree: PDataTree2[] = [];
+
   @Input({ transform: toDataTree })
   data: PDataTree[] = [];
 
@@ -78,7 +81,7 @@ export class PatternsDataDisplayComponent {
   removeChange = new EventEmitter<PDataUpdate>();
 
   @Output()
-  generateChange = new EventEmitter<PDataTree>();
+  generateChange = new EventEmitter<PDataTree2>();
 
   public active = inject(PatternActiveSystemService);
 
@@ -99,7 +102,7 @@ export class PatternsDataDisplayComponent {
     this.removeChange.emit({ block, index, data });
   }
 
-  onGenerateChange(data: PDataTree) {
+  onGenerateChange(data: PDataTree2) {
     this.generateChange.emit(data);
   }
 

@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, of, switchMap } from 'rxjs';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
-import { DialogReturn, PData, PDataTree, PDataUpdate, PSystem } from '../../../model/models.interface';
+import { DialogReturn, PData, PDataTree, PDataTree2, PDataUpdate, PSystem } from '../../../model/models.interface';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -19,6 +19,7 @@ import { PatternSystemService } from '../../../services/pattern-system.service';
 import { PatternsDataDisplayComponent } from '../patterns-data-display/patterns-data-display.component';
 import { PatternsSystemEditComponent } from '../../systems/system-edit/patterns-system-edit.component';
 import { PatternEditPatternService } from '../../../services/pattern-edit-pattern.service';
+import { PatternDataTreeService } from '../../../services/pattern-data-tree.service';
 
 
 @Component({
@@ -43,12 +44,13 @@ export class PatternsDataEditComponent {
   public active = inject(PatternActiveSystemService);
   public patternData = signal<PData[] | null>(null);
 
+  public dataTreeService = inject(PatternDataTreeService);
+
   private patternId!: string;
   private depth: number = 0;
   private sub$$!: Subscription;
 
   private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private dataService = inject(PatternDataService);
   private patternService = inject(PatternService);
   private patternEdit = inject(PatternEditPatternService);
@@ -77,7 +79,7 @@ export class PatternsDataEditComponent {
           if (system.hasData) {
             return this.dataService.list$([
               { name: 'orderBy', field: 'depth' },
-              { name: 'where', field: 'depth', operator: '<', value: this.depth + 3 },
+              { name: 'where', field: 'depth', operator: '<', value: this.depth + 4 },
               { name: 'where', field: 'patternId', operator: '==', value: system.id },
               { name: 'orderBy', field: 'order', direction: 'asc' },
             ]) // why two?
@@ -88,6 +90,7 @@ export class PatternsDataEditComponent {
       )
       .subscribe((data: PData[]) => {
         // console.log('loaded', data);
+        this.dataTreeService.setup(data);
         this.patternData.set(data);
       })
   }
@@ -157,7 +160,7 @@ export class PatternsDataEditComponent {
     }
   }
 
-  onGenerateChange(dataTree: PDataTree) {
+  onGenerateChange(dataTree: PDataTree2) {
     const data = dataTree.self;
     if (data.generatorIds && data.generatorIds?.length === 1) {
       // generate

@@ -31,11 +31,11 @@
     </div>
   }
 
-  @if (patternData(); as pdata) {
+  @if (dataTreeService.dataTree(); as pdata) {
     <div class="pb-5">
 
       <patterns-data-display
-        [data]="pdata"
+        [dataTree]="pdata"
         (addChange)="onAddChange($event)"
         (titleChange)="onTitleChange($event)"
         (updateChange)="onUpdateChange($event)"

@@ -54,7 +54,7 @@ export class PatternDataService {
   remove(id: string): Promise<void> {
     return this.database.delete(this.path + '/' + id);
   }
-
+  
   partToBlockGroup(part: PPart): BlockGroup {
     return {
       title: part.name,

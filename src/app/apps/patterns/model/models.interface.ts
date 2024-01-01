@@ -45,6 +45,15 @@ export interface PDataTree {
   onlyTitle: boolean;
 }
 
+export interface PDataTree2 {
+  id: string;
+  self: PData;
+  children: PDataTree2[];
+  child: boolean;
+  generator: boolean;
+  onlyTitle: boolean;
+}
+
 export interface PRelation extends Meta {
   name: string;
   description: string;

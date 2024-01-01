@@ -20,6 +20,7 @@ import { PatternEditSystemService } from '../services/pattern-edit-system.servic
 import { PatternDataService } from '../services/pattern-data.service';
 import { PatternBlockService } from '../services/pattern-block.service';
 import { PatternEditPatternService } from '../services/pattern-edit-pattern.service';
+import { PatternDataTreeService } from '../services/pattern-data-tree.service';
 
 @Component({
   selector: 'app-patterns-home',
@@ -47,6 +48,7 @@ import { PatternEditPatternService } from '../services/pattern-edit-pattern.serv
     PatternDataService,
     PatternBlockService,
     PatternDialogReturnService,
+    PatternDataTreeService,
     MatDialog,
   ]
 })

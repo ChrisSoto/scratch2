@@ -1,5 +1,5 @@
 <div class="left-border pl-2 mb-2">
-  @for (d of data; track d.id) {
+  @for (d of dataTree; track d.id) {
     <div class="flex flex-row items-end">
       <!-- {{ d.self.order }} - {{ d.self.depth }} -->
       <be-block-group 
@@ -20,7 +20,7 @@
     @if(d.children.length) {
       <div class="pl-5">
         <patterns-data-display
-          [data]="d.children"
+          [dataTree]="d.children"
           (addChange)="addChange.emit($event)"
           (titleChange)="titleChange.emit($event)"
           (updateChange)="updateChange.emit($event)"
