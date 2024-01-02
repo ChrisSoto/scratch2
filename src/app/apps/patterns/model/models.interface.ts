@@ -22,6 +22,7 @@ export interface PPart extends Meta {
   generatorIds?: string[];
   relations?: PRelation[];
   categories?: PCategory[];
+  titleOnly?: boolean;
   notes?: string;
 }
 

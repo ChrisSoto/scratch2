@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { GeneratorIdListComponent } from '../generator-id-list/generator-id-list.component';
 import { PartListSelectComponent } from '../part-list-select/part-list-select.component';
 import { Timestamp } from '@angular/fire/firestore';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'patterns-part-edit',
@@ -19,6 +20,7 @@ import { Timestamp } from '@angular/fire/firestore';
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatCheckboxModule,
     ReactiveFormsModule,
     ConfirmDeleteComponent,
     GeneratorIdListComponent,
@@ -49,6 +51,7 @@ export class PatternsPartEditComponent implements OnInit {
   partForm = this.fb.group({
     name: new FormControl<string>('', Validators.required),
     description: new FormControl<string>('', Validators.required),
+    titleOnly: new FormControl<boolean>(false),
     generatorIds: new FormControl<string[]>([]),
   });
 

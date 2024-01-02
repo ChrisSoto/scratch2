@@ -9,7 +9,7 @@ export class PatternDataTreeService {
   dataTree = signal<PDataTree2[]>([])
 
   setup(data: PData[]) {
-    console.log(data.length)
+    console.log('data: ', data.length)
 
     const tree: PDataTree2[] = [];
 
@@ -40,16 +40,11 @@ export class PatternDataTreeService {
     const newTree = [];
 
     for (let i = 0; i < tree.length; i++) {
-      
-      // console.log(tree[i].children.length);
       if (tree[i].self.depth === 0) {
-        console.log(tree[i].self.data.title);
-        // console.log(tree[i])
         newTree.push(tree[i]);
       }
     }
 
-    // console.log(tree);
     this.dataTree.set(newTree);
   }
 
