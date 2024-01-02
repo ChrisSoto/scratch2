@@ -1,10 +1,14 @@
 
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject, signal } from '@angular/core';
 import { Block } from 'src/app/apps/block-editor/models/block.model';
 import { PData, PDataTree, PDataTree2, PDataUpdate } from '../../../model/models.interface';
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
 import { BlockGroupComponent } from 'src/app/apps/block-editor/block-group/block-group.component';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 
 function toDataTree(data: PData[]): PDataTree[] {
   const tree: PDataTree[] = [];
@@ -15,7 +19,7 @@ function toDataTree(data: PData[]): PDataTree[] {
       self: data[i],
       children: [],
       child: false,
-      onlyTitle: data[i].data.blocks[0].data === '[[ hide-textarea ]]',
+      showTextarea: data[i].data.blocks[0].data !== '[[ hide-textarea ]]',
       generator: data[i].generatorIds.length > 0,
     });
   }
@@ -55,7 +59,11 @@ function toDataTree(data: PData[]): PDataTree[] {
   standalone: true,
   imports: [
     CommonFabButtonComponent,
+    FormsModule,
     BlockGroupComponent,
+    MatExpansionModule,
+    CdkAccordionModule,
+    MatIconModule,
   ],
   templateUrl: './patterns-data-display.component.html',
   styleUrl: './patterns-data-display.component.scss',

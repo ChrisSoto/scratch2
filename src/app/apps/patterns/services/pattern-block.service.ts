@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PPart } from '../model/models.interface';
+import { PCodedData, PPart } from '../model/models.interface';
 import { BlockGroup, BlockTypes } from '../../block-editor/models/block.model';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PatternBlockService {
       blocks: [
         {
           type: BlockTypes.TXT,
-          data: part.description,
+          data: part.titleOnly ? PCodedData.ONLY_TITLE : part.description,
           order: 0
         }
       ]

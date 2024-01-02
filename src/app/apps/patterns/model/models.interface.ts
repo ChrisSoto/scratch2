@@ -43,7 +43,7 @@ export interface PDataTree {
   children: PData[];
   child: boolean;
   generator: boolean;
-  onlyTitle: boolean;
+  showTextarea: boolean;
 }
 
 export interface PDataTree2 {
@@ -52,7 +52,7 @@ export interface PDataTree2 {
   children: PDataTree2[];
   child: boolean;
   generator: boolean;
-  onlyTitle: boolean;
+  showTextarea: boolean;
 }
 
 export interface PRelation extends Meta {
@@ -74,6 +74,10 @@ export interface PDataUpdate {
   data: PData;
   title?: string;
 }
+
+export enum PCodedData  {
+  ONLY_TITLE = '[[ hide-textarea ]]'
+};
 
 export enum EditStatus {
   NEW = 'New',

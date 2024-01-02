@@ -1,32 +1,34 @@
 @if (active.system(); as system) {
 
-  <mat-card class="mt-5 mb-5">
+  <div class="mt-5 mb-5">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ system.name }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ system.description }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-    <div class="flex flex-row justify-between p-5">
-      <div>
-        <h1 class="text-2xl font-bold mb-2">{{ system.name }}</h1>
-        <p>{{ system.description }}</p>
-      </div>
-      
-      <common-fab-button [icon]="'edit'" (buttonChange)="onEditPattern()"></common-fab-button>
-    </div>
-
+        <common-fab-button [icon]="'edit'" (buttonChange)="onEditPattern()"></common-fab-button>
   
-    <mat-divider/>
-
-    <div class="flex flex-col p-5">
-      <h2 class="text-2xl font-bold pb-5">Parts:</h2>
-      <div class="flex flex-col w-full pl-5">
-        @for (part of system.parts; track $index) {
-          <patterns-data-system-part class="w-full" [part]="part" [view]="'simple'"/>
-        }
-      </div>
-    </div>
-
-  </mat-card>
+        <div class="flex flex-col">
+          <h2 class="text-2xl font-bold pb-5">Parts:</h2>
+          <div class="flex flex-col w-full pl-5">
+            @for (part of system.parts; track $index) {
+              <patterns-data-system-part class="w-full" [part]="part" [view]="'simple'"/>
+            }
+          </div>
+        </div>
+  
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
 
   @if (system.hasSiblings) {
-    <div class="flex flex-row justify-end">
+    <div class="flex flex-row justify-end mb-5">
       <common-fab-button [text]="'Add Sibling'" [icon]="'call_split'" (buttonChange)="onAddSiblingChange()"/>
     </div>
   }

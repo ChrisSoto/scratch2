@@ -12,6 +12,7 @@ import { Block } from 'src/app/apps/block-editor/models/block.model';
 import { PatternService } from '../../../services/pattern.service';
 import { PatternsDataSystemPartComponent } from '../data-system-part/patterns-data-system-part.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { PatternDataService } from '../../../services/pattern-data.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -32,6 +33,7 @@ import { PatternDataTreeService } from '../../../services/pattern-data-tree.serv
     MatDividerModule,
     MatCardModule,
     MatIconModule,
+    MatExpansionModule,
     CommonFabButtonComponent,
     BlockGroupComponent,
     PatternsDataDisplayComponent,

@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { PData, PDataTree2 } from '../model/models.interface';
+import { PData, PDataTree2, PCodedData } from '../model/models.interface';
 
 @Injectable()
 export class PatternDataTreeService {
@@ -19,7 +19,7 @@ export class PatternDataTreeService {
         self: data[i],
         children: [],
         child: false,
-        onlyTitle: data[i].data.blocks[0].data === '[[ hide-textarea ]]',
+        showTextarea: data[i].data.blocks[0].data !== PCodedData.ONLY_TITLE,
         generator: data[i].generatorIds.length > 0,
       });
     }
