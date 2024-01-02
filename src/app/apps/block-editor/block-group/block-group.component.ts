@@ -28,7 +28,10 @@ export class BlockGroupComponent {
   blockGroup!: BlockGroup;
 
   @Input()
-  OnlyTitle = false;
+  showTitle = true;
+
+  @Input()
+  showTextarea = true;
 
   @Input()
   index = 0;
