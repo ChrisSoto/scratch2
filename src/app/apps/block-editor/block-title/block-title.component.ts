@@ -39,6 +39,7 @@ export class BlockTitleComponent implements OnInit {
   onFocusOutChange() {
     if (this.dirty()) {
       this.titleChange.emit(this.title);
+      this.dirty.set(false);
     }
   }
 
