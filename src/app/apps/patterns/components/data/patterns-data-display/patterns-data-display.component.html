@@ -1,6 +1,6 @@
 <div class="left-border pl-3 mb-2">
+  
   @for (d of dataTree; track d.id) {
-
     <cdk-accordion>
       <cdk-accordion-item
         #accordionItem="cdkAccordionItem"
@@ -9,18 +9,29 @@
         [attr.aria-expanded]="'accordionItem.expanded'"
         [attr.aria-controls]="'accordion-body-' + $index">
 
-        <div class="flex flex-row justify-left bg-white p-2 mb-0.5" (click)="accordionItem.toggle()">
-          <span class="pr-2">
-            <mat-icon class="pt-1">
-              {{ accordionItem.expanded ? 'expand_less' : 'expand_more' }}
-            </mat-icon>
-          </span>
-          <!-- <input 
-            class="appearance-none outline-none font-bold text-2xl w-full mb-2 bg-transparent"
+        <div class="flex flex-row justify-left bg-white p-2 mb-0.5">
+
+          @if(!move) {
+            <span (click)="accordionItem.toggle()" class="pr-2">
+              <mat-icon class="pt-1">
+                {{ accordionItem.expanded ? 'expand_less' : 'expand_more' }}
+              </mat-icon>
+            </span>
+          } @else {
+            <span class="pr-2">
+              <mat-icon class="pt-1">
+                drag_indicator
+              </mat-icon>
+            </span>
+          }
+
+
+          <input 
+            class="appearance-none outline-none font-bold text-2xl w-full bg-transparent"
             placeholder="Enter Title" 
             [ngModel]="d.self.data.title" 
-            (ngModelChange)="onTitleChange($event, $index, d.self)"> -->
-          <span class="text-2xl font-bold" [class]="accordionItem.expanded ? 'text-slate-300': 'text-slate-900'" >{{ d.self.data.title }}</span>
+            (ngModelChange)="onTitleChange($event, $index, d.self)">
+          <!-- <span class="text-2xl font-bold" [class]="accordionItem.expanded ? 'text-slate-300': 'text-slate-900'" >{{ d.self.data.title }}</span> -->
         </div>
 
         <div
@@ -34,6 +45,7 @@
             <be-block-group 
               class="flex-1"
               [index]="$index"
+              [showTitle]="false"
               [blockGroup]="d.self.data"
               (addChange)="onAddChange($event, $index, d.self)"
               (titleChange)="onTitleChange($event, $index, d.self)"
@@ -42,6 +54,7 @@
           }
       
           @if(d.generator) {
+            <span [className]="d.showTextarea ? '' : 'flex-1'"></span>
             <common-fab-button [icon]="'air'" (buttonChange)="onGenerateChange(d)"/>
           }
         
@@ -53,6 +66,7 @@
     @if(d.children.length) {
       <div class="pl-1">
         <patterns-data-display
+          [move]="move"
           [dataTree]="d.children"
           (addChange)="addChange.emit($event)"
           (titleChange)="titleChange.emit($event)"
@@ -61,6 +75,6 @@
           (generateChange)="generateChange.emit($event)"/>
       </div>
     }
-    
   }
+
 </div>

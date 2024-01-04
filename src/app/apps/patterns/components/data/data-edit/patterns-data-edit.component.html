@@ -27,17 +27,27 @@
     </mat-accordion>
   </div>
 
-  @if (system.hasSiblings) {
-    <div class="flex flex-row justify-end mb-5">
-      <common-fab-button [text]="'Add Sibling'" [icon]="'call_split'" (buttonChange)="onAddSiblingChange()"/>
+  <div class="flex flex-row justify-between mb-5">
+    <div class="flex flex-row gap-3">
+      <mat-checkbox (change)="move.set($event.checked)">
+        Move
+      </mat-checkbox>
+      <mat-checkbox (change)="openAll.set($event.checked)">
+        Open All
+      </mat-checkbox>
     </div>
-  }
+    @if (system.hasSiblings) {
+      <common-fab-button [text]="'Add Sibling'" [icon]="'call_split'" (buttonChange)="onAddSiblingChange()"/>
+    }
+  </div>
 
   @if (dataTreeService.dataTree(); as pdata) {
     <div class="pb-5">
 
       <patterns-data-display
         [dataTree]="pdata"
+        [move]="move()"
+        [openAll]="openAll()"
         (addChange)="onAddChange($event)"
         (titleChange)="onTitleChange($event)"
         (updateChange)="onUpdateChange($event)"

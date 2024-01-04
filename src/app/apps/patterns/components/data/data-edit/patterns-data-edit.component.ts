@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription, of, switchMap } from 'rxjs';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
-import { DialogReturn, PData, PDataTree, PDataTree2, PDataUpdate, PSystem } from '../../../model/models.interface';
+import { DialogReturn, PData, PDataTree2, PDataUpdate, PSystem } from '../../../model/models.interface';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -21,6 +21,8 @@ import { PatternsDataDisplayComponent } from '../patterns-data-display/patterns-
 import { PatternsSystemEditComponent } from '../../systems/system-edit/patterns-system-edit.component';
 import { PatternEditPatternService } from '../../../services/pattern-edit-pattern.service';
 import { PatternDataTreeService } from '../../../services/pattern-data-tree.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PatternDataLocalStorageService } from '../../../services/pattern-data-local-storage.service';
 
 
 @Component({
@@ -33,10 +35,14 @@ import { PatternDataTreeService } from '../../../services/pattern-data-tree.serv
     MatDividerModule,
     MatCardModule,
     MatIconModule,
+    MatCheckboxModule,
     MatExpansionModule,
     CommonFabButtonComponent,
     BlockGroupComponent,
     PatternsDataDisplayComponent,
+  ],
+  providers: [
+    PatternDataLocalStorageService,
   ],
   templateUrl: './patterns-data-edit.component.html',
   styleUrls: ['./patterns-data-edit.component.scss']
@@ -59,6 +65,12 @@ export class PatternsDataEditComponent {
   private systemService = inject(PatternSystemService);
   private snackbar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
+
+  move = signal(false);
+  openAll = signal(false);
+
+  titleReady = signal(false);
+  titleTimeout!: NodeJS.Timeout;
 
   ngOnInit() {
     this.sub$$ = this.route.params
@@ -98,12 +110,17 @@ export class PatternsDataEditComponent {
   }
 
   onTitleChange(update: PDataUpdate) {
-    update.data.data.title = update.title as string;
-    if (update.data.id) {
-      this.updateData(update.data, 'Title');
-    } else {
-      this.createData(update.data, update.index, 'Data');
-    }
+    clearTimeout(this.titleTimeout);
+
+    this.titleTimeout = setTimeout(() => {
+      update.data.data.title = update.title as string;
+      if (update.data.id) {
+        this.updateData(update.data, 'Title');
+      } else {
+        this.createData(update.data, update.index, 'Data');
+      }
+
+    }, 1000);
   }
 
   onUpdateChange(update: PDataUpdate) {

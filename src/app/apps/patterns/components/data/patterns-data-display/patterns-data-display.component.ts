@@ -9,6 +9,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 function toDataTree(data: PData[]): PDataTree[] {
   const tree: PDataTree[] = [];
@@ -60,6 +61,7 @@ function toDataTree(data: PData[]): PDataTree[] {
   imports: [
     CommonFabButtonComponent,
     FormsModule,
+    DragDropModule,
     BlockGroupComponent,
     MatExpansionModule,
     CdkAccordionModule,
@@ -75,6 +77,12 @@ export class PatternsDataDisplayComponent {
 
   @Input({ transform: toDataTree })
   data: PDataTree[] = [];
+
+  @Input()
+  move = false;
+
+  @Input()
+  openAll = false;
 
   @Output()
   titleChange = new EventEmitter<PDataUpdate>();
@@ -98,7 +106,7 @@ export class PatternsDataDisplayComponent {
   }
 
   onTitleChange(title: string, index: number, data: PData) {
-    this.titleChange.emit({ title, index, data })
+    this.titleChange.emit({ title, index, data });
   }
 
   onUpdateChange(block: Block, index: number, data: PData) {
