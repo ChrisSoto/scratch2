@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, of, switchMap } from 'rxjs';
 import { PatternActiveSystemService } from '../../../services/pattern-active-system.service';
 import { DialogReturn, PData, PDataTree2, PDataUpdate, PSystem } from '../../../model/models.interface';
@@ -59,6 +59,7 @@ export class PatternsDataEditComponent {
   private sub$$!: Subscription;
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private dataService = inject(PatternDataService);
   private patternService = inject(PatternService);
   private patternEdit = inject(PatternEditPatternService);
@@ -242,6 +243,7 @@ export class PatternsDataEditComponent {
         } else if (value.status === 'update') {
           this.snackbar.open('System Updated!', undefined, { duration: 3000 });
         } else if (value.status === 'delete') {
+          this.router.navigate(["patterns/patterns"]);
           this.snackbar.open('System Deleted!', undefined, { duration: 3000 });
         } else {
           // cancel
