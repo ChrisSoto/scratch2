@@ -15,20 +15,27 @@
         }
         
       </div>
-      @if (!original()) {
-        <div class=" flex flex-row gap-4">
-          <button mat-icon-button (click)="addNote()">
-            <mat-icon color="primary">edit_note</mat-icon>
+
+      @if(edit) {
+        @if (!original()) {
+          <div class="flex flex-row gap-4">
+            <button mat-icon-button color="primary" [disabled]="!canUpdate()" (click)="compareParts()">
+              <mat-icon>update</mat-icon>
+            </button>
+            <button mat-icon-button (click)="addNote()">
+              <mat-icon color="primary">edit_note</mat-icon>
+            </button>
+            <button mat-icon-button (click)="removeChange.emit(index)">
+              <mat-icon color="warn">delete</mat-icon>
+            </button>
+          </div>
+        } @else {
+          <button mat-icon-button (click)="editPart()">
+            <mat-icon color="primary">edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="removeChange.emit(index)">
-            <mat-icon color="warn">delete</mat-icon>
-          </button>
-        </div>
-      } @else {
-        <button mat-icon-button (click)="editPart()">
-          <mat-icon color="primary">edit</mat-icon>
-        </button>
+        }
       }
+
     </div>
   </div>
 </div>

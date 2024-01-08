@@ -112,3 +112,8 @@ export interface GeneratorIdName {
   id: string;
   name: string;
 }
+
+export interface PPartCompare {
+  newPart: PPart,
+  oldPart: PPart,
+}

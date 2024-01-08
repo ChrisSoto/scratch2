@@ -46,7 +46,7 @@
     <mat-card cdkDropList (cdkDropListDropped)="drop($event)">
 
       @for (part of system.parts; track $index) {
-        <patterns-part-view cdkDrag (removeChange)="onRemoveChange($event)" [part]="part" [isLast]="$last" [index]="$index"/>
+        <patterns-part-view cdkDrag (removeChange)="onRemoveChange($event)" [part]="part" [isLast]="$last" [index]="$index" [edit]="true"/>
       }
       
     </mat-card>
