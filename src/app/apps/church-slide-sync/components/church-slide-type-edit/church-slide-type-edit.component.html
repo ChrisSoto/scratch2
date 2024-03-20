@@ -1,6 +1,6 @@
 <div class="border-b py-4 flex flex-row items-center">
 
-  <div class="drag-handle cursor-move flex flex-row" >
+  <div class="drag-handle cursor-move flex flex-row pl-2">
     <div class="drag-line"></div>
     <div class="drag-line"></div>
     <div class="drag-line"></div>
@@ -12,7 +12,7 @@
       @if (slide.data) {
         <div class="flex flex-row grow justify-start items-center mr-4">
           <span class="basis-1/6 text-3xl pr-4">{{ slide.data.number }}</span>
-          <span class="basis-5/6 text-base text-slate-600 pr-2">{{ slide.data.title }}</span>
+          <span class="basis-5/6 text-base text-slate-600 pr-2">🎵 {{ slide.data.title }}</span>
         </div>
       } @else {
         <div class="flex flex-row grow mr-4">
@@ -24,9 +24,11 @@
         <button (click)="editHymn()" mat-mini-fab color="primary">
           <mat-icon>edit</mat-icon>
         </button>
-        <button (click)="removeSlide()" mat-mini-fab color="warn">
-          <mat-icon>remove</mat-icon>
-        </button>
+        @if (editMode) {
+          <button (click)="removeSlide()" mat-mini-fab color="warn">
+            <mat-icon>remove</mat-icon>
+          </button>
+        }
       </div>
     }
 
@@ -45,13 +47,18 @@
           }
         </div>
 
-        <div class="flex flex-row gap-x-2">
+        <div class="flex flex-row gap-x-4">
+          <button (click)="uploadFromGallery()" mat-mini-fab color="primary">
+            <mat-icon>photo_library</mat-icon>
+          </button>
           <button (click)="uploadImage()" mat-mini-fab color="primary">
             <mat-icon>upload</mat-icon>
           </button>
-          <button (click)="removeSlide()" mat-mini-fab color="warn">
-            <mat-icon>remove</mat-icon>
-          </button>
+          @if (editMode) {
+            <button (click)="removeSlide()" mat-mini-fab color="warn">
+              <mat-icon>remove</mat-icon>
+            </button>
+          }
         </div>
       </div>
 
@@ -59,14 +66,16 @@
 
     @case ('EMPTY') {
       <div class="flex flex-row grow justify-between items-center mr-4">
-        <div class="bg-black h-14 flex grow items-stretch mr-4"></div>
+        <div [ngClass]="slide.data?.bgColor ? slide.data?.bgColor : 'bg-black'" class="h-14 flex grow items-stretch"></div>
         <div class="flex flex-row gap-x-2">
-          <!-- <button (click)="editColor()" mat-mini-fab color="primary">
+          <button class="ml-4" (click)="editColor()" mat-mini-fab color="primary">
             <mat-icon>edit</mat-icon>
-          </button> -->
-          <button (click)="removeSlide()" mat-mini-fab color="warn">
-            <mat-icon>remove</mat-icon>
           </button>
+          @if (editMode) {
+            <button (click)="removeSlide()" mat-mini-fab color="warn">
+              <mat-icon>remove</mat-icon>
+            </button>
+          }
         </div>
       </div>
     }

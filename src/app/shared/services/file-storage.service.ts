@@ -1,5 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { getStorage, ref, list } from "firebase/storage";
+import { FileService } from './file.service';
+
+export interface ImagePacket {
+  urls: string[];
+  nextPageToken: string | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -7,30 +13,38 @@ import { getStorage, ref, list } from "firebase/storage";
 export class FileStorageService {
 
   private storage = getStorage();
+  private file = inject(FileService);
 
-  listAll(folders?: string) {
-    if (!folders) {
-      folders = '';
+  listAll(directory?: string): Promise<ImagePacket> {
+    if (!directory) {
+      directory = '';
     }
+    console.log(directory)
     // Create a reference under which you want to list
-    const listRef = ref(this.storage, folders);
+    const listRef = ref(this.storage, directory);
 
     // Find all the prefixes and items.
-    list(listRef, { maxResults: 10 })
+    return list(listRef, { maxResults: 10 })
       .then((res) => {
 
-        console.log(res);
+        const packet: ImagePacket = {
+          urls: [],
+          nextPageToken: null,
+        };
 
-        res.prefixes.forEach((folderRef) => {
-          // All the prefixes under listRef.
-          // You may call listAll() recursively on them.
+        res.items.forEach((folderRef) => {
+          let path = 'gs://' + folderRef.bucket + '/' + folderRef.fullPath;
+          path = this.file.urlCleanUp(path);
+          packet.urls.push(path);
         });
 
-        res.items.forEach((itemRef) => {
-          // All the items under listRef.
-        });
+        if (res.nextPageToken) {
+          packet.nextPageToken = res.nextPageToken;
+        }
+
+        return packet;
       }).catch((error) => {
-        // Uh-oh, an error occurred!
+        throw error;
       });
   }
 }

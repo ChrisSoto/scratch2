@@ -11,6 +11,8 @@ import { ActiveChurchSlideshowService } from '../../services/active-church-slide
 import { RemoveSlideComponent } from '../../dialogs/remove-slide/remove-slide.component';
 import { EditHymnComponent } from '../../dialogs/edit-hymn/edit-hymn.component';
 import { HymnService } from '../../services/hymn.service';
+import { EditColorComponent } from '../../dialogs/edit-color/edit-color.component';
+import { CommonImageGalleryDialogComponent } from 'src/app/shared/components/common-image-gallery-dialog/common-image-gallery-dialog.component';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -28,6 +30,7 @@ import { HymnService } from '../../services/hymn.service';
 export class ChurchSlideTypeEditComponent {
   @Input() slide!: ChurchSlide;
   @Input() order!: number;
+  @Input() editMode = false;
 
   dialog = inject(MatDialog);
   upload = inject(FileUploadService);
@@ -41,7 +44,22 @@ export class ChurchSlideTypeEditComponent {
       })
   }
 
-  editColor() { }
+  editColor() {
+    this.dialog.open(EditColorComponent)
+      .afterClosed()
+      .subscribe((color: string) => {
+        this.active.saveColor(color, this.order);
+      })
+  }
+
+  uploadFromGallery() {
+    this.dialog.open(CommonImageGalleryDialogComponent, { maxHeight: '80%', width: '50%' , data: 'opc' })
+      .afterClosed()
+      .subscribe(imageUrl => {
+        if (!imageUrl) return;
+        this.active.saveImage(imageUrl, this.order);
+      });
+  }
 
   uploadImage() {
     this.dialog.open(CommonUploadImageDialogComponent, { maxHeight: '80%', width: '50%' })

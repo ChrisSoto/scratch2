@@ -2,7 +2,7 @@
   <h1 class="text-xl pb-4" mat-dialog-title>New Service</h1>
 
   <div mat-dialog-content>
-    <form class="flex flex-col" [formGroup]="newSlidesForm">
+    <form class="flex flex-col" [formGroup]="slideshowForm">
 
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
@@ -22,6 +22,12 @@
 
   <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()">Cancel</button>
-    <button [disabled]="!newSlidesForm.valid" mat-raised-button color="primary" (click)="dialogRef.close(newSlidesForm.value)">Create</button>
+    <button 
+      [disabled]="(!slideshowForm.valid || inThePast()) || slideshowForm.pristine" 
+      mat-raised-button
+      color="primary" 
+      (click)="dialogRef.close(slideshowForm.value)">
+        {{ isUpdate() ? 'Update' : 'Create' }}
+    </button>
   </div>
 </div>

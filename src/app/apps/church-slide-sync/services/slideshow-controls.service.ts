@@ -21,7 +21,7 @@ export class SlideshowControlsService {
   private slideshow$!: Unsubscribable;
 
   keyDown(event: KeyboardEvent) {
-    if (event.code === 'KeyF') this.toggleFullscreen();
+    // if (event.code === 'KeyF') this.toggleFullscreen();
     if (event.code === 'ArrowRight') this.next();
     if (event.code === 'ArrowLeft') this.prev();
   }

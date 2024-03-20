@@ -1,0 +1,22 @@
+<div class="p-4">
+  <h1 class="text-xl pb-4" mat-dialog-title>Image Gallery</h1>
+
+  <div mat-dialog-content class="flex flex-row justify-center">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      @for (item of images(); track $index) {
+        <div class="border-4 border-solid border-gray-200" 
+          (click)="selectItem(item)" 
+          [ngClass]="selectedUrl() === item ? 'border-amber-600' : 'border-gray-200'">
+          <img [src]="item" class="object-cover"/>
+        </div>
+      }
+    </div>
+      
+  </div>
+
+  <div class="mt-4 flex flex-row justify-between items-center" mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!selectedUrl()" (click)="dialogRef.close(selectedUrl())">Select & Upload</button>
+  </div>
+</div>

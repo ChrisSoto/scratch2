@@ -1,40 +1,37 @@
 @if (active.slide$ | async; as slide) {
 
+  <!-- makeSquare -->
+
   <div class="h-full flex flex-row justify-center items-center">
-    <div [ngClass]="{ 'bg-white': !active.background(), 'bg-black': active.background()}" makeSquare>
-      <div class="flex relative flex-row justify-center items-center h-full">
-  
-        @switch (slide.type) {
-          @case ('HYMN') {
-            @if (slide.data) {
-  
-              <hymn-verse
-                [verse]="hymn.verse$ | async"
-                [refrain]="hymn.refrain$ | async"
-                [hymn]="hymn.hymn$ | async"
-                [order]="hymn.order$ | async"/>
-            
-            } @else {
-              <p>Select a hymn</p>
-            }
-  
+    <div class="flex relative flex-row justify-center items-center h-full">
+
+      @switch (slide.type) {
+        @case ('HYMN') {
+          @if (slide.data) {
+
+            <hymn-verse
+              [verse]="hymn.verse$ | async"
+              [refrain]="hymn.refrain$ | async"
+              [hymn]="hymn.hymn$ | async"
+              [order]="hymn.order$ | async"/>
+          
+          } @else {
+            <p>Select a hymn</p>
           }
-          @case ('TEXT') {
-            <p>TEXT</p>
-          }
-          @case ('IMAGE') {
-            <img style="max-height: 100%;" [src]="slide.data?.url" alt="Image alt text">
-          }
-          @case ('EMPTY') {
-            <p>EMPTY</p>
-          }
-  
-          @default {
-            <p>NOTHING</p>
-          }
+
         }
-  
-      </div>
+        @case ('TEXT') {
+          <p>TEXT</p>
+        }
+        @case ('IMAGE') {
+          <img style="max-height: 100%;" [src]="slide.data?.url" alt="Image alt text">
+        }
+        @case ('EMPTY') {}
+        @default {
+          <p>NOTHING</p>
+        }
+      }
+
     </div>
   </div>
 

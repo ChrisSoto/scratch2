@@ -34,6 +34,7 @@ import { EditHymnComponent } from '../dialogs/edit-hymn/edit-hymn.component';
 export class ChurchSlideSyncComponent {
 
   private screenHeight = inject(ScreenHeightService);
+  active = inject(ActiveChurchSlideshowService);
   controls = inject(SlideshowControlsService);
   viewMode = signal(false);
 

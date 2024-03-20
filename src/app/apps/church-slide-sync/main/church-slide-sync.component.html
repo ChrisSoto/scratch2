@@ -1,8 +1,8 @@
-<div id="church-slide-sync" class="flex flex-row gap-2 items-stretch full-height">
-  <div [hidden]="controls.fullscreen()" class="basis-1/2 sm:basis-2/5 lg:basis-2/3 overflow-y-auto overflow-hidden">
+<div id="church-slide-sync" class="flex flex-row full-height w-full">
+  <div [hidden]="controls.fullscreen()" class="basis-11/12 sm:basis-9/12 md:basis-6/12 lg:basis-4/12 xl:basis-3/12 overflow-y-auto overflow-hidden border-r-2 border-gray-200">
     <router-outlet/>
   </div>
-  <div class="bg-black basis-1/2 sm:basis-3/5 lg:basis-2/3 grow">
+  <div [ngClass]="active.bgColor()" class="bg-black flex-1">
 
     @if (viewMode()) {
       <church-slideshow-view/>
@@ -12,3 +12,5 @@
 
   </div>
 </div>
+
+<!-- basis-1/12 sm:basis-3/12 md:basis-6/12 lg:basis-8/12 lg:basis-9/12 -->

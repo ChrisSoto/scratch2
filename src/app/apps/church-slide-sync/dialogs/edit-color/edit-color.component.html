@@ -1,0 +1,19 @@
+<div class="p-4">
+
+  <div class="flex flex-row justify-center">
+    <div class="text-xl pb-4" mat-dialog-title>
+      Select Background Color
+    </div>
+  </div>
+
+  <div mat-dialog-content>
+    <div class="grid grid-cols-5 gap-4">
+      @for (colorRow of colors; track $index) {
+        @for (color of colorRow; track $index) {
+          <div class="w-10 h-10 cursor-pointer hover:scale-125 border border-slate-300" [ngClass]="color" (click)="selectColor(color)"></div>
+        }
+      }
+    </div>
+  </div>
+
+</div>

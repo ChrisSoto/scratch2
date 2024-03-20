@@ -17,6 +17,7 @@ export class ActiveChurchSlideshowService {
   slide$: BehaviorSubject<ChurchSlide | null> = new BehaviorSubject<ChurchSlide | null>(null);
 
   background = signal(false);
+  bgColor = signal('bg-black');
 
   setSlideshow(slideshow: ChurchSlideshow) {
     this.slideshow$.next(slideshow);
@@ -28,10 +29,22 @@ export class ActiveChurchSlideshowService {
 
   updateBackground() {
     const slide = this.slide$.value;
-    if (slide && slide.type === 'EMPTY') {
-      this.background.set(true);
-    } else {
-      this.background.set(false);
+    if (slide) {
+      switch (slide.type) {
+        case 'HYMN':
+          this.bgColor.set('bg-white');
+          break;
+        case 'EMPTY':
+          if (slide.data && 'bgColor' in slide.data) {
+            this.bgColor.set(slide.data.bgColor);
+          } else {
+            this.bgColor.set('bg-black');
+          }
+          break;
+        default:
+          this.bgColor.set('bg-black');
+          break;
+      }
     }
   }
 
@@ -54,6 +67,12 @@ export class ActiveChurchSlideshowService {
   saveHymn(hymn: ChurchHymn, slideIndex: number) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides[slideIndex].data = hymn;
+    this.slideshowService.update(slideshow);
+  }
+
+  saveColor(color: string, slideIndex: number) {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    slideshow.slides[slideIndex].data = { bgColor: color };
     this.slideshowService.update(slideshow);
   }
 

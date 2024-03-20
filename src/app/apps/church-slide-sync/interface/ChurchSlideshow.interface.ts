@@ -13,14 +13,30 @@
 //   exit?: string;
 // }
 
+import { Timestamp } from "@angular/fire/firestore";
 import { Meta } from "src/app/shared/interface/meta.model";
+
+export interface ChurchSlideShowBasic {
+  title: string;
+  pastor: string;
+  date: Timestamp;
+}
+
+export interface ChurchSlideShowDto {
+  title: string;
+  pastor: string;
+  date: Timestamp | Date;
+  slides: ChurchSlide[];
+  activeSlide: number;
+  activeSubSlide: number;  
+}
 
 export interface ChurchSlideshow extends Meta {
   title: string;
   pastor: string;
-  date: Date;
-  slides: ChurchSlide[]
-  activeSlide: number,
+  date: Timestamp | Date;
+  slides: ChurchSlide[];
+  activeSlide: number;
   activeSubSlide: number;
 }
 
@@ -48,6 +64,10 @@ export type ChurchSlideType = 'HYMN' | 'TEXT' | 'IMAGE' | 'EMPTY';
 export interface ChurchSlide {
   data?: any;
   type: ChurchSlideType;
+}
+
+export interface EmptySlide extends Meta {
+  bgColor: string;
 }
 
 export interface ImageUrl {
