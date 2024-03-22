@@ -16,7 +16,9 @@
     <!-- Position Column -->
     <ng-container cdkColumnDef="title">
       <th class="border-b font-medium p-4 pt-0 pb-3 text-slate-950 text-left" cdk-header-cell *cdkHeaderCellDef> Title </th>
-      <td class="border-b border-slate-100 p-4 pl-4" cdk-cell *cdkCellDef="let service"> <a class="text-sky-400" (click)="goToSlideshow(service)">{{ service.title }}</a></td>
+      <td class="border-b border-slate-100 p-4 pl-4 cursor-pointer hover:font-medium" cdk-cell *cdkCellDef="let service">
+        <a class="text-sky-400"[routerLink]="['edit/' + service.id]">{{ service.title }}</a>
+      </td>
     </ng-container>
 
     <!-- Name Column -->

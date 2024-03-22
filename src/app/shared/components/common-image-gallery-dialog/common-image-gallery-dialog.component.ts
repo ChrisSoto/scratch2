@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { NgOptimizedImage } from '@angular/common';
 import { FileStorageService } from '../../services/file-storage.service';
@@ -56,6 +56,7 @@ const IMAGES = [
     MatIconModule,
     MatButtonModule,
     NgOptimizedImage,
+    MatDialogModule,
   ],
   templateUrl: './common-image-gallery-dialog.component.html',
   styleUrl: './common-image-gallery-dialog.component.scss'

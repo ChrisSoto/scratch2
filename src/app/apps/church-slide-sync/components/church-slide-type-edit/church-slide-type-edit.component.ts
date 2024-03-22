@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChurchHymn, ChurchSlide } from '../../interface/ChurchSlideshow.interface';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,9 +10,9 @@ import { filter, mergeMap, of } from 'rxjs';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
 import { RemoveSlideComponent } from '../../dialogs/remove-slide/remove-slide.component';
 import { EditHymnComponent } from '../../dialogs/edit-hymn/edit-hymn.component';
-import { HymnService } from '../../services/hymn.service';
 import { EditColorComponent } from '../../dialogs/edit-color/edit-color.component';
 import { CommonImageGalleryDialogComponent } from 'src/app/shared/components/common-image-gallery-dialog/common-image-gallery-dialog.component';
+import { ActionStatusService } from 'src/app/shared/services/action-status.service';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -22,7 +22,7 @@ import { CommonImageGalleryDialogComponent } from 'src/app/shared/components/com
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    CommonUploadImageDialogComponent
+    CommonUploadImageDialogComponent,
   ],
   templateUrl: './church-slide-type-edit.component.html',
   styleUrls: ['./church-slide-type-edit.component.scss']
@@ -32,57 +32,115 @@ export class ChurchSlideTypeEditComponent {
   @Input() order!: number;
   @Input() editMode = false;
 
+  imageUrl = signal('');
+
+  private actionStatus = inject(ActionStatusService);
+
   dialog = inject(MatDialog);
   upload = inject(FileUploadService);
   active = inject(ActiveChurchSlideshowService);
 
+  ngOnInit() {
+    // switch (this.slide.type) {
+    //   case 'HYMN':
+    //     console.log('Hymn');
+    //     break;
+    //   case 'TEXT':
+    //     console.log('Text');
+    //     break;
+    //   case 'IMAGE':
+    //     console.log('Image');
+    //     break;
+    //   case 'EMPTY':
+    //     console.log('Empty');
+    //     break;
+    //   default:
+    //     console.log('default');
+    //     break;
+    // }
+  }
+
   editHymn() {
-    this.dialog.open(EditHymnComponent)
+    const hymn$$ = this.dialog.open(EditHymnComponent)
       .afterClosed()
       .subscribe((data: ChurchHymn) => {
-        this.active.saveHymn(data, this.order);
+        
+        if (!data) {
+          hymn$$.unsubscribe();
+          return;
+        };
+
+        this.active.saveHymn(data, this.order)
+          .then(() => this.actionStatus.success('Hymn updated'))
+          .finally(() => hymn$$.unsubscribe())
       })
   }
 
   editColor() {
-    this.dialog.open(EditColorComponent)
+    const color$$ = this.dialog.open(EditColorComponent)
       .afterClosed()
       .subscribe((color: string) => {
-        this.active.saveColor(color, this.order);
+        
+        if (!color) {
+          color$$.unsubscribe();
+          return;
+        };
+          
+        this.active.saveColor(color, this.order)
+          .finally(() => color$$.unsubscribe())
       })
   }
 
   uploadFromGallery() {
-    this.dialog.open(CommonImageGalleryDialogComponent, { maxHeight: '80%', width: '50%' , data: 'opc' })
+    const gallery$$ = this.dialog.open(CommonImageGalleryDialogComponent, { data: 'opc' })
       .afterClosed()
       .subscribe(imageUrl => {
-        if (!imageUrl) return;
-        this.active.saveImage(imageUrl, this.order);
+        
+        if (!imageUrl) {
+          gallery$$.unsubscribe();
+          return;
+        };
+
+        this.active.saveImage(imageUrl, this.order)
+          .finally(() => gallery$$.unsubscribe())
       });
   }
 
   uploadImage() {
-    this.dialog.open(CommonUploadImageDialogComponent, { maxHeight: '80%', width: '50%' })
+    const image$$ = this.dialog.open(CommonUploadImageDialogComponent)
       .afterClosed()
       .pipe(
         filter((file: File) => file && 'name' in file),
         mergeMap((file: File) => this.upload.uploadFile('opc', file)),
+        filter((imageUrl: string) => !!imageUrl),
       )
       .subscribe(imageUrl => {
-        this.active.saveImage(imageUrl, this.order);
+
+        if (!imageUrl) {
+          image$$.unsubscribe();
+          return;
+        }
+
+        this.active.saveImage(imageUrl, this.order)
+          .then(() => {
+            this.actionStatus.success('Image updated!')
+          })
+          .finally(() => image$$.unsubscribe())
       });
   }
 
   removeSlide() {
-    this.dialog.open(RemoveSlideComponent, { maxHeight: '80%', width: '300px' })
+    const remove$$ = this.dialog.open(RemoveSlideComponent)
       .afterClosed()
-      .pipe(
-        mergeMap((remove) => {
-          return remove ? this.active.removeSlide(this.order) : of(null)
-        })
-      )
       .subscribe(removed => {
-        console.log(removed);
+
+        if (!removed) {
+          remove$$.unsubscribe();
+          return;
+        };
+
+        this.active.removeSlide(this.order)
+          .finally(() => remove$$.unsubscribe())
       })
   }
 }

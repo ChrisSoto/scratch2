@@ -1,0 +1,11 @@
+<div class="p-4">
+
+  <div mat-dialog-content>
+    <p class="text-3xl text-center text-slate-700">Delete Service?</p>
+  </div>
+
+  <div class="mt-4 flex flex-row justify-between" mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close(false)">Cancel</button>
+    <button mat-raised-button color="warn" (click)="dialogRef.close(true)">Delete</button>
+  </div>
+</div>

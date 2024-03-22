@@ -5,7 +5,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog'
 import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
 import { NewSlidesFormComponent } from '../../dialogs/new-slides-form/new-slides-form.component';
-import { Subscription, filter, mergeMap, of } from 'rxjs';
+import { Subscription, filter, mergeMap, of, tap } from 'rxjs';
 import { ActionStatusService } from 'src/app/shared/services/action-status.service';
 import { ChurchSlideshowDataSource } from '../../services/church-slideshow.datasource';
 import { ChurchSlideshowService } from '../../services/church-slideshow.service';
@@ -16,6 +16,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { SlideshowControlsService } from '../../services/slideshow-controls.service';
 
 @Component({
   selector: 'app-church-slide-list',
@@ -42,6 +43,7 @@ export class ChurchSlideListComponent {
   private sortToQuery = inject(SortToQueryConstraintsService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private controls = inject(SlideshowControlsService);
 
   dataSource = new ChurchSlideshowDataSource();
   lastSort: Sort = { active: 'created', direction: 'desc' };
@@ -69,9 +71,11 @@ export class ChurchSlideListComponent {
   edit() {}
 
   newSlideshow() {
+    this.controls.disabled.set(true);
     this.newSlideshow$$ = this.dialog.open(NewSlidesFormComponent)
       .afterClosed()
       .pipe(
+        tap(() => this.controls.disabled.set(false)),
         filter(slideshow => slideshow),
         mergeMap((slideshow) => {
           return this.churchSlideshowService.create(slideshow);

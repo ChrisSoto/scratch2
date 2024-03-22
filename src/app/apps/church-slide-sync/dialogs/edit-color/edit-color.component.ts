@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 const COLORS = [
   [ 'bg-white', 'bg-black', 'bg-white', 'bg-black', 'bg-white' ],
@@ -22,7 +22,8 @@ const COLORS = [
   selector: 'app-edit-color',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    MatDialogModule,
   ],
   templateUrl: './edit-color.component.html',
   styleUrl: './edit-color.component.scss'

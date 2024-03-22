@@ -65,6 +65,7 @@ export class FileUploadService {
       }, () => {
         // Upload completed successfully, now we can get the download URL
         getDownloadURL(this.uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log('File available at', downloadURL);
           this.fileUrl$.next(this.file.urlCleanUp(downloadURL));
         });
         this.progress$.next(0);

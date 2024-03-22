@@ -1,7 +1,7 @@
 import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActiveChurchSlideshowService } from '../../services/active-church-slideshow.service';
-import { Subscription, Unsubscribable, filter, mergeMap } from 'rxjs';
+import { Subscription, Unsubscribable, filter, map, mergeMap, of, tap } from 'rxjs';
 import { ChurchSlideshowService } from '../../services/church-slideshow.service';
 import { ChurchSlideType } from '../../interface/ChurchSlideshow.interface';
 import { CommonSelectComponent } from 'src/app/shared/components/common-select/common-select.component';
@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewSlidesFormComponent } from '../../dialogs/new-slides-form/new-slides-form.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionStatusService } from 'src/app/shared/services/action-status.service';
+import { RemoveServiceComponent } from '../../dialogs/remove-service/remove-service.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SlideshowControlsService } from '../../services/slideshow-controls.service';
 @Component({
   selector: 'app-church-slide-edit',
   standalone: true,
@@ -23,6 +26,7 @@ import { ActionStatusService } from 'src/app/shared/services/action-status.servi
     DragDropModule,
     MatButtonModule,
     MatIconModule,
+    MatSlideToggleModule,
   ],
   templateUrl: './church-slide-edit.component.html',
   styleUrls: ['./church-slide-edit.component.scss']
@@ -37,6 +41,7 @@ export class ChurchSlideEditComponent {
   activatedRoute = inject(ActivatedRoute);
   slideshowService = inject(ChurchSlideshowService);
   private actionStatus = inject(ActionStatusService);
+  private controls = inject(SlideshowControlsService);
 
   loadSlideshow$!: Subscription;
   editSlideshow$!: Subscription;
@@ -49,6 +54,11 @@ export class ChurchSlideEditComponent {
 
   ngOnInit() {
     this.loadSlideshow();
+  }
+
+  toggleControls() {
+    const state = this.controls.navControls();
+    this.controls.navControls.set(!state);
   }
 
   edit() {
@@ -77,15 +87,22 @@ export class ChurchSlideEditComponent {
   }
 
   deleteSlideshow() {
-    if (!this.id) return;
-    this.loadSlideshow$?.unsubscribe();
-    this.slideshowService.remove(this.id)
-      .then(() => {
-        this.actionStatus.success(`Slideshow Deleted!`);
-        this.router.navigate(['church-slide-sync']);
-      })
-      .catch((err) => {
-        this.actionStatus.failure(err);
+    this.dialog.open(RemoveServiceComponent)
+      .afterClosed()
+      .pipe(
+        filter((confirm) => confirm),
+      )
+      .subscribe((remove) => {
+        if (!remove) return; 
+        if (!this.id) return;
+        this.loadSlideshow$?.unsubscribe()
+        this.slideshowService.remove(this.id)
+          .then(() => {
+            this.actionStatus.success(`Slideshow Deleted!`);
+            this.router.navigate(['church-slide-sync']);
+          }).catch((err) => {
+            this.actionStatus.failure(err);
+          });
       });
   }
 
@@ -107,11 +124,12 @@ export class ChurchSlideEditComponent {
   move(event: CdkDragDrop<string[]>) {
     let slides = this.active.slides$.value;
     moveItemInArray(slides, event.previousIndex, event.currentIndex);
-    // this.active.setSlides(slides);
+    this.active.setSlides();
   }
 
   ngOnDestroy() {
     this.active.clear();
+    this.controls.navControls.set(false);
     this.loadSlideshow$?.unsubscribe();
     this.editSlideshow$?.unsubscribe();
   }

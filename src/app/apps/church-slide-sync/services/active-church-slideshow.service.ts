@@ -61,26 +61,30 @@ export class ActiveChurchSlideshowService {
   addSlide(type: ChurchSlideType) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides.push(this.slideService.addEmptySlide(type));
-    this.slideshowService.update(slideshow);
+    return this.slideshowService.update(slideshow);
+  }
+
+  setSlides() {
+    const slideshow = this.slideshow$.value as ChurchSlideshow;
+    return this.slideshowService.update(slideshow);
   }
 
   saveHymn(hymn: ChurchHymn, slideIndex: number) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides[slideIndex].data = hymn;
-    this.slideshowService.update(slideshow);
+    return this.slideshowService.update(slideshow);
   }
 
   saveColor(color: string, slideIndex: number) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
     slideshow.slides[slideIndex].data = { bgColor: color };
-    this.slideshowService.update(slideshow);
+    return this.slideshowService.update(slideshow);
   }
 
   saveImage(imageUrl: string, slideIndex: number) {
     const slideshow = this.slideshow$.value as ChurchSlideshow;
-    slideshow.slides[slideIndex].data = {}; // convert false to object
-    slideshow.slides[slideIndex].data['url'] = imageUrl;
-    this.slideshowService.update(slideshow);
+    slideshow.slides[slideIndex].data = { url: imageUrl};
+    return this.slideshowService.update(slideshow);
   }
 
   nextSlide(sub?: boolean) {
@@ -113,7 +117,9 @@ export class ActiveChurchSlideshowService {
   clear() {
     this.slideshow$.next(null);
     this.title$.next('');
+    this.slide$.next(null);
     this.slides$.next([]);
+    this.bgColor.set('bg-black');
   }
 
 }

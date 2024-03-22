@@ -20,8 +20,13 @@ export class SlideshowControlsService {
   private active = inject(ActiveChurchSlideshowService);
   private slideshow$!: Unsubscribable;
 
+  disabled = signal(false);
+
+  navControls = signal(false);
+
   keyDown(event: KeyboardEvent) {
-    // if (event.code === 'KeyF') this.toggleFullscreen();
+    if (this.disabled()) return;
+    if (event.code === 'KeyF') this.toggleFullscreen();
     if (event.code === 'ArrowRight') this.next();
     if (event.code === 'ArrowLeft') this.prev();
   }

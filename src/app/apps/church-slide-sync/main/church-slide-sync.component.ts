@@ -9,6 +9,7 @@ import { ChurchSlideService } from '../services/church-slide.service';
 import { SlideshowControlsService } from '../services/slideshow-controls.service';
 import { FileUploadService } from 'src/app/shared/services/file-upload.service';
 import { EditHymnComponent } from '../dialogs/edit-hymn/edit-hymn.component';
+import { ChurchMobileControlsComponent } from '../components/church-mobile-controls/church-mobile-controls.component';
 
 @Component({
   selector: 'app-church-slide-sync',
@@ -17,6 +18,7 @@ import { EditHymnComponent } from '../dialogs/edit-hymn/edit-hymn.component';
     CommonModule,
     RouterModule,
     ChurchSlideshowViewComponent,
+    ChurchMobileControlsComponent,
   ],
   providers: [
     ChurchSlideshowService,

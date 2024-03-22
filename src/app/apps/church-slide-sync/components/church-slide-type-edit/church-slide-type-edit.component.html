@@ -1,10 +1,4 @@
-<div class="border-b py-4 flex flex-row items-center">
-
-  <div class="drag-handle cursor-move flex flex-row pl-2">
-    <div class="drag-line"></div>
-    <div class="drag-line"></div>
-    <div class="drag-line"></div>
-  </div>
+<div class="border-b py-4 flex flex-row items-center" [ngClass]="editMode ? 'pl-1' : 'pl-4'">
 
   @switch (slide.type) {
     
@@ -40,8 +34,8 @@
 
       <div class="flex flex-row grow justify-between items-center mr-4">
         <div class="h-14 flex grow items-stretch mr-4">
-          @if (slide.data?.url) {
-            <img class="h-14 grow object-cover" [src]="slide.data?.url" alt="Image alt text">
+          @if (slide.data?.url; as url) {
+            <img class="h-14 grow object-cover" [src]="url" alt="Image alt text">
           } @else {
             <p>Upload an image...</p>
           }

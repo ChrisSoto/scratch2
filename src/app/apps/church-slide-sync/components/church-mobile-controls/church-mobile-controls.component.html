@@ -1,0 +1,16 @@
+@if(controls.navControls()) {
+  <div id="mobile-controls" class="flex flex-row justify-between items-center bg-gray-400 px-4 py-2 absolute bottom-0 w-full lg:hidden shadow-xl z-10">
+    <button mat-fab color="primary" (click)="controls.prev()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="flex flex-col items-center font-medium tracking-wider text-white">
+      @if (active.slideshow$ | async; as slideshow) {
+        <span>Slide: {{ slideshow.activeSlide + 1}} -- {{ slideshow.slides[slideshow.activeSlide].type }}</span>
+        <span>Sub: {{ slideshow.activeSubSlide + 1}}</span>
+      }
+    </div>
+    <button mat-fab color="primary" (click)="controls.next()">
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </div>
+}
