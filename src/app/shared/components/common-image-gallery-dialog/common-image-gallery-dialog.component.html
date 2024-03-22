@@ -4,11 +4,11 @@
   <div mat-dialog-content class="flex flex-row justify-center overflow-auto">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-      @for (item of images(); track $index) {
+      @for (url of images(); track $index) {
         <div class="border-4 border-solid border-gray-200" 
-          (click)="selectItem(item)" 
-          [ngClass]="selectedUrl() === item ? 'border-amber-600' : 'border-gray-200'">
-          <img [src]="item" class="object-cover"/>
+          (click)="selectItem(url)" 
+          [ngClass]="{'border-amber-600': selectedUrl() == url, 'border-gray-200' : selectedUrl() != url}">
+          <img [src]="url" class="object-cover"/>
         </div>
       }
     </div>

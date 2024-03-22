@@ -6,7 +6,7 @@
 
 [x] fix dialogs on small devices
 
-[] flashing image when sorted
+[x] flashing image when sorted
 
 [x] hide slideshow in xs view
 
@@ -16,7 +16,7 @@
 
 [ ] need to add hymn maker
 
-[ ] why doesn't slide highlight work
+[x] why doesn't slide highlight work
 
 [ ] still can't drag from handle in mobile
 

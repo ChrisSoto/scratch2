@@ -3,7 +3,9 @@
     <div class="flex flex-row justify-between pb-3">
       <button mat-raised-button color="secondary" (click)="goBack()">Return</button>
       <div class="flex flex-row items-center gap-x-3">
-        <mat-slide-toggle class="lg:hidden" (toggleChange)="toggleControls()">Controls</mat-slide-toggle>
+        <div class="lg:hidden">
+          <mat-slide-toggle (toggleChange)="toggleControls()">Controls</mat-slide-toggle>
+        </div>
         <button class="my-1" mat-raised-button [color]="'primary'" (click)="edit()">
           Edit
         </button>
@@ -30,7 +32,7 @@
 <div class="slide-list" cdkDropList (cdkDropListDropped)="move($event)">
   
   @for (slide of active.slides$ | async; track $index) {
-    <div class="bg-white flex flex-row items-center transition-color duration-300" [ngClass]="$index == (active.slideshow$ | async)?.activeSlide ? 'bg-gray-200' : ''" cdkDrag>
+    <div class="slide-item flex flex-row justify-between items-center" [ngClass]="$index == (active.slideshow$ | async)?.activeSlide ? 'bg-blue-200' : 'bg-white'" cdkDrag>
       @if (editMode()) {
         <div [ngClass]="editMode() ? 'px-2' : ''" class="drag-handle cursor-move flex flex-row" cdkDragHandle>
           <div class="drag-line"></div>
