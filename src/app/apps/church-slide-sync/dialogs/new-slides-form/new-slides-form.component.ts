@@ -7,7 +7,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ChurchSlideshow } from '../../interface/ChurchSlideshow.interface';
-import { instance } from 'firebase-functions/lib/v1/providers/database';
 import { Timestamp } from '@angular/fire/firestore';
 
 @Component({

@@ -6,7 +6,7 @@ import { ChurchSlideshowService } from '../../services/church-slideshow.service'
 import { ChurchSlideType } from '../../interface/ChurchSlideshow.interface';
 import { CommonSelectComponent } from 'src/app/shared/components/common-select/common-select.component';
 import { ChurchSlideTypeEditComponent } from '../church-slide-type-edit/church-slide-type-edit.component';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -27,6 +27,8 @@ import { SlideshowControlsService } from '../../services/slideshow-controls.serv
     MatButtonModule,
     MatIconModule,
     MatSlideToggleModule,
+    CdkDrag,
+    CdkDragHandle
   ],
   templateUrl: './church-slide-edit.component.html',
   styleUrls: ['./church-slide-edit.component.scss']

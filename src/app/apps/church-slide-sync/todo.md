@@ -18,6 +18,8 @@
 
 [x] why doesn't slide highlight work
 
+[ ] fancy up hymn status
+
 [ ] still can't drag from handle in mobile
 
 Rabbits, rabbits, everywhere

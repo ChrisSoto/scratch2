@@ -13,6 +13,7 @@ import { EditHymnComponent } from '../../dialogs/edit-hymn/edit-hymn.component';
 import { EditColorComponent } from '../../dialogs/edit-color/edit-color.component';
 import { CommonImageGalleryDialogComponent } from 'src/app/shared/components/common-image-gallery-dialog/common-image-gallery-dialog.component';
 import { ActionStatusService } from 'src/app/shared/services/action-status.service';
+import { SlideshowControlsService } from '../../services/slideshow-controls.service';
 
 @Component({
   selector: 'church-slide-type-edit',
@@ -39,6 +40,7 @@ export class ChurchSlideTypeEditComponent {
   dialog = inject(MatDialog);
   upload = inject(FileUploadService);
   active = inject(ActiveChurchSlideshowService);
+  controls = inject(SlideshowControlsService);
 
   ngOnInit() {
     // switch (this.slide.type) {
@@ -61,9 +63,12 @@ export class ChurchSlideTypeEditComponent {
   }
 
   editHymn() {
+    this.controls.disabled.set(true);
     const hymn$$ = this.dialog.open(EditHymnComponent)
       .afterClosed()
       .subscribe((data: ChurchHymn) => {
+
+        this.controls.disabled.set(false);
         
         if (!data) {
           hymn$$.unsubscribe();

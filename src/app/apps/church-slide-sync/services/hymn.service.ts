@@ -15,15 +15,11 @@ export class HymnService {
     return this.database.get(this.path + '/' + id);
   }
 
-  read$(hymnNumber: string): Observable<ChurchHymn> {
+  read$(hymnNumber: number): Observable<ChurchHymn> {
     return this.list$(where('number', '==', hymnNumber))
       .pipe(
-        filter(data => {
-          return data.length > 0;
-        }),
-        map(data => {
-          return data[0]
-        })
+        filter(data => data.length > 0),
+        map(data => data[0])
       )
   }
 

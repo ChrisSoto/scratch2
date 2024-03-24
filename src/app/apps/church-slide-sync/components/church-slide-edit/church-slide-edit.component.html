@@ -33,13 +33,13 @@
   
   @for (slide of active.slides$ | async; track $index) {
     <div class="slide-item flex flex-row justify-between items-center" [ngClass]="$index == (active.slideshow$ | async)?.activeSlide ? 'bg-blue-200' : 'bg-white'" cdkDrag>
-      @if (editMode()) {
-        <div [ngClass]="editMode() ? 'px-2' : ''" class="drag-handle cursor-move flex flex-row" cdkDragHandle>
-          <div class="drag-line"></div>
-          <div class="drag-line"></div>
-          <div class="drag-line"></div>
-        </div>
-      }
+
+      <div class="drag-handle cursor-move flex flex-row px-2" cdkDragHandle>
+        <div class="drag-line"></div>
+        <div class="drag-line"></div>
+        <div class="drag-line"></div>
+      </div>
+
       <church-slide-type-edit class="flex-grow" [slide]="slide" [order]="$index" [editMode]="editMode()"/>
     </div>
   }
