@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MarkdownModule } from 'ngx-markdown';
 import { TextAreaEditorComponent } from 'src/app/shared/components/text-area-editor/text-area-editor.component';
 import { Router } from '@angular/router';
+import { CommonFabButtonComponent } from 'src/app/shared/components/common-fab-button/common-fab-button.component';
+import { RoleService } from 'src/app/shared/user/role.service';
 
 function toNumber(value: string | number): number {
   return +value;
@@ -24,6 +26,7 @@ function toNumber(value: string | number): number {
     MatButtonModule,
     MarkdownModule,
     TextAreaEditorComponent,
+    CommonFabButtonComponent,
   ],
   templateUrl: './project-page.component.html',
   styleUrls: ['./project-page.component.scss']
@@ -52,6 +55,7 @@ export class ProjectPageComponent {
   nav = inject(PortfolioNavService);
   project$ = inject(PortfolioProjectService).active$;
   projectService = inject(PortfolioProjectService);
+  role = inject(RoleService).isAdmin$;
 
   projectPage$: BehaviorSubject<ProjectPage | null> = new BehaviorSubject<ProjectPage | null>(null)
 
@@ -65,6 +69,17 @@ export class ProjectPageComponent {
           this.projectPage$.next(project.pages[index]);
         }
       })
+  }
+  
+  get isAdmin() {
+    return this.role.value;
+  }
+  
+  addSlide() {
+    const pages = this.project$.value?.pages || [];
+    const index = pages.length;
+    this.projectService.addSlide(index, 'Edit this textarea.');
+    this.nav.goTo(this.project, index + 1);
   }
 
   save(text: string) {

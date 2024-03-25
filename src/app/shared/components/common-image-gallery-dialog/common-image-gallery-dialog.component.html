@@ -1,13 +1,13 @@
 <div class="p-4">
-  <h1 class="text-xl pb-4" mat-dialog-title>Image Gallery</h1>
+  <h1 class="text-1xl font-black pb-4" mat-dialog-title>Image Gallery</h1>
 
   <div mat-dialog-content class="flex flex-row justify-center overflow-auto">
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       @for (url of images(); track $index) {
-        <div class="border-4 border-solid border-gray-200" 
+        <div class="flex flex-col justify-center items-center border-4 border-solid bg-gray-200 hover:bg-gray-300 cursor-pointer transition-all" 
           (click)="selectItem(url)" 
-          [ngClass]="{'border-amber-600': selectedUrl() == url, 'border-gray-200' : selectedUrl() != url}">
+          [ngClass]="{'border-amber-600 hover:border-amber-600': selectedUrl() == url, 'border-gray-200 hover:border-gray-200' : selectedUrl() != url}">
           <img [src]="url" class="object-cover"/>
         </div>
       }

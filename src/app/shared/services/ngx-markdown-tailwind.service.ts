@@ -18,14 +18,14 @@ export class NgxMarkdownTailwindService {
     }
 
     this.mkRender.renderer.paragraph = (text) => {
-      return '<p class="text-base leading-relaxed tracking-wide font-normal text-justify">' + text + '</p>';
+      return '<p class="text-base leading-relaxed tracking-wide font-normal text-justify pb-3">' + text + '</p>';
     }
 
     this.mkRender.renderer.image = (href, desc, altText) => {
       const altData = this.parseAltText(altText);
       if (!('video' in altData)) {
-        return  '<div class="' + this.setImgClasses(altData.align) +' pb-3">' +
-                  '<img class="border-white border-solid border-4 mat-elevation-z1  w-full" src="' + href + '" alt="' + altData.text  + '">' +
+        return  '<div class="' + this.setImgClasses(altData.align) +' py-3">' +
+                  '<img class="border-white border-solid border-4 mat-elevation-z1 mx-auto" src="' + href + '" alt="' + altData.text  + '">' +
                   '<div class="text-sm leading-tight text-center text-slate-600 pt-2">' + desc  + '</div>' +
                 '</div>';
       } else {
@@ -68,9 +68,9 @@ export class NgxMarkdownTailwindService {
   setImgClasses(align: string): string {
     switch (align) {
       case 'left':
-        return 'float-left w-full sm:w-3/4 md:w-1/2 pr-0 sm:pr-4';
+        return 'float-left w-full sm:w-3/4 pr-0 sm:pr-4';
       case 'right':
-        return 'float-right w-full sm:w-3/4 md:w-1/2 pr-0 sm:pl-4';
+        return 'float-right w-full sm:w-3/4 pr-0 sm:pl-4';
       case 'left-small':
         return 'float-left w-1/2 sm:w-1/4 pr-0 pr-4';
       case 'right-small':
@@ -78,7 +78,7 @@ export class NgxMarkdownTailwindService {
       case 'center':
         return 'mx-auto float-none w-full sm:w-3/4 md:w-1/2';
       case 'center-full':
-        return 'mx-auto float-none w-full sm:w-5/6 md:w-11/12 '
+        return 'mx-auto float-none w-full sm:w-5/6 md:w-11/12'
       default:
         return 'float-none';
     }

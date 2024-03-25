@@ -30,6 +30,12 @@
 
       <project-viewer [projectPage]="projectPage$ | async"/>
 
+      @if (isAdmin) {
+        <div class="flex flex-row justify-end mb-4 mr-4">
+          <common-fab-button [text]="'Add Slide'" [icon]="'add'" (click)="addSlide()"></common-fab-button>
+        </div>
+      }
+
     </div>
 
   </div>

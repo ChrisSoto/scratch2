@@ -45,6 +45,14 @@ export class PortfolioProjectService {
     }
   }
 
+  addSlide(idx: number, text: string) {
+    const project = this.active$.value;
+    if (project) {
+      project.pages.splice(idx, 0, { text, order: idx });
+      this.database.update(this.path + '/' + project.id, project);
+    }
+  }
+
   savePageTextEdit(idx: number, text: string) {
     const project = this.active$.value;
     if (project?.pages.length) {
